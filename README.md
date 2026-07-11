@@ -51,6 +51,38 @@ Alongside the per-patient JSON, every run also writes:
 - **`reports_table.html`** — the same matrix as a standalone web page with sticky
   headers, so you can scan any field across all patients at a glance.
 
+## Batch processing at scale (offline / on-premise)
+
+For large runs (tens of thousands of PDFs) use the **batch runner** — a parallel,
+resumable, fault-tolerant pipeline that needs **no internet and no cloud**. On a
+single workstation it processes ~26 ms/PDF/core, so 70,000 reports take roughly
+**2–5 minutes on 16 cores** (plus the OCR cost for any scans).
+
+```bash
+python -m genetic_report_extractor.batch /path/to/pdfs \
+    --db out/batch.db --workers 16 --ocr \
+    --csv out/records.csv --xlsx out/records.xlsx \
+    --review-csv out/review_queue.csv \
+    --errors out/errors.csv --quarantine out/quarantine
+```
+
+- **Parallel** across all cores (`--workers`).
+- **Resumable / idempotent** — every file is tracked by content hash; re-running
+  skips finished files, so you can stop/restart or add new PDFs incrementally.
+  Use `--retry-errors` to reprocess only the failures.
+- **Fault-tolerant** — corrupt / encrypted / text-less files are logged as errors
+  (and copied to `--quarantine`) instead of aborting the run.
+- **Offline OCR** (`--ocr`) reads scanned/image-only PDFs with Tesseract. Install
+  the system binary once: `apt-get install tesseract-ocr` (e.g. `--ocr-lang eng+ara`).
+- **Confidence scoring** — each record gets `high`/`medium`/`low`; low-confidence
+  and OCR-derived records are routed to `--review-csv` for a human to check.
+- **Streaming exports** — CSV and a write-only Excel sheet that scale to 70k+ rows
+  without loading everything into memory.
+
+Everything is stored in a local SQLite file (`--db`); re-export any time with
+`--export-only`. See [`docs/AT_SCALE.md`](docs/AT_SCALE.md) for a full on-premise
+deployment and privacy checklist.
+
 As a library:
 
 ```python
@@ -152,7 +184,9 @@ genetic_report_extractor/
   extractor.py    top-level orchestration (PDF -> [GeneticReport])
   flatten.py      GeneticReport -> flat one-row-per-patient dict / CSV
   html_report.py  transposed HTML field matrix
-  excel_report.py formatted .xlsx workbook (flat + matrix sheets)
+  excel_report.py formatted .xlsx workbook (+ streaming writer for big sets)
+  confidence.py   per-record confidence score + review flags
+  batch.py        parallel, resumable, offline batch runner (70k+ PDFs)
   cli.py          command-line interface
 examples/         the three sample PDFs
 output/           example output (JSON per patient + reports.csv/.xlsx + reports_table.html)

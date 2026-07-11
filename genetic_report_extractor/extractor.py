@@ -9,10 +9,17 @@ from .parser import parse_document
 from .schema import GeneticReport
 
 
-def extract_from_pdf(path: str) -> List[GeneticReport]:
-    """Extract one ``GeneticReport`` per patient from a single PDF."""
-    doc = extract_document(path)
-    return parse_document(doc)
+def extract_from_pdf(path: str, ocr: bool = False, ocr_lang: str = "eng") -> List[GeneticReport]:
+    """Extract one ``GeneticReport`` per patient from a single PDF.
+
+    Set ``ocr=True`` to fall back to offline Tesseract OCR for scanned/image-only
+    PDFs. Each returned report carries ``ocr_used`` so callers can flag it.
+    """
+    doc = extract_document(path, ocr=ocr, ocr_lang=ocr_lang)
+    reports = parse_document(doc)
+    for r in reports:
+        r.ocr_used = doc.ocr_used
+    return reports
 
 
 def extract_reports(paths: List[str]) -> List[GeneticReport]:

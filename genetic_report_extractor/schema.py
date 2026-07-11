@@ -163,6 +163,7 @@ class GeneticReport:
     # Bookkeeping for multi-patient PDFs
     patient_index: Optional[int] = None
     patients_in_source: Optional[int] = None
+    ocr_used: Optional[bool] = None
 
     def variant_summary(self) -> Optional[str]:
         """One readable line per reported variant (the 'results summary')."""

@@ -142,3 +142,30 @@ def xlsx_bytes(reports: List[GeneticReport]) -> bytes:
     buf = io.BytesIO()
     _build_workbook(reports).save(buf)
     return buf.getvalue()
+
+
+def write_xlsx_streaming(rows, columns, path: str, extra_headers=None) -> None:
+    """Write a large flat sheet row-by-row using openpyxl write-only mode.
+
+    ``rows`` is an iterable of dicts (e.g. from ``flatten_report``); nothing is
+    held in memory beyond the current row, so this scales to tens of thousands of
+    records. Suitable for the one-row-per-patient export at 70k scale (the
+    transposed matrix sheet is intentionally omitted — it does not scale to that
+    many patient columns).
+    """
+    from openpyxl import Workbook as _WB
+    from openpyxl.cell import WriteOnlyCell
+
+    cols = list(columns) + list(extra_headers or [])
+    wb = _WB(write_only=True)
+    ws = wb.create_sheet("Records (flat)")
+    header = []
+    for c in cols:
+        cell = WriteOnlyCell(ws, value=c)
+        cell.font = _HEADER_FONT
+        cell.fill = _HEADER_FILL
+        header.append(cell)
+    ws.append(header)
+    for row in rows:
+        ws.append(["" if row.get(c) is None else str(row.get(c)) for c in cols])
+    wb.save(path)
