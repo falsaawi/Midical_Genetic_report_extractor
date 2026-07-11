@@ -5,3 +5,4 @@ openpyxl>=3.1
 fastapi>=0.110
 uvicorn>=0.27
 python-multipart>=0.0.9
+libsql-experimental>=0.0.40   # durable Turso/libSQL backend (falls back to SQLite)

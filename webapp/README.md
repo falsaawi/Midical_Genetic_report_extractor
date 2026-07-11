@@ -58,13 +58,28 @@ cd Midical_Genetic_report_extractor
 npx vercel --prod        # prompts you to log in the first time
 ```
 
-### ⚠️ Persistence on Vercel
-Vercel functions are stateless with a read-only filesystem except ephemeral
-`/tmp`, so the bundled SQLite DB **resets on cold starts** — fine for a demo, not
-for durable transaction history. For production set `GRE_DB_PATH` to a mounted
-volume, or point the store at a hosted database (e.g. Turso/libSQL or Vercel
-Postgres). Hosts with a persistent disk (Render, Railway, Fly.io) keep the
-SQLite file as-is.
+### Durable persistence (Turso / libSQL)
+Vercel functions are stateless (only ephemeral `/tmp` is writable), so the local
+SQLite DB would reset on cold starts. The store therefore switches automatically
+to **Turso / libSQL** — a serverless SQLite — when these environment variables
+are set:
+
+| Env var | Purpose |
+|---------|---------|
+| `TURSO_DATABASE_URL` | `libsql://<db>-<org>.turso.io` connection URL |
+| `TURSO_AUTH_TOKEN`   | database auth token |
+
+Create a free database in ~1 minute:
+```bash
+curl -sSfL https://get.tur.so/install.sh | bash   # install CLI
+turso auth signup
+turso db create genetic-reports
+turso db show genetic-reports --url                # -> TURSO_DATABASE_URL
+turso db tokens create genetic-reports             # -> TURSO_AUTH_TOKEN
+```
+Set both in the Vercel project's Environment Variables (or pass with `vercel -e`).
+With neither set, the app uses local SQLite at `GRE_DB_PATH` — ideal for a disk
+host (Render, Railway, Fly.io) or local dev.
 
 ## Notes
 
