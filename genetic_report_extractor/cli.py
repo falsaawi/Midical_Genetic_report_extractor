@@ -21,19 +21,23 @@ from .schema import GeneticReport
 
 
 def _summarise(r: GeneticReport) -> str:
-    name = r.patient.full_name or "(unknown patient)"
-    variants = ", ".join(
-        f"{v.gene} {v.cdna_change or ''} {v.protein_change or ''} [{v.classification or '?'}]".strip()
-        for v in r.variants
-    ) or "no reportable variants"
+    kf = r.key_fields()
     tag = ""
     if r.patients_in_source and r.patients_in_source > 1:
         tag = f" (patient {r.patient_index + 1}/{r.patients_in_source})"
-    return (
-        f"  • {name}{tag} — no. {r.patient.patient_no or '?'} | "
-        f"{r.overall_result or r.report_type or ''}\n"
-        f"      variants: {variants}"
-    )
+    clinical = kf["clinical_information"] or ""
+    if len(clinical) > 160:
+        clinical = clinical[:157] + "..."
+    rows = [
+        f"  • {kf['patient_name'] or '(unknown)'}{tag}  [patient no. {kf['patient_no'] or '?'}]",
+        f"      Your Ref            : {kf['your_ref'] or '-'}",
+        f"      Doctor name         : {kf['doctor_name'] or '-'}",
+        f"      Hospital name       : {kf['hospital_name'] or '-'}",
+        f"      Results             : {kf['results'] or '-'}",
+        f"      Results summary     : {kf['results_summary'] or '-'}",
+        f"      Clinical information: {clinical or '-'}",
+    ]
+    return "\n".join(rows)
 
 
 def main(argv: List[str] | None = None) -> int:

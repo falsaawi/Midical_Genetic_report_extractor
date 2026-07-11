@@ -64,6 +64,7 @@
     "free_text": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
   },
   "overall_result": "Pathogenic variant identified",
+  "result_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1)",
   "variants": [
     {
       "gene": "CHD2",
@@ -105,5 +106,15 @@
     }
   ],
   "patient_index": 0,
-  "patients_in_source": 1
+  "patients_in_source": 1,
+  "key_fields": {
+    "your_ref": "544023",
+    "doctor_name": "Mrs. Fatimah Al Zayed",
+    "hospital_name": "Royal Commission Hospital",
+    "patient_name": "Saqer Mohammed Misfer Alkhathami",
+    "patient_no": "1933708",
+    "results": "Pathogenic variant identified",
+    "results_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1)",
+    "clinical_information": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
+  }
 }

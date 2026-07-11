@@ -164,6 +164,54 @@ class GeneticReport:
     patient_index: Optional[int] = None
     patients_in_source: Optional[int] = None
 
+    def variant_summary(self) -> Optional[str]:
+        """One readable line per reported variant (the 'results summary')."""
+        if not self.variants:
+            return "No reportable variants identified."
+        lines = []
+        for v in self.variants:
+            parts = [v.gene or "?"]
+            if v.transcript:
+                parts.append(v.transcript)
+            if v.cdna_change:
+                parts.append(v.cdna_change)
+            if v.protein_change:
+                parts.append(v.protein_change)
+            tail = []
+            if v.zygosity:
+                tail.append(v.zygosity)
+            if v.classification:
+                cls = v.classification
+                if v.classification_class:
+                    cls += f" ({v.classification_class})"
+                tail.append(cls)
+            if v.disorder and v.disorder.name:
+                dis = v.disorder.name
+                if v.disorder.omim:
+                    dis += f", OMIM {v.disorder.omim}"
+                tail.append(dis)
+            line = " ".join(parts)
+            if tail:
+                line += " — " + " — ".join(tail)
+            lines.append(line)
+        return " | ".join(lines)
+
+    def key_fields(self) -> dict:
+        """The commonly-requested headline fields, in one flat block."""
+        ci = self.clinical_information
+        clinical = ci.free_text or "; ".join(ci.hpo_terms) or None
+        return {
+            "your_ref": self.patient.your_ref,
+            "doctor_name": self.ordering_provider.physician,
+            "hospital_name": self.ordering_provider.institution,
+            "patient_name": self.patient.full_name,
+            "patient_no": self.patient.patient_no,
+            "results": self.overall_result,
+            "results_summary": self.result_summary or self.variant_summary(),
+            "clinical_information": clinical,
+        }
+
     def to_dict(self, prune: bool = True) -> dict:
         d = asdict(self)
+        d["key_fields"] = self.key_fields()
         return _clean(d) if prune else d

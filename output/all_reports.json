@@ -46,6 +46,7 @@
       "free_text": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
     },
     "overall_result": "Pathogenic variant identified in CANT1",
+    "result_summary": "CANT1 NM_001159772.1 c.902_906dup p.Ser303Alafs*21 — Heterozygous — Pathogenic (class 1)",
     "variants": [
       {
         "gene": "CANT1",
@@ -84,7 +85,17 @@
       }
     ],
     "patient_index": 0,
-    "patients_in_source": 2
+    "patients_in_source": 2,
+    "key_fields": {
+      "your_ref": "064230",
+      "doctor_name": "Dr. Majid Alfadhel",
+      "hospital_name": "Thuriah Medical Center",
+      "patient_name": "Amani Mustafa Ahmad",
+      "patient_no": "1150124",
+      "results": "Pathogenic variant identified in CANT1",
+      "results_summary": "CANT1 NM_001159772.1 c.902_906dup p.Ser303Alafs*21 — Heterozygous — Pathogenic (class 1)",
+      "clinical_information": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
+    }
   },
   {
     "source_file": "examples/report1_1150124_couple.pdf",
@@ -133,6 +144,7 @@
       "free_text": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
     },
     "overall_result": "Pathogenic variant identified in CANT1",
+    "result_summary": "CANT1 NM_001159772.1 c.902_906dup p.Ser303Alafs*21 — Heterozygous — Pathogenic (class 1)",
     "variants": [
       {
         "gene": "CANT1",
@@ -171,7 +183,17 @@
       }
     ],
     "patient_index": 1,
-    "patients_in_source": 2
+    "patients_in_source": 2,
+    "key_fields": {
+      "your_ref": "R6508/16",
+      "doctor_name": "Dr. Majid Alfadhel",
+      "hospital_name": "Thuriah Medical Center",
+      "patient_name": "Abdulhamide Mohammed Almohammed",
+      "patient_no": "1150130",
+      "results": "Pathogenic variant identified in CANT1",
+      "results_summary": "CANT1 NM_001159772.1 c.902_906dup p.Ser303Alafs*21 — Heterozygous — Pathogenic (class 1)",
+      "clinical_information": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
+    }
   },
   {
     "source_file": "examples/report2_1223557.pdf",
@@ -234,6 +256,7 @@
       "free_text": "Chewing difficulties, Delayed gross motor development, Easy fatigability, Elevated hepatic transaminases, Elevated serum creatine phosphokinase, Global developmental delay, Muscle weakness, Skeletal muscle hypertrophy *: Clinical information indicated above follows HPO nomenclature."
     },
     "overall_result": "Likely pathogenic variant identified",
+    "result_summary": "DMD NM_004006.2 c.2642C>G p.(Ser881*) — Hemizygous — likely pathogenic (class 2) — Duchenne Muscular Dystrophy, OMIM 310200",
     "variants": [
       {
         "gene": "DMD",
@@ -277,7 +300,17 @@
       }
     ],
     "patient_index": 0,
-    "patients_in_source": 1
+    "patients_in_source": 1,
+    "key_fields": {
+      "your_ref": "01-20-89-66",
+      "doctor_name": "Dr. Walaa Al Shuaibi",
+      "hospital_name": "King Khalid University Hospital",
+      "patient_name": "Meshael Alsubaie",
+      "patient_no": "1223557",
+      "results": "Likely pathogenic variant identified",
+      "results_summary": "DMD NM_004006.2 c.2642C>G p.(Ser881*) — Hemizygous — likely pathogenic (class 2) — Duchenne Muscular Dystrophy, OMIM 310200",
+      "clinical_information": "Chewing difficulties, Delayed gross motor development, Easy fatigability, Elevated hepatic transaminases, Elevated serum creatine phosphokinase, Global developmental delay, Muscle weakness, Skeletal muscle hypertrophy *: Clinical information indicated above follows HPO nomenclature."
+    }
   },
   {
     "source_file": "examples/report3_1933708.pdf",
@@ -345,6 +378,7 @@
       "free_text": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
     },
     "overall_result": "Pathogenic variant identified",
+    "result_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1)",
     "variants": [
       {
         "gene": "CHD2",
@@ -386,6 +420,16 @@
       }
     ],
     "patient_index": 0,
-    "patients_in_source": 1
+    "patients_in_source": 1,
+    "key_fields": {
+      "your_ref": "544023",
+      "doctor_name": "Mrs. Fatimah Al Zayed",
+      "hospital_name": "Royal Commission Hospital",
+      "patient_name": "Saqer Mohammed Misfer Alkhathami",
+      "patient_no": "1933708",
+      "results": "Pathogenic variant identified",
+      "results_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1)",
+      "clinical_information": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
+    }
   }
 ]

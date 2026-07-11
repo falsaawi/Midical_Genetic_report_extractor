@@ -45,6 +45,7 @@
     "free_text": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
   },
   "overall_result": "Pathogenic variant identified in CANT1",
+  "result_summary": "CANT1 NM_001159772.1 c.902_906dup p.Ser303Alafs*21 — Heterozygous — Pathogenic (class 1)",
   "variants": [
     {
       "gene": "CANT1",
@@ -83,5 +84,15 @@
     }
   ],
   "patient_index": 0,
-  "patients_in_source": 2
+  "patients_in_source": 2,
+  "key_fields": {
+    "your_ref": "064230",
+    "doctor_name": "Dr. Majid Alfadhel",
+    "hospital_name": "Thuriah Medical Center",
+    "patient_name": "Amani Mustafa Ahmad",
+    "patient_no": "1150124",
+    "results": "Pathogenic variant identified in CANT1",
+    "results_summary": "CANT1 NM_001159772.1 c.902_906dup p.Ser303Alafs*21 — Heterozygous — Pathogenic (class 1)",
+    "clinical_information": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
+  }
 }

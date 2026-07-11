@@ -63,6 +63,35 @@ Each `GeneticReport` (one per patient) captures:
 
 Missing fields are simply omitted from the JSON rather than causing a failure.
 
+### Headline `key_fields` block
+
+For convenience, every serialised record also carries a flat `key_fields` block
+that surfaces the most commonly requested values in one place (also available
+programmatically via `report.key_fields()`):
+
+| key | source |
+|-----|--------|
+| `your_ref` | patient's "Your ref." |
+| `doctor_name` | referring physician the report is addressed to |
+| `hospital_name` | referring institution |
+| `patient_name` / `patient_no` | patient identity |
+| `results` | overall result banner (e.g. *POSITIVE RESULT — Likely pathogenic variant identified*) |
+| `results_summary` | readable one-liner per reported variant (gene, transcript, cDNA/protein, zygosity, classification, disorder) |
+| `clinical_information` | referral clinical text / HPO terms |
+
+```json
+"key_fields": {
+  "your_ref": "01-20-89-66",
+  "doctor_name": "Dr. Walaa Al Shuaibi",
+  "hospital_name": "King Khalid University Hospital",
+  "patient_name": "Meshael Alsubaie",
+  "patient_no": "1223557",
+  "results": "Likely pathogenic variant identified",
+  "results_summary": "DMD NM_004006.2 c.2642C>G p.(Ser881*) — Hemizygous — likely pathogenic (class 2) — Duchenne Muscular Dystrophy, OMIM 310200",
+  "clinical_information": "Chewing difficulties, Delayed gross motor development, ..."
+}
+```
+
 ## Example: multi-patient split
 
 `report1_1150124_couple.pdf` is a single PDF describing both parents. It becomes

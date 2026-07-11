@@ -355,6 +355,8 @@ def _parse_2016(doc: ExtractedDocument, clean: str, raw: str) -> List[GeneticRep
             patient_index=idx,
             patients_in_source=n,
         ))
+    for r in reports:
+        r.result_summary = r.variant_summary()
     return reports
 
 
@@ -492,6 +494,7 @@ def _parse_labeled(doc: ExtractedDocument, clean: str, raw: str, generation: str
         patient_index=0,
         patients_in_source=1,
     )
+    report.result_summary = report.variant_summary()
     return [report]
 
 

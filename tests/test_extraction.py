@@ -87,6 +87,21 @@ def test_2024_single():
     assert len(r.signatories) == 3
 
 
+def test_key_fields():
+    (r,) = extract_from_pdf(os.path.join(EX, "report2_1223557.pdf"))
+    kf = r.key_fields()
+    assert kf["your_ref"] == "01-20-89-66"
+    assert kf["doctor_name"] == "Dr. Walaa Al Shuaibi"
+    assert kf["hospital_name"] == "King Khalid University Hospital"
+    assert "pathogenic" in kf["results"].lower()
+    assert kf["results_summary"].startswith("DMD")
+    assert "Chewing difficulties" in kf["clinical_information"]
+    # result_summary is also persisted on the record itself
+    assert r.result_summary == kf["results_summary"]
+    # ...and exposed in the serialised JSON
+    assert "key_fields" in r.to_dict()
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_") and callable(fn):
