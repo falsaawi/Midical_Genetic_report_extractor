@@ -1,0 +1,15 @@
+.git
+.github
+.vercel
+.vercel_deploy.log
+__pycache__
+**/__pycache__
+*.pyc
+output
+webapp/data/*.db
+webapp/data/*.log
+webapp/data/shots
+docs
+*.md
+tests
+wheels

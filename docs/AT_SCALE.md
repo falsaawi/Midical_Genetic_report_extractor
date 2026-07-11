@@ -93,7 +93,48 @@ text is noisier.
   libraries carry no telemetry.
 - **Optional containerisation.** Package as an offline Docker image for a
   reproducible, isolated run — build once on a connected machine, `docker save`
-  the image, and load it on the air-gapped host.
+  the image, and load it on the air-gapped host (see below).
+
+## 7. Offline Docker image (air-gapped)
+
+The bundled `Dockerfile` produces a self-contained image (Python + Tesseract +
+all dependencies + the app). It needs internet only to **build**; at **runtime**
+it needs nothing — verified with `docker run --network=none`.
+
+**Build once on a connected machine and export a portable tarball:**
+```bash
+./docker/build-offline.sh                       # builds + self-tests + saves .tar.gz
+# -> genetic-report-extractor_1.0.0.tar.gz  (~130 MB compressed, 511 MB image)
+```
+
+**Move the tarball to the air-gapped host and load it:**
+```bash
+docker load -i genetic-report-extractor_1.0.0.tar.gz
+```
+
+**Run — batch mode (mount a host dir at `/data`):**
+```bash
+docker run --rm --network=none -v /data:/data genetic-report-extractor:1.0.0 \
+    batch /data/reports --db /data/out/batch.db --ocr \
+    --csv /data/out/records.csv --xlsx /data/out/records.xlsx \
+    --review-csv /data/out/review.csv --quarantine /data/out/quarantine
+```
+
+**Run — review web app (local only):**
+```bash
+docker run --rm -p 8077:8077 -v /data:/data genetic-report-extractor:1.0.0 web
+# http://localhost:8077
+```
+
+Other entrypoint commands: `extract` (one-off CLI), `selftest` (runs the bundled
+samples), `shell`. Add OCR language packs by editing the `apt-get` line in the
+`Dockerfile` (e.g. `tesseract-ocr-ara`).
+
+**Fully offline build** (no internet even at build time) — vendor the wheels and
+`.deb`s on a connected machine, then:
+```bash
+docker build --build-arg PIP_ARGS="--no-index --find-links /wheels" -t genetic-report-extractor:1.0.0 .
+```
 
 ## 6. Interactive review UI (optional, local only)
 

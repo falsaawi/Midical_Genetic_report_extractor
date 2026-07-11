@@ -83,6 +83,19 @@ Everything is stored in a local SQLite file (`--db`); re-export any time with
 `--export-only`. See [`docs/AT_SCALE.md`](docs/AT_SCALE.md) for a full on-premise
 deployment and privacy checklist.
 
+### Offline Docker image
+
+A self-contained image (Python + Tesseract + deps + app) ships the whole thing
+as one artifact that runs with **no network** (verified with `--network=none`):
+
+```bash
+./docker/build-offline.sh                          # build + self-test + save tarball
+docker load -i genetic-report-extractor_1.0.0.tar.gz   # on the air-gapped host
+docker run --rm --network=none -v /data:/data genetic-report-extractor:1.0.0 \
+    batch /data/reports --db /data/out/batch.db --ocr --csv /data/out/records.csv
+docker run --rm -p 8077:8077 -v /data:/data genetic-report-extractor:1.0.0 web
+```
+
 As a library:
 
 ```python

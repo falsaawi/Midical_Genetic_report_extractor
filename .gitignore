@@ -9,3 +9,9 @@ webapp/data/*.log
 webapp/data/shots/
 webapp/data/*.xlsx
 .vercel
+
+# never commit proxy CA or image tarballs
+docker/proxy-ca.crt
+*.tar
+*.tar.gz
+wheels/
