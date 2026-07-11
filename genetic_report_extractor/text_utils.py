@@ -39,6 +39,9 @@ _BOILERPLATE_PATTERNS = [
     re.compile(r"Centogene AG\s*[••]\s*Schillingallee.*?Germany", re.IGNORECASE | re.DOTALL),
     # Page markers
     re.compile(r"Page:\s*\d+\s*of\s*\d+", re.IGNORECASE),
+    # Repeated per-page "Patient no.: N  Order no.: N" echo on continuation
+    # pages (the real header line is followed by ", First Name", so it is safe).
+    re.compile(r"Patient no\.?:\s*\d+\s+Order no\.?:\s*\d+", re.IGNORECASE),
 ]
 
 

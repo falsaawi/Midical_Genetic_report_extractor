@@ -564,7 +564,7 @@ def _clinical_labeled(clean: str, raw: str) -> ClinicalInformation:
         for cut in (r"\(?\s*Clinical information indicated above", r"Diagnosed Condition",
                     r"Age of manifestation", r"Previous ", r"EEG ", r"MRI "):
             head = re.split(cut, head)[0]
-        head = head.rstrip(" (\t")
+        head = re.sub(r"[\s*:(]+$", "", head)  # drop trailing footnote markers (* : ( )
         # Newer reports separate terms with ';', older ones with ','.  Only split
         # on ',' when there are no semicolons, so terms like "Intellectual
         # disability, mild" stay intact.
