@@ -258,6 +258,44 @@ def _split_slash(value: Optional[str]) -> List[str]:
     return [collapse_ws(p) for p in re.split(r"\s+/\s+", value) if collapse_ws(p)]
 
 
+_COUNTRY_RE = (
+    r"(Saudi Arabia|United Arab Emirates|Kuwait|Qatar|Bahrain|Oman|Egypt|Jordan|"
+    r"Lebanon|Iraq|Yemen|Germany|United Kingdom|United States|Turkey|India|Pakistan)"
+)
+
+
+def _legacy_ordering(header: str) -> OrderingProvider:
+    """Addressee block on legacy page 1 sits between the physician line and the
+    'Centogene AG' sender block that follows it."""
+    op = OrderingProvider()
+    pm = re.search(r"(Dr\.?|Prof\.?|Mrs\.?|Mr\.?|Ms\.?)\s*[A-Z][A-Za-z.\-]+", header)
+    if not pm:
+        return op
+    tail = header[pm.start():]
+    sender = re.search(r"\n\s*Centogene AG", tail, re.IGNORECASE)
+    block = tail[: sender.start()] if sender else tail
+    lines = norm_lines(block)
+    if not lines:
+        return op
+    op.physician = lines[0]
+    if len(lines) > 1:
+        op.institution = lines[1]
+    country_idx = next((i for i, ln in enumerate(lines) if re.fullmatch(_COUNTRY_RE, ln)), None)
+    if country_idx is not None:
+        op.country = lines[country_idx]
+        middle = lines[2:country_idx]
+    else:
+        middle = lines[2:]
+    if middle:
+        # A short alphabetic first middle line reads as a department.
+        if len(middle[0]) <= 24 and not re.search(r"\d", middle[0]):
+            op.department = middle[0]
+            middle = middle[1:]
+        if middle:
+            op.address = ", ".join(middle)
+    return op
+
+
 def _parse_2016(doc: ExtractedDocument, clean: str, raw: str) -> List[GeneticReport]:
     header = doc.page_texts[0]
 
@@ -282,10 +320,7 @@ def _parse_2016(doc: ExtractedDocument, clean: str, raw: str) -> List[GeneticRep
         collection_date=first(r"Sample collection date[^:]*:\s*([0-9.]+)", header),
         order_received_date=first(r"Order received[^:]*:\s*([0-9.]+)", header),
     )
-    ordering = OrderingProvider(
-        physician=first(r"(Dr\.?\s*[A-Z][A-Za-z.\- ]+)\n", header),
-        institution=first(r"Dr\.?\s*[A-Z][A-Za-z.\- ]+\n\s*([^\n]+)", header),
-    )
+    ordering = _legacy_ordering(header)
     lab = _laboratory(raw)
     test = TestInfo(
         tests_requested=first(r"(Whole Exome Sequencing \(CentoXome[^)]*\)[^.\n]*)", raw),
@@ -376,7 +411,14 @@ def _parse_2016_variant(header: str) -> Optional[Variant]:
     cls, cls_class = _classification(block)
     pmid = first(r"PMID:\s*(\d+)", block)
     described = first(r"([A-Z][a-z]+,\s*\d{4})", block)
-    dm = re.search(r"([A-Z][A-Za-z0-9 ,'\-]+?(?:dysplasia|syndrome|disease)[^()\n]*?)\s*\((\d{6}),\s*([A-Z]{2,3})\)", block)
+    # Disorder name / OMIM / inheritance — the table cell wraps across several
+    # lines, so match on a whitespace-collapsed copy of the block.
+    flat_block = collapse_ws(block)
+    dm = re.search(
+        r"([A-Z][A-Za-z0-9 ,'\-]+?(?:dysplasia|syndrome|disease|deficiency|disorder)"
+        r"[^()]*?)\s*\((\d{6}),\s*([A-Z]{2,3})\)",
+        flat_block,
+    )
     disorder = None
     if dm:
         disorder = Disorder(

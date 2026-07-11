@@ -25,12 +25,25 @@ pip install -r requirements.txt      # PyMuPDF only
 Command line:
 
 ```bash
-# Write one <patient_no>.json per patient (plus a combined all_reports.json) to ./output
+# Write one <patient_no>.json per patient (plus all_reports.json, reports.csv,
+# and reports_table.html) to ./output
 python -m genetic_report_extractor examples/*.pdf -o output
 
 # Print combined JSON to stdout instead
 python -m genetic_report_extractor examples/report1_1150124_couple.pdf --stdout
+
+# Choose explicit CSV / HTML output paths
+python -m genetic_report_extractor examples/*.pdf --csv fields.csv --html matrix.html
 ```
+
+Alongside the per-patient JSON, every run also writes:
+
+- **`reports.csv`** — a flat table, **one row per patient and every field in its own
+  column** (75 columns; nested objects become dotted names like `patient.your_ref`,
+  repeated variants are numbered `variant1.*`, `variant2.*`). Ready for Excel / a database load.
+- **`reports_table.html`** — the same data **transposed** into a readable matrix
+  (fields as rows, one column per patient) with sticky headers, so you can scan any
+  field across all patients at a glance.
 
 As a library:
 
@@ -131,9 +144,11 @@ genetic_report_extractor/
   schema.py       dataclasses for the structured model
   parser.py       adaptive CENTOGENE parser + multi-patient splitting
   extractor.py    top-level orchestration (PDF -> [GeneticReport])
+  flatten.py      GeneticReport -> flat one-row-per-patient dict / CSV
+  html_report.py  transposed HTML field matrix
   cli.py          command-line interface
 examples/         the three sample PDFs
-output/           example JSON output (one file per patient)
+output/           example output (JSON per patient + reports.csv + reports_table.html)
 tests/            end-to-end extraction tests
 ```
 

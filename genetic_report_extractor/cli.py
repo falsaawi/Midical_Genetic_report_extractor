@@ -17,6 +17,8 @@ import sys
 from typing import List
 
 from .extractor import extract_from_pdf
+from .flatten import write_csv
+from .html_report import write_html
 from .schema import GeneticReport
 
 
@@ -46,6 +48,8 @@ def main(argv: List[str] | None = None) -> int:
     ap.add_argument("-o", "--outdir", default="output", help="output directory for JSON (default: output)")
     ap.add_argument("--stdout", action="store_true", help="print JSON to stdout instead of writing files")
     ap.add_argument("--no-prune", action="store_true", help="keep empty/None fields in the JSON")
+    ap.add_argument("--csv", metavar="PATH", help="also write a flat one-row-per-patient CSV")
+    ap.add_argument("--html", metavar="PATH", help="also write a transposed HTML field matrix")
     args = ap.parse_args(argv)
 
     all_reports: List[GeneticReport] = []
@@ -80,6 +84,14 @@ def main(argv: List[str] | None = None) -> int:
     with open(combined, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, indent=2, ensure_ascii=False)
     print(f"\nWrote {len(all_reports)} record(s) to {args.outdir}/ (+ all_reports.json)")
+
+    csv_path = args.csv or os.path.join(args.outdir, "reports.csv")
+    cols = write_csv(all_reports, csv_path)
+    print(f"Wrote flat CSV ({len(cols)} columns x {len(all_reports)} rows): {csv_path}")
+
+    html_path = args.html or os.path.join(args.outdir, "reports_table.html")
+    write_html(all_reports, html_path)
+    print(f"Wrote HTML field matrix: {html_path}")
     return 0
 
 

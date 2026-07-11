@@ -44,8 +44,16 @@ def test_multipatient_split():
         assert v.protein_change == "p.Ser303Alafs*21"
         assert v.zygosity == "Heterozygous"
         assert v.classification == "Pathogenic"
+        assert v.disorder.name == "Desbuquois dysplasia type 1"
+        assert v.disorder.omim == "251450"
+        assert v.disorder.inheritance == "Autosomal recessive"
     assert p1.coverage.average_coverage == "157.93"
     assert p2.coverage.average_coverage == "169.916"
+    # Ordering provider fully parsed from the legacy addressee block
+    assert p1.ordering_provider.physician == "Dr. Majid Alfadhel"
+    assert p1.ordering_provider.institution == "Thuriah Medical Center"
+    assert p1.ordering_provider.department == "Pediatrics"
+    assert p1.ordering_provider.country == "Saudi Arabia"
 
 
 def test_2018_single():
