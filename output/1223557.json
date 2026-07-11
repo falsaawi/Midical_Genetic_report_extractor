@@ -1,0 +1,106 @@
+{
+  "source_file": "examples/report2_1223557.pdf",
+  "lab_name": "CENTOGENE AG",
+  "report_type": "Final Report",
+  "report_date": "12 Apr. 2018",
+  "template_generation": "2018_labeled",
+  "patient": {
+    "patient_no": "1223557",
+    "first_name": "Meshael",
+    "last_name": "Alsubaie",
+    "full_name": "Meshael Alsubaie",
+    "sex": "male",
+    "date_of_birth": "19 Dec. 2011",
+    "your_ref": "01-20-89-66",
+    "order_no": "62451890"
+  },
+  "laboratory": {
+    "name": "CENTOGENE AG",
+    "address": "Am Strande 7 • 18055 Rostock • Germany",
+    "country": "Germany",
+    "clia_registration": "99D2049715",
+    "cap_registration": "8005167",
+    "phone": "+49 (0)381 80113 416",
+    "fax": "+49 (0)381 80113 401",
+    "email": "dmqc@centogene.com",
+    "website": "www.centogene.com"
+  },
+  "ordering_provider": {
+    "physician": "Dr. Walaa Al Shuaibi",
+    "institution": "King Khalid University Hospital",
+    "department": "Pediatrics",
+    "address": "Riyadh",
+    "country": "Saudi Arabia"
+  },
+  "sample": {
+    "sample_type": "blood, filter card",
+    "collection_date": "18 Feb. 2018",
+    "order_no": "62451890",
+    "order_received_date": "09 Mar. 2018"
+  },
+  "test": {
+    "tests_requested": "Whole Exome Sequencing (CentoXome GOLD®)",
+    "method_summary": "RNA capture baits against approximately 60 Mb of the Human Exome (targeting >99% of regions in CCDS, RefSeq and Gencode databases) is used to enrich regions of interest from fragmented genomic DNA w ith Agilent’s SureSelect Human All Exon V6 kit. The generated library is sequenced on an Illumina platform to obtain an average coverage depth of ~100x. Typically, ~97% of the targeted bases are covered >10x. An end to end in-house bioinformatics pipeline including base calling, alignment of reads to GRCh37/hg19 genome assembly, primary filtering out of low quality reads and probable artefacts, and subsequent annotation of variants, is applied. All disease causing variants reported in HGMD®, Patient no.: 1223557 Order no.: 62451890 in ClinVar or in CentoMD® as w ell as all variants w ith minor allele frequency (MAF) of less than 1% in gnomAD database are considered. Evaluation is focused on coding exons along w ith flanking +/-20 intronic bases. All pertinent inheritance patterns are considered. In addition, provided family history and clinical information are used to evaluate eventually identified variants. All identified variants are evaluated w ith respect to their pathogenicity and causality, and these are categorized into classes 1 - 5 (see above). All variants related to the phenotype of the patient, except benign or likely benign variants, are reported. Variants of relevance identified by NGS are continuously and individually in-house validated for quality aspects; those variants which meet our internal QC criteria (based on extensive validation processes) are not validated by Sanger.",
+    "genome_build": "GRCh37",
+    "platform": "Illumina platform"
+  },
+  "clinical_information": {
+    "hpo_terms": [
+      "Chewing difficulties",
+      "Delayed gross motor development",
+      "Easy fatigability",
+      "Elevated hepatic transaminases",
+      "Elevated serum creatine phosphokinase",
+      "Global developmental delay",
+      "Muscle weakness",
+      "Skeletal muscle hypertrophy *:"
+    ],
+    "age_of_manifestation": "18 months",
+    "free_text": "Chewing difficulties, Delayed gross motor development, Easy fatigability, Elevated hepatic transaminases, Elevated serum creatine phosphokinase, Global developmental delay, Muscle weakness, Skeletal muscle hypertrophy *: Clinical information indicated above follows HPO nomenclature."
+  },
+  "overall_result": "Likely pathogenic variant identified",
+  "variants": [
+    {
+      "gene": "DMD",
+      "transcript": "NM_004006.2",
+      "cdna_change": "c.2642C>G",
+      "protein_change": "p.(Ser881*)",
+      "genomic_coordinate": "ChrX(GRCh37):g.32503197G>C",
+      "exon": "21",
+      "zygosity": "Hemizygous",
+      "variant_type": "Stop gain",
+      "classification": "likely pathogenic",
+      "classification_class": "class 2",
+      "disorder": {
+        "name": "Duchenne Muscular Dystrophy",
+        "omim": "310200",
+        "inheritance": "X-linked"
+      }
+    }
+  ],
+  "interpretation": "A hemizygous likely pathogenic nonsense variant was identified in the DMD gene. The genetic diagnosis of Duchenne Muscular Dystrophy is thus confirmed. Of note, patients with nonsense mutations, such as the one detected here, can benefit from novel genetic therapies implementing stop codon read-through technology.",
+  "recommendations": " maternal carrier testing to evaluate whether the detected variant is inherited or de novo  genetic counselling",
+  "incidental_findings": "Incidental findings which we list according to the ACMG guidelines are not provided here due to the lack of consent.",
+  "coverage": {
+    "average_coverage": "96.94",
+    "pct_0x": "0.13",
+    "pct_ge_1x": "99.87",
+    "pct_ge_5x": "99.35",
+    "pct_ge_10x": "98.13",
+    "pct_ge_20x": "93.51",
+    "pct_ge_50x": "69.45",
+    "raw": "COVERAGE (X) 0X ≥ 1X ≥ 5X ≥ 10X ≥ 20X ≥ 50X 96.94 0.13 99.87 99.35 98.13 93.51 69.45"
+  },
+  "signatories": [
+    {
+      "name": "Prof. Dr. Arndt Rolfs, MD",
+      "title": "Chief Medical Director"
+    },
+    {
+      "name": "Dr. Iris Hövel, PhD",
+      "title": "Clinical Scientist"
+    }
+  ],
+  "patient_index": 0,
+  "patients_in_source": 1
+}

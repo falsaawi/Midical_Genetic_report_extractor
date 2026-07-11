@@ -1,0 +1,391 @@
+[
+  {
+    "source_file": "examples/report1_1150124_couple.pdf",
+    "lab_name": "CENTOGENE AG",
+    "report_type": "Final Report",
+    "report_date": "30.09.2016",
+    "template_generation": "2016_legacy",
+    "patient": {
+      "patient_no": "1150124",
+      "first_name": "Amani Mustafa",
+      "last_name": "Ahmad",
+      "full_name": "Amani Mustafa Ahmad",
+      "sex": "female",
+      "date_of_birth": "04.07.1992",
+      "your_ref": "064230",
+      "order_no": "62322058"
+    },
+    "laboratory": {
+      "name": "CENTOGENE AG",
+      "address": "Schillingallee 68 • 18057 Rostock • Germany",
+      "country": "Germany",
+      "clia_registration": "99D2049715",
+      "cap_registration": "8005167",
+      "phone": "+49 (0)381 203652 0",
+      "fax": "+49 (0)381 203652 19",
+      "email": "support@centogene.com",
+      "website": "www.centogene.com"
+    },
+    "ordering_provider": {
+      "physician": "Dr. Majid Alfadhel",
+      "institution": "Thuriah Medical Center"
+    },
+    "sample": {
+      "sample_type": "blood, EDTA",
+      "collection_date": "03.09.2016",
+      "order_received_date": "06.09.2016"
+    },
+    "test": {
+      "tests_requested": "Whole Exome Sequencing (CentoXome PLATINUM®) was performed for both probands of the couple",
+      "method_summary": "Approximately 37 Mb (214,405 exons) of the Consensus Coding Sequences (CCS) were enriched from fragmented genomic DNA by >340,000 probes designed against the human genome (Nextera Rapid Capture Exome, Illumina) and the generated library sequenced on an Illumina NextSeq or HiSeq 4000 platform (Illumina) to an average coverage depth 100-130X. An end to end inhouse bioinformatics pipelines including base calling, primary filtering of low quality reads and probable artefacts, and annotation of variants was applied. All disease causing variants reported in HGMD®, in ClinVar or in CentoMD® (class 1) as well as all variants with minor allele frequency (MAF) of less than 1% in ExAc database are considered. Evaluation is focused on exons and intron boundaries +/-20. All relevant inheritance patterns are considered, provided family history and clinical information are used to evaluate eventually identified variants. Only variants related to the phenotype are reported. Any relevant variant identified by NGS are in-house validated or Sanger sequenced in forward and reverse direction to exclude NGS artefacts.",
+      "platform": "Illumina NextSeq or HiSeq 4000"
+    },
+    "clinical_information": {
+      "family_history": "negative family history",
+      "consanguinity": "consanguineous",
+      "free_text": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
+    },
+    "overall_result": "Pathogenic variant identified in CANT1",
+    "variants": [
+      {
+        "gene": "CANT1",
+        "transcript": "NM_001159772.1",
+        "cdna_change": "c.902_906dup",
+        "protein_change": "p.Ser303Alafs*21",
+        "zygosity": "Heterozygous",
+        "variant_type": "Frame-shift",
+        "classification": "Pathogenic",
+        "classification_class": "class 1",
+        "described_in": "Huber, 2009",
+        "pmid": "19853239"
+      }
+    ],
+    "interpretation": "By whole exome sequencing we detected a heterozygous variant in the CANT1 gene, c.902_906dup (p.Ser303Alafs*21) in both probands. This variant has been confirmed by Sanger sequencing. It has been previously described as disease-causing for Desbuquois dysplasia by Huber et al., 2009 (HGMD Professional 2016.2 - PMID: 19853239). In CentoMD® 3.0 it is listed in 1 affected patients in a homozygous state and in a heterozygous state in the patient's asymptomatic parents. It is classified as pathogenic (class 1) according to the recommendations of Centogene and ACMG (please, see additional information below). Pathogenic variants in the CANT1 gene are causative for autosomal recessive Desbuquois dysplasia type 1 (DBQD). DBQD is an autosomal recessive chondrodysplasia belonging to the multiple dislocation group and characterized by severe prenatal and postnatal growth retardation (stature less than -5 SD), joint laxity, short extremities, and progressive scoliosis. The main radiologic features are short long bones with metaphyseal splay, a 'Swedish key' appearance of the proximal femur (exaggerated trochanter), and advanced carpal and tarsal bone age with a delta phalanx (OMIM: 251450). We conclude that both probands are heterozygous carriers of a heterozygous pathogenic variant in the CANT1 gene and that therefore a diagnosis of Desbuquois dysplasia type 1 for the deceased children is likely. We recommend a clinical re-evaluation to determine the compatibility of the detected variant with the described symptoms. Genetic counselling is recommended.",
+    "recommendations": "Given the results we recommend retrospective clinical analysis to evaluate compatibility of phenotype with the identified variant as well as genetic counselling. We recommend a clinical re-evaluation to determine the compatibility of the detected variant with the described symptoms. Genetic counselling is recommended.",
+    "incidental_findings": "We did not detect any class 1 or 2 variants in the genes for which incidental findings are reported based on the ACMG guidelines.",
+    "coverage": {
+      "average_coverage": "157.93",
+      "pct_0x": "0.254751",
+      "pct_ge_1x": "99.7452",
+      "pct_ge_5x": "98.9969",
+      "pct_ge_10x": "97.8484",
+      "pct_ge_20x": "95.1728",
+      "pct_ge_50x": "85.0906",
+      "raw": "Amani Mustafa 157.93 0.254751 99.7452 98.9969 97.8484 95.1728 85.0906"
+    },
+    "signatories": [
+      {
+        "name": "Karen Wessel, PhD",
+        "title": "Clinical Scientist"
+      },
+      {
+        "name": "Prof. Arndt Rolfs, MD",
+        "title": "Chief Medical Director"
+      }
+    ],
+    "patient_index": 0,
+    "patients_in_source": 2
+  },
+  {
+    "source_file": "examples/report1_1150124_couple.pdf",
+    "lab_name": "CENTOGENE AG",
+    "report_type": "Final Report",
+    "report_date": "30.09.2016",
+    "template_generation": "2016_legacy",
+    "patient": {
+      "patient_no": "1150130",
+      "first_name": "Abdulhamide Mohammed",
+      "last_name": "Almohammed",
+      "full_name": "Abdulhamide Mohammed Almohammed",
+      "sex": "male",
+      "date_of_birth": "01.01.1981",
+      "your_ref": "R6508/16",
+      "order_no": "62322067"
+    },
+    "laboratory": {
+      "name": "CENTOGENE AG",
+      "address": "Schillingallee 68 • 18057 Rostock • Germany",
+      "country": "Germany",
+      "clia_registration": "99D2049715",
+      "cap_registration": "8005167",
+      "phone": "+49 (0)381 203652 0",
+      "fax": "+49 (0)381 203652 19",
+      "email": "support@centogene.com",
+      "website": "www.centogene.com"
+    },
+    "ordering_provider": {
+      "physician": "Dr. Majid Alfadhel",
+      "institution": "Thuriah Medical Center"
+    },
+    "sample": {
+      "sample_type": "blood, EDTA",
+      "collection_date": "03.09.2016",
+      "order_received_date": "06.09.2016"
+    },
+    "test": {
+      "tests_requested": "Whole Exome Sequencing (CentoXome PLATINUM®) was performed for both probands of the couple",
+      "method_summary": "Approximately 37 Mb (214,405 exons) of the Consensus Coding Sequences (CCS) were enriched from fragmented genomic DNA by >340,000 probes designed against the human genome (Nextera Rapid Capture Exome, Illumina) and the generated library sequenced on an Illumina NextSeq or HiSeq 4000 platform (Illumina) to an average coverage depth 100-130X. An end to end inhouse bioinformatics pipelines including base calling, primary filtering of low quality reads and probable artefacts, and annotation of variants was applied. All disease causing variants reported in HGMD®, in ClinVar or in CentoMD® (class 1) as well as all variants with minor allele frequency (MAF) of less than 1% in ExAc database are considered. Evaluation is focused on exons and intron boundaries +/-20. All relevant inheritance patterns are considered, provided family history and clinical information are used to evaluate eventually identified variants. Only variants related to the phenotype are reported. Any relevant variant identified by NGS are in-house validated or Sanger sequenced in forward and reverse direction to exclude NGS artefacts.",
+      "platform": "Illumina NextSeq or HiSeq 4000"
+    },
+    "clinical_information": {
+      "family_history": "negative family history",
+      "consanguinity": "consanguineous",
+      "free_text": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
+    },
+    "overall_result": "Pathogenic variant identified in CANT1",
+    "variants": [
+      {
+        "gene": "CANT1",
+        "transcript": "NM_001159772.1",
+        "cdna_change": "c.902_906dup",
+        "protein_change": "p.Ser303Alafs*21",
+        "zygosity": "Heterozygous",
+        "variant_type": "Frame-shift",
+        "classification": "Pathogenic",
+        "classification_class": "class 1",
+        "described_in": "Huber, 2009",
+        "pmid": "19853239"
+      }
+    ],
+    "interpretation": "By whole exome sequencing we detected a heterozygous variant in the CANT1 gene, c.902_906dup (p.Ser303Alafs*21) in both probands. This variant has been confirmed by Sanger sequencing. It has been previously described as disease-causing for Desbuquois dysplasia by Huber et al., 2009 (HGMD Professional 2016.2 - PMID: 19853239). In CentoMD® 3.0 it is listed in 1 affected patients in a homozygous state and in a heterozygous state in the patient's asymptomatic parents. It is classified as pathogenic (class 1) according to the recommendations of Centogene and ACMG (please, see additional information below). Pathogenic variants in the CANT1 gene are causative for autosomal recessive Desbuquois dysplasia type 1 (DBQD). DBQD is an autosomal recessive chondrodysplasia belonging to the multiple dislocation group and characterized by severe prenatal and postnatal growth retardation (stature less than -5 SD), joint laxity, short extremities, and progressive scoliosis. The main radiologic features are short long bones with metaphyseal splay, a 'Swedish key' appearance of the proximal femur (exaggerated trochanter), and advanced carpal and tarsal bone age with a delta phalanx (OMIM: 251450). We conclude that both probands are heterozygous carriers of a heterozygous pathogenic variant in the CANT1 gene and that therefore a diagnosis of Desbuquois dysplasia type 1 for the deceased children is likely. We recommend a clinical re-evaluation to determine the compatibility of the detected variant with the described symptoms. Genetic counselling is recommended.",
+    "recommendations": "Given the results we recommend retrospective clinical analysis to evaluate compatibility of phenotype with the identified variant as well as genetic counselling. We recommend a clinical re-evaluation to determine the compatibility of the detected variant with the described symptoms. Genetic counselling is recommended.",
+    "incidental_findings": "We did not detect any class 1 or 2 variants in the genes for which incidental findings are reported based on the ACMG guidelines.",
+    "coverage": {
+      "average_coverage": "169.916",
+      "pct_0x": "0.134534",
+      "pct_ge_1x": "99.8655",
+      "pct_ge_5x": "99.3181",
+      "pct_ge_10x": "98.3245",
+      "pct_ge_20x": "95.9405",
+      "pct_ge_50x": "86.7372",
+      "raw": "Abdulhamide Mohammed 169.916 0.134534 99.8655 99.3181 98.3245 95.9405 86.7372"
+    },
+    "signatories": [
+      {
+        "name": "Karen Wessel, PhD",
+        "title": "Clinical Scientist"
+      },
+      {
+        "name": "Prof. Arndt Rolfs, MD",
+        "title": "Chief Medical Director"
+      }
+    ],
+    "patient_index": 1,
+    "patients_in_source": 2
+  },
+  {
+    "source_file": "examples/report2_1223557.pdf",
+    "lab_name": "CENTOGENE AG",
+    "report_type": "Final Report",
+    "report_date": "12 Apr. 2018",
+    "template_generation": "2018_labeled",
+    "patient": {
+      "patient_no": "1223557",
+      "first_name": "Meshael",
+      "last_name": "Alsubaie",
+      "full_name": "Meshael Alsubaie",
+      "sex": "male",
+      "date_of_birth": "19 Dec. 2011",
+      "your_ref": "01-20-89-66",
+      "order_no": "62451890"
+    },
+    "laboratory": {
+      "name": "CENTOGENE AG",
+      "address": "Am Strande 7 • 18055 Rostock • Germany",
+      "country": "Germany",
+      "clia_registration": "99D2049715",
+      "cap_registration": "8005167",
+      "phone": "+49 (0)381 80113 416",
+      "fax": "+49 (0)381 80113 401",
+      "email": "dmqc@centogene.com",
+      "website": "www.centogene.com"
+    },
+    "ordering_provider": {
+      "physician": "Dr. Walaa Al Shuaibi",
+      "institution": "King Khalid University Hospital",
+      "department": "Pediatrics",
+      "address": "Riyadh",
+      "country": "Saudi Arabia"
+    },
+    "sample": {
+      "sample_type": "blood, filter card",
+      "collection_date": "18 Feb. 2018",
+      "order_no": "62451890",
+      "order_received_date": "09 Mar. 2018"
+    },
+    "test": {
+      "tests_requested": "Whole Exome Sequencing (CentoXome GOLD®)",
+      "method_summary": "RNA capture baits against approximately 60 Mb of the Human Exome (targeting >99% of regions in CCDS, RefSeq and Gencode databases) is used to enrich regions of interest from fragmented genomic DNA w ith Agilent’s SureSelect Human All Exon V6 kit. The generated library is sequenced on an Illumina platform to obtain an average coverage depth of ~100x. Typically, ~97% of the targeted bases are covered >10x. An end to end in-house bioinformatics pipeline including base calling, alignment of reads to GRCh37/hg19 genome assembly, primary filtering out of low quality reads and probable artefacts, and subsequent annotation of variants, is applied. All disease causing variants reported in HGMD®, Patient no.: 1223557 Order no.: 62451890 in ClinVar or in CentoMD® as w ell as all variants w ith minor allele frequency (MAF) of less than 1% in gnomAD database are considered. Evaluation is focused on coding exons along w ith flanking +/-20 intronic bases. All pertinent inheritance patterns are considered. In addition, provided family history and clinical information are used to evaluate eventually identified variants. All identified variants are evaluated w ith respect to their pathogenicity and causality, and these are categorized into classes 1 - 5 (see above). All variants related to the phenotype of the patient, except benign or likely benign variants, are reported. Variants of relevance identified by NGS are continuously and individually in-house validated for quality aspects; those variants which meet our internal QC criteria (based on extensive validation processes) are not validated by Sanger.",
+      "genome_build": "GRCh37",
+      "platform": "Illumina platform"
+    },
+    "clinical_information": {
+      "hpo_terms": [
+        "Chewing difficulties",
+        "Delayed gross motor development",
+        "Easy fatigability",
+        "Elevated hepatic transaminases",
+        "Elevated serum creatine phosphokinase",
+        "Global developmental delay",
+        "Muscle weakness",
+        "Skeletal muscle hypertrophy *:"
+      ],
+      "age_of_manifestation": "18 months",
+      "free_text": "Chewing difficulties, Delayed gross motor development, Easy fatigability, Elevated hepatic transaminases, Elevated serum creatine phosphokinase, Global developmental delay, Muscle weakness, Skeletal muscle hypertrophy *: Clinical information indicated above follows HPO nomenclature."
+    },
+    "overall_result": "Likely pathogenic variant identified",
+    "variants": [
+      {
+        "gene": "DMD",
+        "transcript": "NM_004006.2",
+        "cdna_change": "c.2642C>G",
+        "protein_change": "p.(Ser881*)",
+        "genomic_coordinate": "ChrX(GRCh37):g.32503197G>C",
+        "exon": "21",
+        "zygosity": "Hemizygous",
+        "variant_type": "Stop gain",
+        "classification": "likely pathogenic",
+        "classification_class": "class 2",
+        "disorder": {
+          "name": "Duchenne Muscular Dystrophy",
+          "omim": "310200",
+          "inheritance": "X-linked"
+        }
+      }
+    ],
+    "interpretation": "A hemizygous likely pathogenic nonsense variant was identified in the DMD gene. The genetic diagnosis of Duchenne Muscular Dystrophy is thus confirmed. Of note, patients with nonsense mutations, such as the one detected here, can benefit from novel genetic therapies implementing stop codon read-through technology.",
+    "recommendations": " maternal carrier testing to evaluate whether the detected variant is inherited or de novo  genetic counselling",
+    "incidental_findings": "Incidental findings which we list according to the ACMG guidelines are not provided here due to the lack of consent.",
+    "coverage": {
+      "average_coverage": "96.94",
+      "pct_0x": "0.13",
+      "pct_ge_1x": "99.87",
+      "pct_ge_5x": "99.35",
+      "pct_ge_10x": "98.13",
+      "pct_ge_20x": "93.51",
+      "pct_ge_50x": "69.45",
+      "raw": "COVERAGE (X) 0X ≥ 1X ≥ 5X ≥ 10X ≥ 20X ≥ 50X 96.94 0.13 99.87 99.35 98.13 93.51 69.45"
+    },
+    "signatories": [
+      {
+        "name": "Prof. Dr. Arndt Rolfs, MD",
+        "title": "Chief Medical Director"
+      },
+      {
+        "name": "Dr. Iris Hövel, PhD",
+        "title": "Clinical Scientist"
+      }
+    ],
+    "patient_index": 0,
+    "patients_in_source": 1
+  },
+  {
+    "source_file": "examples/report3_1933708.pdf",
+    "lab_name": "CENTOGENE GmbH",
+    "report_type": "Final report",
+    "report_date": "16 Sep. 2024",
+    "template_generation": "2024_labeled",
+    "patient": {
+      "patient_no": "1933708",
+      "first_name": "Saqer Mohammed Misfer",
+      "last_name": "Alkhathami",
+      "full_name": "Saqer Mohammed Misfer Alkhathami",
+      "sex": "male",
+      "date_of_birth": "25 Jan. 2013",
+      "your_ref": "544023",
+      "order_no": "63246826"
+    },
+    "laboratory": {
+      "name": "CENTOGENE GmbH",
+      "address": "Am Strande 7 • 18055 Rostock • Germany",
+      "country": "Germany",
+      "clia_registration": "99D2049715",
+      "cap_registration": "8005167",
+      "phone": "+49 (0)381 80113 416",
+      "fax": "+49 (0)381 80113 401",
+      "email": "customer.support@centogene.com",
+      "website": "www.centogene.com"
+    },
+    "ordering_provider": {
+      "physician": "Mrs. Fatimah Al Zayed",
+      "institution": "Royal Commission Hospital",
+      "department": "Medical Laboratory",
+      "address": "jubail industrial city, Al-Lulu street, 31961 Jubail",
+      "country": "Saudi Arabia"
+    },
+    "sample": {
+      "sample_type": "blood, CentoCard®",
+      "collection_date": "04 Aug. 2024",
+      "order_no": "63246826",
+      "order_received_date": "08 Aug. 2024"
+    },
+    "test": {
+      "tests_requested": "CentoXome® Solo",
+      "method_summary": "CentoXome® Solo Genomic DNA is enzymatically fragmented, and target regions are enriched using DNA capture probes. These regions include approximately 41 Mb of the human coding exome (targeting > 98% of the coding RefSeq from the human genome build GRCh37/hg19), as well as the mitochondrial genome. The generated library is sequenced on an Illumina platform to obtain at least 20x coverage depth for > 98% of the targeted bases. An in-house bioinformatics pipeline, including read alignment to GRCh37/hg19 genome assembly and revised Cambridge Reference Sequence (rCRS) of the Human Mitochondrial DNA (NC_012920), variant calling, annotation, and comprehensive variant filtering is applied. All variants with minor allele frequency (MAF) of less than 1% in gnomAD database, and disease-causing variants reported in HGMD®, in ClinVar or in CENTOGENE’s in-house Biodatabank are evaluated. The investigation for relevant variants is focused on coding exons and flanking +/-10 intronic nucleotides of genes with clear gene- phenotype evidence (based on OMIM® information). All potential patterns for mode of inheritance are considered. In addition, provided family history and clinical information are used to evaluate identified variants with respect to their pathogenicity and disease causality. Variants are categorized into five classes (pathogenic, likely pathogenic, variant of uncertain significance [VUS], likely benign, and benign) according to ACMG/AMP guidelines for classification of variants in addition to ClinGen recommendations. All relevant variants related to the phenotype of the patient are reported. CENTOGENE has established stringent quality criteria and validation processes for variants detected by NGS. Variants with low sequencing quality and/or unclear zygosity are confirmed by orthogonal methods. Consequently, a specificity of > 99.9% for all reported variants is warranted. Mitochondrial variants are reported for heteroplasmy levels of 15% or higher. The copy number variation (CNV) detection software has a sensitivity of more than 95%. For the uniparental disomy (UPD) screening, a specific algorithm is used to assess the well-known clinically relevant chromosomal regions (6q24, 7, 11p15.5, 14q32, 15q11q13, 20q13 and 20).",
+      "genome_build": "GRCh37/hg19",
+      "platform": "Illumina platform"
+    },
+    "clinical_information": {
+      "hpo_terms": [
+        "Abnormality of the face",
+        "Atypical behavior",
+        "Auditory sensitivity",
+        "Autism",
+        "Autistic behavior",
+        "Cognitive impairment",
+        "Ear pain",
+        "Global developmental delay",
+        "Hypotonia",
+        "Intellectual disability",
+        "Intellectual disability, mild"
+      ],
+      "diagnosed_conditions": "inattention",
+      "family_history": "Unknown.",
+      "consanguinity": "No",
+      "free_text": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
+    },
+    "overall_result": "Pathogenic variant identified",
+    "variants": [
+      {
+        "gene": "CHD2",
+        "transcript": "NM_001271.3",
+        "cdna_change": "c.3783G>A",
+        "protein_change": "p.(Trp1261*)",
+        "exon": "30",
+        "zygosity": "Heterozygous",
+        "variant_type": "Nonsense",
+        "classification": "Pathogenic",
+        "classification_class": "class 1",
+        "pmid": "35627293",
+        "disorder": {
+          "omim": "615369",
+          "inheritance": "Autosomal dominant"
+        }
+      }
+    ],
+    "interpretation": "A heterozygous pathogenic variant was identified in the CHD2 gene. The genetic diagnosis of autosomal dominant developmental and epileptic encephalopathy-94 is confirmed. No further clinically relevant variants related to the described phenotype were detected.",
+    "recommendations": "If possible, parental targeted testing is recommended as establishing the origin of the variant, inherited or de novo, is important for familial genetic counselling. Additionally, targeted testing for all affected and at-risk family members, if any, is recommended. Genetic counselling, including reproductive counselling (discussing prenatal and preimplantation diagnoses, if relevant), is recommended.",
+    "secondary_findings": "If consent is provided, in line with ACMG recommendations (ACMG SF v3.2 list for reporting of secondary findings in clinical exome and genome sequencing; Genetics in Medicine, 2023; PMID: 37347242) we report secondary findings, i.e. relevant pathogenic and likely pathogenic variants in the recommended genes for the indicated phenotypes in this publication. We did not detect any relevant variants in the genes for which secondary findings are reported.",
+    "carriership_findings": "In this table we list sequence variants previously ascertained or evaluated and classified in CENTOGENE as \"pathogenic\" and \"likely pathogenic\", in selected genes associated with recessive severe and early- onset Mendelian diseases. As only in-house classified variants are presented, it should not be considered a comprehensive list of variants in these genes and does not provide a complete list of potentially relevant genetic variants in the patient. The complete gene list can be found at www.centogene.com/carriership-findings (please contact CENTOGENE customer support if the gene list has been updated after this report was issued). Orthogonal validation was not performed for these variants. Therefore, if any variant is used for clinical management of the patient, confirmation by another method needs to be considered. Furthermore, the classification of these variants may change over time, however reclassification reports for these variants will not be issued. CENTOGENE is not liable for any missing variant in this list and/or any provided classification of the variants at a certain point of time. As the identified variants may indicate (additional) genetic risks or diagnoses in the patient and/or family and/or inform about reproductive risks, we recommend discussing these findings in the context of genetic counselling. In accordance with this disclaimer no relevant pathogenic or likely pathogenic variant was identified.",
+    "coverage": {
+      "pct_ge_20x": "99.28%",
+      "raw": "≥ 20x 99.28%"
+    },
+    "signatories": [
+      {
+        "name": "Prof Dr Peter Bauer, MD",
+        "title": "Chief Medical and Genomic Officer, Human Geneticist"
+      },
+      {
+        "name": "Dr Pilar Guatibonza Moreno, MD",
+        "title": "Clinical Geneticist"
+      },
+      {
+        "name": "Aswathy Sreekumar Latha, MSc",
+        "title": "Clinical Scientist"
+      }
+    ],
+    "patient_index": 0,
+    "patients_in_source": 1
+  }
+]

@@ -1,0 +1,87 @@
+{
+  "source_file": "examples/report1_1150124_couple.pdf",
+  "lab_name": "CENTOGENE AG",
+  "report_type": "Final Report",
+  "report_date": "30.09.2016",
+  "template_generation": "2016_legacy",
+  "patient": {
+    "patient_no": "1150124",
+    "first_name": "Amani Mustafa",
+    "last_name": "Ahmad",
+    "full_name": "Amani Mustafa Ahmad",
+    "sex": "female",
+    "date_of_birth": "04.07.1992",
+    "your_ref": "064230",
+    "order_no": "62322058"
+  },
+  "laboratory": {
+    "name": "CENTOGENE AG",
+    "address": "Schillingallee 68 • 18057 Rostock • Germany",
+    "country": "Germany",
+    "clia_registration": "99D2049715",
+    "cap_registration": "8005167",
+    "phone": "+49 (0)381 203652 0",
+    "fax": "+49 (0)381 203652 19",
+    "email": "support@centogene.com",
+    "website": "www.centogene.com"
+  },
+  "ordering_provider": {
+    "physician": "Dr. Majid Alfadhel",
+    "institution": "Thuriah Medical Center"
+  },
+  "sample": {
+    "sample_type": "blood, EDTA",
+    "collection_date": "03.09.2016",
+    "order_received_date": "06.09.2016"
+  },
+  "test": {
+    "tests_requested": "Whole Exome Sequencing (CentoXome PLATINUM®) was performed for both probands of the couple",
+    "method_summary": "Approximately 37 Mb (214,405 exons) of the Consensus Coding Sequences (CCS) were enriched from fragmented genomic DNA by >340,000 probes designed against the human genome (Nextera Rapid Capture Exome, Illumina) and the generated library sequenced on an Illumina NextSeq or HiSeq 4000 platform (Illumina) to an average coverage depth 100-130X. An end to end inhouse bioinformatics pipelines including base calling, primary filtering of low quality reads and probable artefacts, and annotation of variants was applied. All disease causing variants reported in HGMD®, in ClinVar or in CentoMD® (class 1) as well as all variants with minor allele frequency (MAF) of less than 1% in ExAc database are considered. Evaluation is focused on exons and intron boundaries +/-20. All relevant inheritance patterns are considered, provided family history and clinical information are used to evaluate eventually identified variants. Only variants related to the phenotype are reported. Any relevant variant identified by NGS are in-house validated or Sanger sequenced in forward and reverse direction to exclude NGS artefacts.",
+    "platform": "Illumina NextSeq or HiSeq 4000"
+  },
+  "clinical_information": {
+    "family_history": "negative family history",
+    "consanguinity": "consanguineous",
+    "free_text": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
+  },
+  "overall_result": "Pathogenic variant identified in CANT1",
+  "variants": [
+    {
+      "gene": "CANT1",
+      "transcript": "NM_001159772.1",
+      "cdna_change": "c.902_906dup",
+      "protein_change": "p.Ser303Alafs*21",
+      "zygosity": "Heterozygous",
+      "variant_type": "Frame-shift",
+      "classification": "Pathogenic",
+      "classification_class": "class 1",
+      "described_in": "Huber, 2009",
+      "pmid": "19853239"
+    }
+  ],
+  "interpretation": "By whole exome sequencing we detected a heterozygous variant in the CANT1 gene, c.902_906dup (p.Ser303Alafs*21) in both probands. This variant has been confirmed by Sanger sequencing. It has been previously described as disease-causing for Desbuquois dysplasia by Huber et al., 2009 (HGMD Professional 2016.2 - PMID: 19853239). In CentoMD® 3.0 it is listed in 1 affected patients in a homozygous state and in a heterozygous state in the patient's asymptomatic parents. It is classified as pathogenic (class 1) according to the recommendations of Centogene and ACMG (please, see additional information below). Pathogenic variants in the CANT1 gene are causative for autosomal recessive Desbuquois dysplasia type 1 (DBQD). DBQD is an autosomal recessive chondrodysplasia belonging to the multiple dislocation group and characterized by severe prenatal and postnatal growth retardation (stature less than -5 SD), joint laxity, short extremities, and progressive scoliosis. The main radiologic features are short long bones with metaphyseal splay, a 'Swedish key' appearance of the proximal femur (exaggerated trochanter), and advanced carpal and tarsal bone age with a delta phalanx (OMIM: 251450). We conclude that both probands are heterozygous carriers of a heterozygous pathogenic variant in the CANT1 gene and that therefore a diagnosis of Desbuquois dysplasia type 1 for the deceased children is likely. We recommend a clinical re-evaluation to determine the compatibility of the detected variant with the described symptoms. Genetic counselling is recommended.",
+  "recommendations": "Given the results we recommend retrospective clinical analysis to evaluate compatibility of phenotype with the identified variant as well as genetic counselling. We recommend a clinical re-evaluation to determine the compatibility of the detected variant with the described symptoms. Genetic counselling is recommended.",
+  "incidental_findings": "We did not detect any class 1 or 2 variants in the genes for which incidental findings are reported based on the ACMG guidelines.",
+  "coverage": {
+    "average_coverage": "157.93",
+    "pct_0x": "0.254751",
+    "pct_ge_1x": "99.7452",
+    "pct_ge_5x": "98.9969",
+    "pct_ge_10x": "97.8484",
+    "pct_ge_20x": "95.1728",
+    "pct_ge_50x": "85.0906",
+    "raw": "Amani Mustafa 157.93 0.254751 99.7452 98.9969 97.8484 95.1728 85.0906"
+  },
+  "signatories": [
+    {
+      "name": "Karen Wessel, PhD",
+      "title": "Clinical Scientist"
+    },
+    {
+      "name": "Prof. Arndt Rolfs, MD",
+      "title": "Chief Medical Director"
+    }
+  ],
+  "patient_index": 0,
+  "patients_in_source": 2
+}

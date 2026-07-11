@@ -1,0 +1,109 @@
+{
+  "source_file": "examples/report3_1933708.pdf",
+  "lab_name": "CENTOGENE GmbH",
+  "report_type": "Final report",
+  "report_date": "16 Sep. 2024",
+  "template_generation": "2024_labeled",
+  "patient": {
+    "patient_no": "1933708",
+    "first_name": "Saqer Mohammed Misfer",
+    "last_name": "Alkhathami",
+    "full_name": "Saqer Mohammed Misfer Alkhathami",
+    "sex": "male",
+    "date_of_birth": "25 Jan. 2013",
+    "your_ref": "544023",
+    "order_no": "63246826"
+  },
+  "laboratory": {
+    "name": "CENTOGENE GmbH",
+    "address": "Am Strande 7 • 18055 Rostock • Germany",
+    "country": "Germany",
+    "clia_registration": "99D2049715",
+    "cap_registration": "8005167",
+    "phone": "+49 (0)381 80113 416",
+    "fax": "+49 (0)381 80113 401",
+    "email": "customer.support@centogene.com",
+    "website": "www.centogene.com"
+  },
+  "ordering_provider": {
+    "physician": "Mrs. Fatimah Al Zayed",
+    "institution": "Royal Commission Hospital",
+    "department": "Medical Laboratory",
+    "address": "jubail industrial city, Al-Lulu street, 31961 Jubail",
+    "country": "Saudi Arabia"
+  },
+  "sample": {
+    "sample_type": "blood, CentoCard®",
+    "collection_date": "04 Aug. 2024",
+    "order_no": "63246826",
+    "order_received_date": "08 Aug. 2024"
+  },
+  "test": {
+    "tests_requested": "CentoXome® Solo",
+    "method_summary": "CentoXome® Solo Genomic DNA is enzymatically fragmented, and target regions are enriched using DNA capture probes. These regions include approximately 41 Mb of the human coding exome (targeting > 98% of the coding RefSeq from the human genome build GRCh37/hg19), as well as the mitochondrial genome. The generated library is sequenced on an Illumina platform to obtain at least 20x coverage depth for > 98% of the targeted bases. An in-house bioinformatics pipeline, including read alignment to GRCh37/hg19 genome assembly and revised Cambridge Reference Sequence (rCRS) of the Human Mitochondrial DNA (NC_012920), variant calling, annotation, and comprehensive variant filtering is applied. All variants with minor allele frequency (MAF) of less than 1% in gnomAD database, and disease-causing variants reported in HGMD®, in ClinVar or in CENTOGENE’s in-house Biodatabank are evaluated. The investigation for relevant variants is focused on coding exons and flanking +/-10 intronic nucleotides of genes with clear gene- phenotype evidence (based on OMIM® information). All potential patterns for mode of inheritance are considered. In addition, provided family history and clinical information are used to evaluate identified variants with respect to their pathogenicity and disease causality. Variants are categorized into five classes (pathogenic, likely pathogenic, variant of uncertain significance [VUS], likely benign, and benign) according to ACMG/AMP guidelines for classification of variants in addition to ClinGen recommendations. All relevant variants related to the phenotype of the patient are reported. CENTOGENE has established stringent quality criteria and validation processes for variants detected by NGS. Variants with low sequencing quality and/or unclear zygosity are confirmed by orthogonal methods. Consequently, a specificity of > 99.9% for all reported variants is warranted. Mitochondrial variants are reported for heteroplasmy levels of 15% or higher. The copy number variation (CNV) detection software has a sensitivity of more than 95%. For the uniparental disomy (UPD) screening, a specific algorithm is used to assess the well-known clinically relevant chromosomal regions (6q24, 7, 11p15.5, 14q32, 15q11q13, 20q13 and 20).",
+    "genome_build": "GRCh37/hg19",
+    "platform": "Illumina platform"
+  },
+  "clinical_information": {
+    "hpo_terms": [
+      "Abnormality of the face",
+      "Atypical behavior",
+      "Auditory sensitivity",
+      "Autism",
+      "Autistic behavior",
+      "Cognitive impairment",
+      "Ear pain",
+      "Global developmental delay",
+      "Hypotonia",
+      "Intellectual disability",
+      "Intellectual disability, mild"
+    ],
+    "diagnosed_conditions": "inattention",
+    "family_history": "Unknown.",
+    "consanguinity": "No",
+    "free_text": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
+  },
+  "overall_result": "Pathogenic variant identified",
+  "variants": [
+    {
+      "gene": "CHD2",
+      "transcript": "NM_001271.3",
+      "cdna_change": "c.3783G>A",
+      "protein_change": "p.(Trp1261*)",
+      "exon": "30",
+      "zygosity": "Heterozygous",
+      "variant_type": "Nonsense",
+      "classification": "Pathogenic",
+      "classification_class": "class 1",
+      "pmid": "35627293",
+      "disorder": {
+        "omim": "615369",
+        "inheritance": "Autosomal dominant"
+      }
+    }
+  ],
+  "interpretation": "A heterozygous pathogenic variant was identified in the CHD2 gene. The genetic diagnosis of autosomal dominant developmental and epileptic encephalopathy-94 is confirmed. No further clinically relevant variants related to the described phenotype were detected.",
+  "recommendations": "If possible, parental targeted testing is recommended as establishing the origin of the variant, inherited or de novo, is important for familial genetic counselling. Additionally, targeted testing for all affected and at-risk family members, if any, is recommended. Genetic counselling, including reproductive counselling (discussing prenatal and preimplantation diagnoses, if relevant), is recommended.",
+  "secondary_findings": "If consent is provided, in line with ACMG recommendations (ACMG SF v3.2 list for reporting of secondary findings in clinical exome and genome sequencing; Genetics in Medicine, 2023; PMID: 37347242) we report secondary findings, i.e. relevant pathogenic and likely pathogenic variants in the recommended genes for the indicated phenotypes in this publication. We did not detect any relevant variants in the genes for which secondary findings are reported.",
+  "carriership_findings": "In this table we list sequence variants previously ascertained or evaluated and classified in CENTOGENE as \"pathogenic\" and \"likely pathogenic\", in selected genes associated with recessive severe and early- onset Mendelian diseases. As only in-house classified variants are presented, it should not be considered a comprehensive list of variants in these genes and does not provide a complete list of potentially relevant genetic variants in the patient. The complete gene list can be found at www.centogene.com/carriership-findings (please contact CENTOGENE customer support if the gene list has been updated after this report was issued). Orthogonal validation was not performed for these variants. Therefore, if any variant is used for clinical management of the patient, confirmation by another method needs to be considered. Furthermore, the classification of these variants may change over time, however reclassification reports for these variants will not be issued. CENTOGENE is not liable for any missing variant in this list and/or any provided classification of the variants at a certain point of time. As the identified variants may indicate (additional) genetic risks or diagnoses in the patient and/or family and/or inform about reproductive risks, we recommend discussing these findings in the context of genetic counselling. In accordance with this disclaimer no relevant pathogenic or likely pathogenic variant was identified.",
+  "coverage": {
+    "pct_ge_20x": "99.28%",
+    "raw": "≥ 20x 99.28%"
+  },
+  "signatories": [
+    {
+      "name": "Prof Dr Peter Bauer, MD",
+      "title": "Chief Medical and Genomic Officer, Human Geneticist"
+    },
+    {
+      "name": "Dr Pilar Guatibonza Moreno, MD",
+      "title": "Clinical Geneticist"
+    },
+    {
+      "name": "Aswathy Sreekumar Latha, MSc",
+      "title": "Clinical Scientist"
+    }
+  ],
+  "patient_index": 0,
+  "patients_in_source": 1
+}
