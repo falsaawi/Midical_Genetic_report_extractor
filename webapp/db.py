@@ -68,6 +68,12 @@ def init_db() -> None:
         conn.executescript(_SCHEMA)
 
 
+# Create the tables as soon as this module is imported. FastAPI startup events
+# do not reliably fire on serverless cold starts (Vercel), so we cannot depend
+# on them alone to have run before the first query.
+init_db()
+
+
 def add_transaction(filename: str, size_bytes: int, uploaded_at: str,
                     status: str, num_patients: int = 0,
                     error: Optional[str] = None) -> int:

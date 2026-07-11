@@ -1,0 +1,5 @@
+examples/
+output/
+webapp/data/
+tests/
+*.md

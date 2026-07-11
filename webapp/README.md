@@ -36,6 +36,36 @@ The database path can be overridden with `GRE_DB_PATH`.
 | `GET`  | `/api/export/xlsx` | Download all records as a formatted Excel workbook |
 | `GET`  | `/api/health` | Health check |
 
+## Deploy to Vercel
+
+The repo is Vercel-ready: `api/index.py` exposes the FastAPI app to the
+`@vercel/python` runtime and `vercel.json` routes all traffic to it.
+
+**Option A — one-click / dashboard**
+1. Go to <https://vercel.com/new> and import
+   `falsaawi/Midical_Genetic_report_extractor`.
+2. In the import screen set the **production branch** to
+   `claude/medical-report-extraction-picjms` (that's where this code lives until
+   it is merged to the default branch).
+3. Deploy. Vercel installs `requirements.txt` and serves the app; your link is
+   `https://<project>.vercel.app`.
+
+**Option B — CLI**
+```bash
+git clone -b claude/medical-report-extraction-picjms \
+  https://github.com/falsaawi/Midical_Genetic_report_extractor.git
+cd Midical_Genetic_report_extractor
+npx vercel --prod        # prompts you to log in the first time
+```
+
+### ⚠️ Persistence on Vercel
+Vercel functions are stateless with a read-only filesystem except ephemeral
+`/tmp`, so the bundled SQLite DB **resets on cold starts** — fine for a demo, not
+for durable transaction history. For production set `GRE_DB_PATH` to a mounted
+volume, or point the store at a hosted database (e.g. Turso/libSQL or Vercel
+Postgres). Hosts with a persistent disk (Render, Railway, Fly.io) keep the
+SQLite file as-is.
+
 ## Notes
 
 - `webapp/data/` holds the SQLite DB at runtime; it is git-ignored.
