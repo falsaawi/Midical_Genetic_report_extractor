@@ -1,2 +1,7 @@
 PyMuPDF>=1.24
 openpyxl>=3.1
+
+# Web app (webapp/) — optional; not needed for the library/CLI
+fastapi>=0.110
+uvicorn>=0.27
+python-multipart>=0.0.9

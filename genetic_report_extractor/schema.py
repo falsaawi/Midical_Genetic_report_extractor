@@ -13,7 +13,7 @@ together) is split into one ``GeneticReport`` per patient, all sharing the same
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field, asdict, fields
 from typing import List, Optional
 
 
@@ -215,3 +215,38 @@ class GeneticReport:
         d = asdict(self)
         d["key_fields"] = self.key_fields()
         return _clean(d) if prune else d
+
+    @staticmethod
+    def from_dict(d: dict) -> "GeneticReport":
+        """Rebuild a report from a (possibly pruned) dict — inverse of to_dict."""
+        d = d or {}
+        r = _fill(GeneticReport(), d)
+        r.patient = _fill(Patient(), d.get("patient"))
+        r.laboratory = _fill(Laboratory(), d.get("laboratory"))
+        r.ordering_provider = _fill(OrderingProvider(), d.get("ordering_provider"))
+        r.sample = _fill(Sample(), d.get("sample"))
+        r.test = _fill(TestInfo(), d.get("test"))
+        r.clinical_information = _fill(ClinicalInformation(), d.get("clinical_information"))
+        r.coverage = _fill(CoverageStatistics(), d.get("coverage"))
+        r.variants = []
+        for vd in d.get("variants") or []:
+            vd = dict(vd)
+            dis = vd.pop("disorder", None)
+            v = _fill(Variant(), vd)
+            v.disorder = _fill(Disorder(), dis) if dis else None
+            r.variants.append(v)
+        r.signatories = [_fill(Signatory(), s) for s in d.get("signatories") or []]
+        return r
+
+
+def _fill(obj, data: Optional[dict]):
+    """Copy known scalar fields from ``data`` onto dataclass instance ``obj``."""
+    if not data:
+        return obj
+    names = {f.name for f in fields(obj)}
+    nested = {"patient", "laboratory", "ordering_provider", "sample", "test",
+              "clinical_information", "coverage", "variants", "signatories", "disorder"}
+    for k, v in data.items():
+        if k in names and k not in nested:
+            setattr(obj, k, v)
+    return obj

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Genetic Report Extractor</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AC%3C/text%3E%3C/svg%3E" />
+<style>
+:root{
+  --bg:#eef2f5; --panel:#ffffff; --ink:#131a1f; --muted:#5c6b76; --faint:#8899a3;
+  --line:#dde5ea; --line-2:#c7d3da; --accent:#0e7c86; --accent-ink:#0a5b63;
+  --accent-weak:#e1f1f2; --ring:rgba(14,124,134,.35);
+  --path:#b3261e; --path-bg:#fbe9e7; --likely:#a96a12; --likely-bg:#fbf0dc;
+  --vus:#5b6b76; --vus-bg:#eef1f3; --ok:#1f8a54; --ok-bg:#e3f4ea; --err:#c33;
+  --shadow:0 1px 2px rgba(19,26,31,.06),0 8px 24px rgba(19,26,31,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0c1216; --panel:#141d23; --ink:#e7eef2; --muted:#93a3ad; --faint:#67787f;
+    --line:#243139; --line-2:#31424b; --accent:#46c3d0; --accent-ink:#7ad6df;
+    --accent-weak:#102c31; --ring:rgba(70,195,208,.4);
+    --path:#f2766c; --path-bg:#331916; --likely:#e0aa4a; --likely-bg:#31240f;
+    --vus:#9fb0b9; --vus-bg:#1b262c; --ok:#5fce93; --ok-bg:#122a1d; --err:#f0736a;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="light"]{color-scheme:light;
+  --bg:#eef2f5;--panel:#ffffff;--ink:#131a1f;--muted:#5c6b76;--faint:#8899a3;
+  --line:#dde5ea;--line-2:#c7d3da;--accent:#0e7c86;--accent-ink:#0a5b63;
+  --accent-weak:#e1f1f2;--ring:rgba(14,124,134,.35);
+  --path:#b3261e;--path-bg:#fbe9e7;--likely:#a96a12;--likely-bg:#fbf0dc;
+  --vus:#5b6b76;--vus-bg:#eef1f3;--ok:#1f8a54;--ok-bg:#e3f4ea;--err:#c33;
+  --shadow:0 1px 2px rgba(19,26,31,.06),0 8px 24px rgba(19,26,31,.06);}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#0c1216;--panel:#141d23;--ink:#e7eef2;--muted:#93a3ad;--faint:#67787f;
+  --line:#243139;--line-2:#31424b;--accent:#46c3d0;--accent-ink:#7ad6df;
+  --accent-weak:#102c31;--ring:rgba(70,195,208,.4);
+  --path:#f2766c;--path-bg:#331916;--likely:#e0aa4a;--likely-bg:#31240f;
+  --vus:#9fb0b9;--vus-bg:#1b262c;--ok:#5fce93;--ok-bg:#122a1d;--err:#f0736a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:14px;line-height:1.5;}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px 72px}
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--panel) 88%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.topbar .inner{max-width:1240px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;margin-right:auto}
+.logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent-ink));color:#fff;font-size:20px;
+  box-shadow:0 3px 10px var(--ring)}
+.brand h1{font-size:16px;margin:0;letter-spacing:-.01em}
+.brand p{font-size:12px;margin:0;color:var(--muted)}
+.btn{border:1px solid var(--line-2);background:var(--panel);color:var(--ink);
+  padding:8px 14px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;transition:.15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.06);color:#fff}
+.btn.ghost{padding:8px 10px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 16px;box-shadow:var(--shadow)}
+.kpi .n{font-size:26px;font-weight:750;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-top:2px}
+.kpi.accent .n{color:var(--accent)}
+.kpi.path .n{color:var(--path)}
+/* dropzone */
+.drop{background:var(--panel);border:1.5px dashed var(--line-2);border-radius:15px;
+  padding:30px;text-align:center;transition:.18s;box-shadow:var(--shadow)}
+.drop.drag{border-color:var(--accent);background:var(--accent-weak)}
+.drop .big{font-size:34px;line-height:1}
+.drop h2{margin:12px 0 4px;font-size:17px}
+.drop p{margin:0;color:var(--muted);font-size:13px}
+.drop .row{margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.filelist{margin:14px auto 0;max-width:560px;text-align:left;display:flex;flex-direction:column;gap:6px}
+.filerow{display:flex;align-items:center;gap:10px;font-size:13px;background:var(--bg);
+  border:1px solid var(--line);border-radius:8px;padding:7px 11px}
+.filerow .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.filerow .sz{color:var(--faint);font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--faint);flex:none}
+.dot.ok{background:var(--ok)} .dot.err{background:var(--err)} .dot.run{background:var(--accent);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.35}}
+/* tabs + table */
+.tabs{display:flex;gap:4px;margin:26px 0 12px;border-bottom:1px solid var(--line)}
+.tab{padding:9px 15px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;
+  border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab .badge{margin-left:7px;background:var(--accent-weak);color:var(--accent);
+  border-radius:999px;padding:0 7px;font-size:11px;font-weight:700}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);overflow:hidden}
+.scroll{overflow-x:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:760px;font-size:13px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{position:sticky;top:0;background:var(--panel);font-size:11px;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted);font-weight:700;border-bottom:1.5px solid var(--line-2);z-index:1}
+tbody tr:hover td{background:color-mix(in srgb,var(--accent-weak) 45%,transparent)}
+tbody tr{cursor:pointer}
+td .sub{color:var(--faint);font-size:12px}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.pill.path{color:var(--path);background:var(--path-bg)}
+.pill.likely{color:var(--likely);background:var(--likely-bg)}
+.pill.vus{color:var(--vus);background:var(--vus-bg)}
+.pill.ok{color:var(--ok);background:var(--ok-bg)}
+.pill.err{color:var(--err);background:var(--path-bg)}
+.pill.tmpl{color:var(--muted);background:var(--vus-bg);font-weight:600}
+.empty{padding:44px;text-align:center;color:var(--muted)}
+.empty .big{font-size:30px}
+/* modal */
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:flex-start;justify-content:center;
+  padding:5vh 16px;background:rgba(8,14,18,.5);backdrop-filter:blur(2px)}
+.modal.open{display:flex}
+.sheet{background:var(--panel);border:1px solid var(--line-2);border-radius:15px;max-width:760px;width:100%;
+  max-height:88vh;overflow:auto;box-shadow:var(--shadow)}
+.sheet header{position:sticky;top:0;background:var(--panel);padding:18px 22px;border-bottom:1px solid var(--line);
+  display:flex;align-items:flex-start;gap:12px}
+.sheet header h3{margin:0;font-size:17px}
+.sheet header .x{margin-left:auto}
+.sheet .body{padding:8px 22px 22px}
+.sect{margin-top:18px}
+.sect h4{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin:0 0 8px;font-weight:700}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:6px 14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;word-break:break-word}
+.longtext{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:12.5px;color:var(--ink)}
+/* toast */
+#toasts{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--panel);border:1px solid var(--line-2);border-left:3px solid var(--accent);
+  border-radius:9px;padding:10px 14px;font-size:13px;box-shadow:var(--shadow);max-width:340px}
+.toast.err{border-left-color:var(--err)}
+.toast.ok{border-left-color:var(--ok)}
+@media (max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}.kv{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <div class="brand">
+    <div class="logo">🧬</div>
+    <div><h1>Genetic Report Extractor</h1><p>Bulk PDF intake · structured extraction · Excel export</p></div>
+  </div>
+  <button class="btn ghost" id="theme" title="Toggle theme">◐</button>
+  <button class="btn" id="refresh">↻ Refresh</button>
+  <button class="btn primary" id="export">⬇ Export to Excel</button>
+</div></div>
+
+<div class="wrap">
+  <div class="kpis">
+    <div class="kpi accent"><div class="n" id="k-records">0</div><div class="l">Patient records</div></div>
+    <div class="kpi"><div class="n" id="k-uploads">0</div><div class="l">Uploads processed</div></div>
+    <div class="kpi path"><div class="n" id="k-path">0</div><div class="l">Pathogenic / likely</div></div>
+    <div class="kpi"><div class="n" id="k-patients">0</div><div class="l">Unique patients</div></div>
+  </div>
+
+  <div class="drop" id="drop">
+    <input type="file" id="file" accept="application/pdf" multiple hidden />
+    <div class="big">📄⬆️</div>
+    <h2>Drop genetic report PDFs here</h2>
+    <p>Bulk upload is supported — drop several files at once. Reports with two patients are split automatically.</p>
+    <div class="row">
+      <button class="btn" id="browse">Choose files</button>
+      <button class="btn primary" id="upload" disabled>Upload &amp; extract</button>
+    </div>
+    <div class="filelist" id="filelist"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="records">Records <span class="badge" id="b-records">0</span></button>
+    <button class="tab" data-tab="tx">Upload log <span class="badge" id="b-tx">0</span></button>
+  </div>
+
+  <div class="card" id="pane-records">
+    <div class="scroll"><table>
+      <thead><tr>
+        <th>Patient</th><th>Sex</th><th>Your ref</th><th>Gene / variant</th>
+        <th>Classification</th><th>Doctor · Hospital</th><th>Result</th><th>Source</th>
+      </tr></thead>
+      <tbody id="records-body"></tbody>
+    </table></div>
+    <div class="empty" id="records-empty"><div class="big">🗂️</div><p>No records yet — upload some PDFs to begin.</p></div>
+  </div>
+
+  <div class="card" id="pane-tx" style="display:none">
+    <div class="scroll"><table>
+      <thead><tr><th>File</th><th>Uploaded</th><th>Status</th><th>Patients</th><th>Size</th><th>Note</th></tr></thead>
+      <tbody id="tx-body"></tbody>
+    </table></div>
+    <div class="empty" id="tx-empty"><div class="big">📜</div><p>No uploads logged yet.</p></div>
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="sheet">
+  <header><h3 id="m-title">Record</h3><button class="btn ghost x" id="m-close">✕</button></header>
+  <div class="body" id="m-body"></div>
+</div></div>
+<div id="toasts"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -12,6 +12,7 @@ Requires ``openpyxl`` (listed in requirements.txt).
 
 from __future__ import annotations
 
+import io
 from typing import List
 
 from openpyxl import Workbook
@@ -125,8 +126,19 @@ def _matrix_sheet(wb: Workbook, reports: List[GeneticReport]) -> None:
     ws.row_dimensions[1].height = 30
 
 
-def write_xlsx(reports: List[GeneticReport], path: str) -> None:
+def _build_workbook(reports: List[GeneticReport]) -> Workbook:
     wb = Workbook()
     _flat_sheet(wb, reports)
     _matrix_sheet(wb, reports)
-    wb.save(path)
+    return wb
+
+
+def write_xlsx(reports: List[GeneticReport], path: str) -> None:
+    _build_workbook(reports).save(path)
+
+
+def xlsx_bytes(reports: List[GeneticReport]) -> bytes:
+    """Return the workbook as bytes (for streaming from a web response)."""
+    buf = io.BytesIO()
+    _build_workbook(reports).save(buf)
+    return buf.getvalue()
