@@ -32,18 +32,20 @@ python -m genetic_report_extractor examples/*.pdf -o output
 # Print combined JSON to stdout instead
 python -m genetic_report_extractor examples/report1_1150124_couple.pdf --stdout
 
-# Choose explicit CSV / HTML output paths
-python -m genetic_report_extractor examples/*.pdf --csv fields.csv --html matrix.html
+# Choose explicit CSV / HTML / Excel output paths
+python -m genetic_report_extractor examples/*.pdf --csv fields.csv --html matrix.html --xlsx book.xlsx
 ```
 
 Alongside the per-patient JSON, every run also writes:
 
 - **`reports.csv`** — a flat table, **one row per patient and every field in its own
   column** (75 columns; nested objects become dotted names like `patient.your_ref`,
-  repeated variants are numbered `variant1.*`, `variant2.*`). Ready for Excel / a database load.
-- **`reports_table.html`** — the same data **transposed** into a readable matrix
-  (fields as rows, one column per patient) with sticky headers, so you can scan any
-  field across all patients at a glance.
+  repeated variants are numbered `variant1.*`, `variant2.*`). Ready for a database load.
+- **`reports.xlsx`** — a formatted Excel workbook with two sheets: **Records (flat)**
+  (one row per patient, frozen header, auto-filter) and **Field matrix** (fields as
+  rows grouped by section, one column per patient). Needs `openpyxl`.
+- **`reports_table.html`** — the same matrix as a standalone web page with sticky
+  headers, so you can scan any field across all patients at a glance.
 
 As a library:
 
@@ -146,9 +148,10 @@ genetic_report_extractor/
   extractor.py    top-level orchestration (PDF -> [GeneticReport])
   flatten.py      GeneticReport -> flat one-row-per-patient dict / CSV
   html_report.py  transposed HTML field matrix
+  excel_report.py formatted .xlsx workbook (flat + matrix sheets)
   cli.py          command-line interface
 examples/         the three sample PDFs
-output/           example output (JSON per patient + reports.csv + reports_table.html)
+output/           example output (JSON per patient + reports.csv/.xlsx + reports_table.html)
 tests/            end-to-end extraction tests
 ```
 

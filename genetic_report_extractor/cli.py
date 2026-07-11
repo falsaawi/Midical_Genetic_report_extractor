@@ -21,6 +21,11 @@ from .flatten import write_csv
 from .html_report import write_html
 from .schema import GeneticReport
 
+try:
+    from .excel_report import write_xlsx
+except ImportError:  # openpyxl not installed
+    write_xlsx = None
+
 
 def _summarise(r: GeneticReport) -> str:
     kf = r.key_fields()
@@ -50,6 +55,7 @@ def main(argv: List[str] | None = None) -> int:
     ap.add_argument("--no-prune", action="store_true", help="keep empty/None fields in the JSON")
     ap.add_argument("--csv", metavar="PATH", help="also write a flat one-row-per-patient CSV")
     ap.add_argument("--html", metavar="PATH", help="also write a transposed HTML field matrix")
+    ap.add_argument("--xlsx", metavar="PATH", help="also write a formatted Excel workbook")
     args = ap.parse_args(argv)
 
     all_reports: List[GeneticReport] = []
@@ -92,6 +98,13 @@ def main(argv: List[str] | None = None) -> int:
     html_path = args.html or os.path.join(args.outdir, "reports_table.html")
     write_html(all_reports, html_path)
     print(f"Wrote HTML field matrix: {html_path}")
+
+    xlsx_path = args.xlsx or os.path.join(args.outdir, "reports.xlsx")
+    if write_xlsx is not None:
+        write_xlsx(all_reports, xlsx_path)
+        print(f"Wrote Excel workbook (Records + Field matrix sheets): {xlsx_path}")
+    elif args.xlsx:
+        print("! openpyxl is not installed — run: pip install openpyxl", file=sys.stderr)
     return 0
 
 
