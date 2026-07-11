@@ -1,5 +1,9 @@
 # Medical Genetic Report Extractor
 
+**▶ Live app:** https://genetic-report-extractor.vercel.app — bulk-upload report
+PDFs, browse extracted records, and export to Excel. Auto-deploys from this
+branch on every push.
+
 Extracts structured data from **CENTOGENE** genetic-testing report PDFs and emits
 one clean JSON record **per patient**. Reports that contain two patients (for
 example a consanguineous couple analysed together) are automatically **split**
