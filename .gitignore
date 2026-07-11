@@ -8,3 +8,4 @@ webapp/data/*.db
 webapp/data/*.log
 webapp/data/shots/
 webapp/data/*.xlsx
+.vercel
