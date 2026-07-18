@@ -3,7 +3,7 @@
   "lab_name": "CENTOGENE AG",
   "report_type": "Final Report",
   "report_date": "30.09.2016",
-  "template_generation": "2016_legacy",
+  "template_generation": "2016_couple",
   "patient": {
     "patient_no": "1150130",
     "first_name": "Abdulhamide Mohammed",
@@ -68,7 +68,7 @@
       }
     }
   ],
-  "interpretation": "By whole exome sequencing we detected a heterozygous variant in the CANT1 gene, c.902_906dup (p.Ser303Alafs*21) in both probands. This variant has been confirmed by Sanger sequencing. It has been previously described as disease-causing for Desbuquois dysplasia by Huber et al., 2009 (HGMD Professional 2016.2 - PMID: 19853239). In CentoMD® 3.0 it is listed in 1 affected patients in a homozygous state and in a heterozygous state in the patient's asymptomatic parents. It is classified as pathogenic (class 1) according to the recommendations of Centogene and ACMG (please, see additional information below). Pathogenic variants in the CANT1 gene are causative for autosomal recessive Desbuquois dysplasia type 1 (DBQD). DBQD is an autosomal recessive chondrodysplasia belonging to the multiple dislocation group and characterized by severe prenatal and postnatal growth retardation (stature less than -5 SD), joint laxity, short extremities, and progressive scoliosis. The main radiologic features are short long bones with metaphyseal splay, a 'Swedish key' appearance of the proximal femur (exaggerated trochanter), and advanced carpal and tarsal bone age with a delta phalanx (OMIM: 251450). We conclude that both probands are heterozygous carriers of a heterozygous pathogenic variant in the CANT1 gene and that therefore a diagnosis of Desbuquois dysplasia type 1 for the deceased children is likely. We recommend a clinical re-evaluation to determine the compatibility of the detected variant with the described symptoms. Genetic counselling is recommended.",
+  "interpretation": "By whole exome sequencing we detected a heterozygous variant in the CANT1 gene, c.902_906dup (p.Ser303Alafs*21) in both probands. This variant has been confirmed by Sanger sequencing. It has been previously described as disease-causing for Desbuquois dysplasia by Huber et al., 2009 (HGMD Professional 2016.2 - PMID: 19853239). In CentoMD® 3.0 it is listed in 1 affected patients in a homozygous state and in a heterozygous state in the patient's asymptomatic parents. It is classified as pathogenic (class 1) according to the",
   "recommendations": "Given the results we recommend retrospective clinical analysis to evaluate compatibility of phenotype with the identified variant as well as genetic counselling. We recommend a clinical re-evaluation to determine the compatibility of the detected variant with the described symptoms. Genetic counselling is recommended.",
   "incidental_findings": "We did not detect any class 1 or 2 variants in the genes for which incidental findings are reported based on the ACMG guidelines.",
   "coverage": {
@@ -93,6 +93,7 @@
   ],
   "patient_index": 1,
   "patients_in_source": 2,
+  "ocr_used": false,
   "key_fields": {
     "your_ref": "R6508/16",
     "doctor_name": "Dr. Majid Alfadhel",

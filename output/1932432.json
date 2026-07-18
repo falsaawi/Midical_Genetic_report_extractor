@@ -1,0 +1,111 @@
+{
+  "source_file": "examples_v2/new5_ER3407788.pdf",
+  "lab_name": "CENTOGENE GmbH",
+  "report_type": "Final report",
+  "report_date": "06 Sep. 2024",
+  "template_generation": "2024_labeled",
+  "patient": {
+    "patient_no": "1932432",
+    "first_name": "AMERH ABUBAKUR",
+    "last_name": "ENAYAT",
+    "full_name": "AMERH ABUBAKUR ENAYAT",
+    "sex": "female",
+    "date_of_birth": "03 Sep. 2022",
+    "your_ref": "20030712",
+    "order_no": "63245347"
+  },
+  "laboratory": {
+    "name": "CENTOGENE GmbH",
+    "address": "Am Strande 7 • 18055 Rostock • Germany",
+    "country": "Germany",
+    "clia_registration": "99D2049715",
+    "cap_registration": "8005167",
+    "phone": "+49 (0)381 80113 416",
+    "fax": "+49 (0)381 80113 401",
+    "email": "customer.support@centogene.com",
+    "website": "www.centogene.com"
+  },
+  "ordering_provider": {
+    "physician": "Dr. Sameer Abdullah",
+    "institution": "Fetal Care Medical",
+    "department": "Laboratory",
+    "address": "Takhasusi Street cross Makkeh Road, 11596 Riyadh",
+    "country": "Saudi Arabia"
+  },
+  "sample": {
+    "sample_type": "blood, CentoCard®",
+    "collection_date": "31 Jul. 2024",
+    "order_no": "63245347",
+    "order_received_date": "02 Aug. 2024"
+  },
+  "test": {
+    "tests_requested": "CentoXome® MOx 1.0 Trio",
+    "method_summary": "CentoXome® MOx 1.0 Trio Genomic DNA is enzymatically fragmented, and target regions are enriched using DNA capture probes. These regions include approximately 41 Mb of the human coding exome (targeting > 98% of the coding RefSeq from the human genome build GRCh37/hg19), as well as the mitochondrial genome. The generated library is sequenced on an Illumina platform to obtain at least 20x coverage depth for > 98% of the targeted bases. An in-house bioinformatics pipeline, including read alignment to GRCh37/hg19 genome assembly and revised Cambridge Reference Sequence (rCRS) of the Human Mitochondrial DNA (NC_012920), variant calling, annotation, and comprehensive variant filtering is applied. All variants with minor allele frequency (MAF) of less than 1% in gnomAD database, and disease-causing variants reported in HGMD®, in ClinVar or in CENTOGENE’s in-house Biodatabank are evaluated. The investigation for relevant variants is focused on coding exons and flanking +/-10 intronic nucleotides of genes with clear gene- phenotype evidence (based on OMIM® information). All potential patterns for mode of inheritance are considered. In addition, provided family history and clinical information are used to evaluate identified variants with respect to their pathogenicity and disease causality. Variants are categorized into five classes (pathogenic, likely pathogenic, variant of uncertain significance [VUS], likely benign, and benign) according to ACMG/AMP guidelines for classification of variants in addition to ClinGen recommendations. All relevant variants related to the phenotype of the patient are reported. For CentoXome® MOx, if applicable, biochemical analysis is performed upon detection of relevant variants by sequencing. This enhances the diagnosis of metabolic disorders, optimizes variant classification, and helps to ascertain the eventual contribution to the phenotype; the list of enzyme-activity assays and biomarkers can be obtained at www.centogene.com/mox. CENTOGENE has established stringent quality criteria and validation processes for variants detected by NGS. Variants with low sequencing quality and/or unclear zygosity are confirmed by orthogonal methods. Consequently, a specificity of > 99.9% for all reported variants is warranted. Mitochondrial variants are reported for heteroplasmy levels of 15% or higher. The copy number variation (CNV) detection software has a sensitivity of more than 95%. For the uniparental disomy (UPD) screening, a specific algorithm is used to assess the well-known clinically relevant chromosomal regions (6q24, 7, 11p15.5, 14q32, 15q11q13, 20q13 and 20).",
+    "genome_build": "GRCh37/hg19",
+    "platform": "Illumina platform"
+  },
+  "clinical_information": {
+    "hpo_terms": [
+      "Abnormal cerebral ventricle morphology",
+      "Acidemia",
+      "Frontal bossing",
+      "Macrocephaly",
+      "Methylmalonic acidemia",
+      "Ventriculomegaly"
+    ],
+    "family_history": "Unknown.",
+    "consanguinity": "Unknown",
+    "free_text": "Abnormal cerebral ventricle morphology; Acidemia; Frontal bossing; Macrocephaly; Methylmalonic acidemia; Ventriculomegaly (Clinical information indicated above follows HPO nomenclature.) Family history: Unknown. Consanguineous parents: Unknown."
+  },
+  "overall_result": "Likely pathogenic variant identified",
+  "result_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2)",
+  "variants": [
+    {
+      "gene": "PTCH1",
+      "transcript": "NM_000264.5",
+      "cdna_change": "c.92_98del",
+      "protein_change": "p.(Gly31Alafs*47)",
+      "exon": "1",
+      "zygosity": "Heterozygous",
+      "variant_type": "Frameshift",
+      "classification": "Likely pathogenic",
+      "classification_class": "class 2",
+      "pmid": "11932998",
+      "disorder": {
+        "omim": "109400",
+        "inheritance": "Autosomal dominant"
+      }
+    }
+  ],
+  "interpretation": "A heterozygous likely pathogenic variant was identified in the PTCH1 gene. The result is consistent with a genetic diagnosis of autosomal dominant PTCH1-related disease. The familial segregation analysis suggests the identified variant is de novo (although, other less likely explanations are possible, e.g., germline mosaicism in one of the parents).",
+  "recommendations": "Targeted testing for all affected and at-risk family members, if any, is recommended. Genetic counselling, including reproductive counselling (discussing prenatal and preimplantation diagnoses, if relevant), is recommended.",
+  "secondary_findings": "If consent is provided, in line with ACMG recommendations (ACMG SF v3.2 list for reporting of secondary findings in clinical exome and genome sequencing; Genetics in Medicine, 2023; PMID: 37347242) we report secondary findings, i.e. relevant pathogenic and likely pathogenic variants in the recommended genes for the indicated phenotypes in this publication. We did not detect any relevant variants in the genes for which secondary findings are reported.",
+  "carriership_findings": "In this table we list sequence variants previously ascertained or evaluated and classified in CENTOGENE as \"pathogenic\" and \"likely pathogenic\", in selected genes associated with recessive severe and early- onset Mendelian diseases. As only in-house classified variants are presented, it should not be considered a comprehensive list of variants in these genes and does not provide a complete list of potentially relevant genetic variants in the patient. The complete gene list can be found at www.centogene.com/carriership-findings (please contact CENTOGENE customer support if the gene list has been updated after this report was issued). Orthogonal validation was not performed for these variants. Therefore, if any variant is used for clinical management of the patient, confirmation by another method needs to be considered. Furthermore, the classification of these variants may change over time, however reclassification reports for these variants will not be issued. CENTOGENE is not liable for any missing variant in this list and/or any provided classification of the variants at a certain point of time. As the identified variants may indicate (additional) genetic risks or diagnoses in the patient and/or family and/or inform about reproductive risks, we recommend discussing these findings in the context of genetic counselling. In accordance with this disclaimer no relevant pathogenic or likely pathogenic variant was identified.",
+  "coverage": {
+    "pct_ge_20x": "99.49%",
+    "raw": "≥ 20x 99.49%"
+  },
+  "signatories": [
+    {
+      "name": "Prof Dr Peter Bauer, MD",
+      "title": "Chief Medical and Genomic Officer, Human Geneticist, Clinical Geneticist"
+    },
+    {
+      "name": "Nishtha Gulati, MSc",
+      "title": "Clinical Scientist"
+    }
+  ],
+  "patient_index": 0,
+  "patients_in_source": 1,
+  "ocr_used": false,
+  "key_fields": {
+    "your_ref": "20030712",
+    "doctor_name": "Dr. Sameer Abdullah",
+    "hospital_name": "Fetal Care Medical",
+    "patient_name": "AMERH ABUBAKUR ENAYAT",
+    "patient_no": "1932432",
+    "results": "Likely pathogenic variant identified",
+    "results_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2)",
+    "clinical_information": "Abnormal cerebral ventricle morphology; Acidemia; Frontal bossing; Macrocephaly; Methylmalonic acidemia; Ventriculomegaly (Clinical information indicated above follows HPO nomenclature.) Family history: Unknown. Consanguineous parents: Unknown."
+  }
+}

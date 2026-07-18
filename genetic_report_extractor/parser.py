@@ -35,6 +35,7 @@ from .schema import (
     Variant,
 )
 from .text_utils import collapse_ws, first, norm_lines, section, strip_boilerplate
+from .variants import extract_variants, apply_prose_zygosity, disorder_for_gene
 
 INHERITANCE_MAP = {
     "AR": "Autosomal recessive",
@@ -80,13 +81,16 @@ ZYGOSITY_MAP = {
 # Format detection
 # --------------------------------------------------------------------------- #
 def detect_format(raw_text: str) -> str:
-    if re.search(r"Patient name:.*/.*", raw_text) or "CentoXome PLATINUM" in raw_text:
-        # slash-separated header ⇒ legacy layout (may be multi-patient)
-        return "2016_legacy"
-    if "CENTOGENE GmbH" in raw_text or "MAIN FINDINGS" in raw_text or "CentoXome® Solo" in raw_text:
-        return "2024_labeled"
-    if re.search(r"First Name:", raw_text) or "RESULT SUMMARY" in raw_text:
+    # Labeled generations use "First Name:/Last Name:" headers.
+    if "First Name:" in raw_text or "MAIN FINDINGS" in raw_text or "RESULT SUMMARY" in raw_text:
+        if "CENTOGENE GmbH" in raw_text or "MAIN FINDINGS" in raw_text or "CentoXome®" in raw_text:
+            return "2024_labeled"
         return "2018_labeled"
+    # Legacy generations use "Patient name: Last, First".
+    if "Patient name:" in raw_text:
+        if re.search(r"Patient name:[^\n]*\s/\s", raw_text) or "CentoXome PLATINUM" in raw_text:
+            return "2016_couple"        # two probands in one report
+        return "2017_legacy"            # single patient, "Detailed description" table
     return "unknown"
 
 
@@ -296,7 +300,8 @@ def _legacy_ordering(header: str) -> OrderingProvider:
     return op
 
 
-def _parse_2016(doc: ExtractedDocument, clean: str, raw: str) -> List[GeneticReport]:
+def _parse_2016(doc: ExtractedDocument, clean: str, raw: str,
+                fmt: str = "2016_couple") -> List[GeneticReport]:
     header = doc.page_texts[0]
 
     names = first(r"Patient name:\s*(.+?)\s*(?:\n|Your ref)", header, flags=re.IGNORECASE | re.DOTALL)
@@ -334,16 +339,37 @@ def _parse_2016(doc: ExtractedDocument, clean: str, raw: str) -> List[GeneticRep
         family_history=first(r"(negative family history|positive family history)", raw),
     )
 
-    variant = _parse_2016_variant(header)
-    interpretation = section(clean, r"Interpretation", ["Incidental findings", "Analysis statistics"])
+    # Variant extraction: newer legacy reports (2017) use a "Detailed description
+    # of the detected variants" table that can hold several variants; the 2016
+    # couple report uses the inline header table with per-patient zygosity.
+    detailed = "Detailed description of the detected variants" in clean
+    table_variants: List[Variant] = []
+    variant = None
+    if detailed:
+        # Anchor on the actual table header ("...variants  Gene  Variant Coordinates"),
+        # not the page-1 prose sentence that mentions the same phrase.
+        region = section(clean, r"Detailed description of the detected variants\s+Gene\b",
+                         ["Methods", "Limitations", "Variant description based on", "Additional information"]) \
+            or section(clean, r"Gene\s+Variant Coordinates",
+                       ["Methods", "Limitations", "Variant description based on"])
+        table_variants = extract_variants(region or "", clean)
+        apply_prose_zygosity(table_variants, clean)
+    else:
+        variant = _parse_2016_variant(header)
+
+    interpretation = section(clean, r"Interpretation", ["Incidental findings", "Analysis statistics", "Recommendations"])
     recommendations = _recommend_sentences(clean)
     incidental = section(clean, r"Incidental findings", ["If you have any", "Best regards", "Analysis statistics"])
     coverage_rows = _parse_2016_coverage(doc.page_texts[-1], name_list)
     sigs = _signatories("\n".join(doc.page_texts[1:]))
-    # Legacy reports carry no one-line result banner; derive one from the variant.
-    result_line = None
-    if variant and variant.classification:
-        result_line = f"{variant.classification} variant identified in {variant.gene}"
+    # Legacy reports carry no one-line result banner; prefer the "genetic
+    # diagnosis of ..." sentence, else derive one from the variant(s).
+    result_line = first(r"(The (?:genetic diagnosis|carrier status)[^\n.]*(?:possible|confirmed|likely)[^\n.]*)", clean)
+    if not result_line:
+        vs = table_variants or ([variant] if variant else [])
+        cls = next((v for v in vs if v.classification), None)
+        if cls:
+            result_line = f"{cls.classification} variant identified in {cls.gene}"
 
     reports = []
     for idx in range(n):
@@ -357,9 +383,11 @@ def _parse_2016(doc: ExtractedDocument, clean: str, raw: str) -> List[GeneticRep
         if idx < len(name_list):
             _assign_name(p, name_list[idx])
 
-        # Per-patient variant (copy, set zygosity for this patient)
+        # Per-patient variants
         pvariants = []
-        if variant:
+        if detailed:
+            pvariants = [_copy_variant(v) for v in table_variants]
+        elif variant:
             v = _copy_variant(variant)
             if variant.zygosity and "/" in variant.zygosity:
                 zz = _split_slash(variant.zygosity)
@@ -373,7 +401,7 @@ def _parse_2016(doc: ExtractedDocument, clean: str, raw: str) -> List[GeneticRep
             lab_name=lab.name,
             report_type=first(r"(Final Report)", header) or "Final Report",
             report_date=first(r"Date:\s*([0-9.]+)", header),
-            template_generation="2016_legacy",
+            template_generation=fmt,
             patient=p,
             laboratory=lab,
             ordering_provider=ordering,
@@ -500,15 +528,17 @@ def _parse_labeled(doc: ExtractedDocument, clean: str, raw: str, generation: str
 
     clinical = _clinical_labeled(clean, raw)
 
-    overall = section(clean, r"(?:POSITIVE RESULT|NEGATIVE RESULT|NO PATHOGENIC)", ["INTERPRETATION"]) \
-        or first(r"(POSITIVE RESULT|NEGATIVE RESULT)", raw)
+    banner = (r"(?:POTENTIALLY RELEVANT RESULT|POSITIVE RESULT|NEGATIVE RESULT|"
+              r"NO (?:PATHOGENIC|REPORTABLE|CLINICALLY RELEVANT)[^\n]*)")
+    overall = section(clean, banner, ["INTERPRETATION"]) \
+        or first(r"(POTENTIALLY RELEVANT RESULT|POSITIVE RESULT|NEGATIVE RESULT)", raw)
     interpretation = section(clean, r"\bINTERPRETATION\b", ["RECOMMENDATIONS", "RESULT SUMMARY", "MAIN FINDINGS"])
     recommendations = section(clean, r"\bRECOMMENDATIONS\b", ["RESULT SUMMARY", "MAIN FINDINGS", "GENE ", "SEQUENCE VARIANTS", "Patient no"])
     incidental = section(clean, r"INCIDENTAL FINDINGS", ["ANALYSIS STATISTICS", "CENTOGENE VARIANT", "METHODS", "SECONDARY"])
     secondary = section(clean, r"SECONDARY FINDINGS", ["CARRIERSHIP FINDINGS", "CENTOGENE VARIANT", "METHODS", "Patient no"])
     carriership = section(clean, r"CARRIERSHIP FINDINGS", ["CENTOGENE VARIANT", "METHODS", "ANALYSIS STATISTICS"])
 
-    variant = _parse_labeled_variant(clean, raw)
+    variants = _labeled_variants(clean, raw)
     coverage = _coverage_single(raw)
     sigs = _signatories("\n".join(doc.page_texts[-2:]))
 
@@ -525,7 +555,7 @@ def _parse_labeled(doc: ExtractedDocument, clean: str, raw: str, generation: str
         test=test,
         clinical_information=clinical,
         overall_result=overall,
-        variants=[variant] if variant else [],
+        variants=variants,
         interpretation=interpretation,
         recommendations=recommendations,
         incidental_findings=incidental,
@@ -628,40 +658,34 @@ def _clinical_labeled(clean: str, raw: str) -> ClinicalInformation:
     )
 
 
-def _parse_labeled_variant(clean: str, raw: str) -> Optional[Variant]:
-    # Gene + cDNA + protein reliably appear together in VARIANT INTERPRETATION
-    gv = re.search(
-        r"\b([A-Z][A-Z0-9]{1,9}),\s*(c\.[0-9_A-Za-z>+\-]+)\s*(p\.\(?[A-Za-z0-9*_=]+\)?)",
-        clean,
-    )
-    gene = gv.group(1) if gv else None
-    cdna = gv.group(2) if gv else first(r"(c\.[0-9_A-Za-z>+\-]+)", raw)
-    protein = gv.group(3) if gv else first(r"(p\.\(?[A-Za-z0-9*_=]+\)?)", raw)
-    transcript = first(r"(NM_[0-9]+\.[0-9]+):c\.", raw)
-    if not gene:
-        gene = first(r"(?:RESULT SUMMARY|SEQUENCE VARIANTS).*?\b([A-Z][A-Z0-9]{2,9})\b", raw, flags=re.DOTALL)
-    genomic = first(r"(Chr[0-9XYM]+\([^)]+\):g\.[0-9A-Za-z>+\-]+)", raw)
-    exon = first(r"Exon\s*([0-9]+)", raw) or first(r"exon\(s\)\s*no\.\s*([0-9]+)", raw)
-    zyg = _norm_zyg(first(r"\b(Hemizygous|Heterozygous|Homozygous|Hem|Het|Hom)\b", raw))
-    cls, cls_class = _classification(clean)
-    disorder = _disorder_from_interpretation(clean)
-    pmid = first(r"PMID:\s*(\d+)", raw)
-    snp = first(r"(rs\d+)", raw)
-    return Variant(
-        gene=gene,
-        transcript=transcript,
-        cdna_change=cdna,
-        protein_change=protein,
-        genomic_coordinate=genomic,
-        exon=exon,
-        zygosity=zyg,
-        variant_type=_variant_type(clean),
-        classification=cls,
-        classification_class=cls_class,
-        snp_identifier=snp,
-        pmid=pmid,
-        disorder=disorder if (disorder.name or disorder.omim or disorder.inheritance) else None,
-    )
+def _labeled_variants(clean: str, raw: str) -> List[Variant]:
+    """Extract all variants from a 2018/2024 report's variant table + prose."""
+    region = section(clean, r"(?:MAIN FINDINGS|SEQUENCE VARIANTS|RESULT SUMMARY)",
+                     ["VARIANT INTERPRETATION", "SECONDARY FINDINGS", "CARRIERSHIP",
+                      "CENTOGENE VARIANT", "METHODS", "Variant annotation based",
+                      "Variant description based"]) or clean
+    variants = extract_variants(region, clean)
+    apply_prose_zygosity(variants, clean)
+
+    if not variants:
+        return []
+
+    # Per-variant enrichment that the table alone doesn't carry.
+    single = len(variants) == 1
+    fallback_dis = _disorder_from_interpretation(clean) if single else None
+    for v in variants:
+        if not v.exon:
+            v.exon = first(rf"{re.escape(v.cdna_change or '###')}[^\n]*?Exon\s*([0-9]+)", clean) \
+                or (first(r"exon\(s\)\s*no\.\s*([0-9]+)", clean) if single else None) \
+                or (first(r"Exon\s*([0-9]+)", raw) if single else None)
+        if not v.pmid:
+            v.pmid = first(r"PMID:\s*(\d+)", clean) if single else None
+        if not v.snp_identifier:
+            v.snp_identifier = first(r"(rs\d+)", raw) if single else None
+        if not v.disorder and fallback_dis and (fallback_dis.name or fallback_dis.omim
+                                                or fallback_dis.inheritance):
+            v.disorder = fallback_dis
+    return variants
 
 
 # --------------------------------------------------------------------------- #
@@ -698,8 +722,8 @@ def parse_document(doc: ExtractedDocument) -> List[GeneticReport]:
     raw = doc.text
     clean = strip_boilerplate(raw)
     fmt = detect_format(raw)
-    if fmt == "2016_legacy":
-        return _parse_2016(doc, clean, raw)
+    if fmt in ("2016_couple", "2017_legacy"):
+        return _parse_2016(doc, clean, raw, fmt)
     if fmt == "2024_labeled":
         return _parse_labeled(doc, clean, raw, "2024_labeled")
     if fmt == "2018_labeled":

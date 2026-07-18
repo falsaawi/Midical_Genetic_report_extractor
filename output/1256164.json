@@ -1,0 +1,107 @@
+{
+  "source_file": "examples_v2/new1_ER860827.pdf",
+  "lab_name": "CENTOGENE AG",
+  "report_type": "Final Report",
+  "report_date": "31.01.2018",
+  "template_generation": "2017_legacy",
+  "patient": {
+    "patient_no": "1256164",
+    "first_name": "Eleen Talal",
+    "last_name": "Al Otaibi",
+    "full_name": "Eleen Talal Al Otaibi",
+    "sex": "female",
+    "date_of_birth": "14.03.2016",
+    "your_ref": "MRN: 27011592",
+    "order_no": "62437132"
+  },
+  "laboratory": {
+    "name": "CENTOGENE AG",
+    "address": "Am Strande 7 • 18055 Rostock • Germany",
+    "country": "Germany",
+    "clia_registration": "99D2049715",
+    "cap_registration": "8005167",
+    "phone": "+49 (0)381 80113 416",
+    "fax": "+49 (0)381 80113 401",
+    "email": "support@centogene.com",
+    "website": "www.centogene.com"
+  },
+  "ordering_provider": {
+    "physician": "Dr. Amal Alhashem",
+    "institution": "Prince Sultan Military Medical City",
+    "department": "Pediatric",
+    "address": "King Abdulaziz street, 11159 Riyadh",
+    "country": "Saudi Arabia"
+  },
+  "sample": {
+    "sample_type": "blood, filter card",
+    "collection_date": "11.12.2017",
+    "order_received_date": "03.01.2018"
+  },
+  "test": {
+    "tests_requested": "Whole Exome Sequencing (CentoXome GOLD®) and Mitochondrial Genome Sequencing (CentoMito®",
+    "method_summary": "RNA capture baits against approximately 60 Mb of the Human Exome (targeting >99% of regions in CCDS, RefSeq and Gencode databases) is used to enrich regions of interest from fragmented genomic DNA with Agilent’s SureSelect Human All Exon V6 kit. The generated library is sequenced on an Illumina platform to obtain an average coverage depth of ~100x. Typically, ~97% of the targeted bases are covered >10x. An end to end in-house bioinformatics pipeline including base calling, alignment of reads to GRCh37/hg19 genome assembly, primary filtering out of low quality reads and probable artefacts, and subsequent annotation of variants, is applied. All disease causing variants reported in HGMD®, in ClinVar or in CentoMD® as well as all variants with minor allele frequency (MAF) of less than 1% in gnomAD database are considered. Evaluation is focused on coding exons along with flanking +/-20 intronic bases. All pertinent inheritance patterns are considered. In addition, provided family history and clinical information are used to evaluate eventually identified variants. All identified variants are evaluated with respect to their pathogenicity and causality, and these are categorized into classes 1 - 6 (see above). All variants related to the phenotype of the patient, except benign or likely benign variants, are reported. Variants of relevance identified by NGS are continuously and individually in-house validated for quality aspects; those variants which meet our internal QC criteria (based on extensive validation processes) are not validated by Sanger. Targeted amplification of the entire mitochondrial genome is done using two overlapping long range PCRs. The amplicons are run on the Bioanalyzer to assess for any putative deletion within the mitochondrial genome. The amplified products are subsequently tagmented and Illumina compatible adapters ligated to generate libraries that are sequenced on Illumina platforms to an average sequencing depth of 1000x or more. Raw sequence data analysis, including base calling, demultiplexing, alignment to the Revised Cambridge Reference Sequence (rCRS) of the Human Mitochondrial DNA (NC_012920) and variant calling are performed using validated in-house software. Following the base calling and primary filtering of low quality reads, standard Bioinformatics pipeline was implemented to annotate detected variants and to filter out probable artefacts. The pipeline confidently detects heteroplasmy levels down to 15%. All identified variants are evaluated with respect to their pathogenicity and causality, and these are categorized into classes 1 - 6 (see above). All variants related to the phenotype of the patient, except benign or likely benign variants, are reported. Variants of relevance identified by NGS are continuously and individually in-house validated for quality aspects; those variants which meet our internal QC criteria (based on extensive validation processes) are not validated by Sanger.",
+    "genome_build": "GRCh37",
+    "platform": "Illumina compatible adapters ligated to generate libraries that are sequenced on Illumina"
+  },
+  "clinical_information": {
+    "consanguinity": "consanguineous",
+    "free_text": "20 months old female with frequent visits to ER due to hyperactive airway disease, after 6 months of age she started to have progressive loss of milestones with ataxia, nystagmus, ptosis, eye squint and hyperreflexia with clonus, upper motor neuron lesions (UMNL), normal ammonia-lactate; age of manifestation at 14 months. Family history: positive for epilepsy and early deaths (according to the provided pedigree two nephews deceased at age of 6 ½ years and 1 year, clinically diagnosed with progressive delayed epilepsy); the parents are consanguineous, no affected siblings"
+  },
+  "overall_result": "Variant of uncertain significance variant identified in NAXE",
+  "result_summary": "NAXE NM_144772.2 c.262G>T p.(Gly88Trp) — Homozygous — Variant of uncertain significance (class 3) — progressive, early-onset encephalopathy with brain edema and/or leukoencephalopathy, OMIM 61718 | DCHS1 NM_003737.3 c.391G>T p.(Val131Leu) — Homozygous — Variant of uncertain significance (class 3) — van Maldergem syndrome type 1, OMIM 601390",
+  "variants": [
+    {
+      "gene": "NAXE",
+      "transcript": "NM_144772.2",
+      "cdna_change": "c.262G>T",
+      "protein_change": "p.(Gly88Trp)",
+      "genomic_coordinate": "Chr1(GRCh37):g.156561972G>T",
+      "zygosity": "Homozygous",
+      "variant_type": "Missense",
+      "classification": "Variant of uncertain significance",
+      "classification_class": "class 3",
+      "disorder": {
+        "name": "progressive, early-onset encephalopathy with brain edema and/or leukoencephalopathy",
+        "omim": "61718",
+        "inheritance": "Autosomal recessive"
+      }
+    },
+    {
+      "gene": "DCHS1",
+      "transcript": "NM_003737.3",
+      "cdna_change": "c.391G>T",
+      "protein_change": "p.(Val131Leu)",
+      "genomic_coordinate": "Chr11(GRCh37):g.6662454C>A",
+      "zygosity": "Homozygous",
+      "variant_type": "Missense",
+      "classification": "Variant of uncertain significance",
+      "classification_class": "class 3",
+      "disorder": {
+        "name": "van Maldergem syndrome type 1",
+        "omim": "601390"
+      }
+    }
+  ],
+  "interpretation": "The NAXE variant c.262G>T p.(Gly88Trp) causes an amino acid change from Gly to Trp at position 88. It is classified as variant of uncertain significance (class 3) according to the",
+  "recommendations": "Recommendations We recommend parental carrier testing to confirm homozygosity by excluding the presence of a large deletion. Genetic counselling is recommended.",
+  "incidental_findings": "We did not detect any class 1 or 2 variants in the genes for which incidental findings are reported based on the ACMG guidelines.",
+  "signatories": [
+    {
+      "name": "Prof. Dr. Arndt Rolfs, MD",
+      "title": "Chief Medical Director"
+    }
+  ],
+  "patient_index": 0,
+  "patients_in_source": 1,
+  "ocr_used": false,
+  "key_fields": {
+    "your_ref": "MRN: 27011592",
+    "doctor_name": "Dr. Amal Alhashem",
+    "hospital_name": "Prince Sultan Military Medical City",
+    "patient_name": "Eleen Talal Al Otaibi",
+    "patient_no": "1256164",
+    "results": "Variant of uncertain significance variant identified in NAXE",
+    "results_summary": "NAXE NM_144772.2 c.262G>T p.(Gly88Trp) — Homozygous — Variant of uncertain significance (class 3) — progressive, early-onset encephalopathy with brain edema and/or leukoencephalopathy, OMIM 61718 | DCHS1 NM_003737.3 c.391G>T p.(Val131Leu) — Homozygous — Variant of uncertain significance (class 3) — van Maldergem syndrome type 1, OMIM 601390",
+    "clinical_information": "20 months old female with frequent visits to ER due to hyperactive airway disease, after 6 months of age she started to have progressive loss of milestones with ataxia, nystagmus, ptosis, eye squint and hyperreflexia with clonus, upper motor neuron lesions (UMNL), normal ammonia-lactate; age of manifestation at 14 months. Family history: positive for epilepsy and early deaths (according to the provided pedigree two nephews deceased at age of 6 ½ years and 1 year, clinically diagnosed with progressive delayed epilepsy); the parents are consanguineous, no affected siblings"
+  }
+}

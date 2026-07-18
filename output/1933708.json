@@ -107,6 +107,7 @@
   ],
   "patient_index": 0,
   "patients_in_source": 1,
+  "ocr_used": false,
   "key_fields": {
     "your_ref": "544023",
     "doctor_name": "Mrs. Fatimah Al Zayed",

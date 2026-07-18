@@ -1,0 +1,117 @@
+{
+  "source_file": "examples_v2/new2_ER3283421.pdf",
+  "lab_name": "CENTOGENE GmbH",
+  "report_type": "Final report",
+  "report_date": "10 Apr. 2024",
+  "template_generation": "2024_labeled",
+  "patient": {
+    "patient_no": "1886117",
+    "first_name": "Faisal Raed Rajab",
+    "last_name": "Alzahrani",
+    "full_name": "Faisal Raed Rajab Alzahrani",
+    "sex": "male",
+    "date_of_birth": "31 Dec. 2023",
+    "your_ref": "8100371892",
+    "order_no": "63193794"
+  },
+  "laboratory": {
+    "name": "CENTOGENE GmbH",
+    "address": "Am Strande 7 • 18055 Rostock • Germany",
+    "country": "Germany",
+    "clia_registration": "99D2049715",
+    "cap_registration": "8005167",
+    "phone": "+49 (0)381 80113 416",
+    "fax": "+49 (0)381 80113 401",
+    "email": "customer.support@centogene.com",
+    "website": "www.centogene.com"
+  },
+  "ordering_provider": {
+    "physician": "Prof. Dr. Amal Alhashem",
+    "institution": "Prince Sultan Military Medical City (PSMMC)",
+    "department": "Department of Pediatrics",
+    "address": "King Abdulaziz street, 11159 Riyadh",
+    "country": "Saudi Arabia"
+  },
+  "sample": {
+    "sample_type": "blood, CentoCard®",
+    "collection_date": "28 Jan. 2024",
+    "order_no": "63193794",
+    "order_received_date": "16 Feb. 2024"
+  },
+  "test": {
+    "tests_requested": "CentoXome® MOx 1.0 Solo",
+    "method_summary": "CentoXome® MOx 1.0 Solo Genomic DNA is enzymatically fragmented, and target regions are enriched using DNA capture probes. These regions include approximately 41 Mb of the human coding exome (targeting > 98% of the coding RefSeq from the human genome build GRCh37/hg19), as well as the mitochondrial genome. The generated library is sequenced on an Illumina platform to obtain at least 20x coverage depth for > 98% of the targeted bases. An in-house bioinformatics pipeline, including read alignment to GRCh37/hg19 genome assembly and revised Cambridge Reference Sequence (rCRS) of the Human Mitochondrial DNA (NC_012920), variant calling, annotation, and comprehensive variant filtering is applied. All variants with minor allele frequency (MAF) of less than 1% in gnomAD database, and disease-causing variants reported in HGMD®, in ClinVar or in CentoMD® are evaluated. The investigation for relevant variants is focused on coding exons and flanking +/-10 intronic nucleotides of genes with clear gene-phenotype evidence (based on OMIM® information). All potential patterns for mode of inheritance are considered. In addition, provided family history and clinical information are used to evaluate identified variants with respect to their pathogenicity and disease causality. Variants are categorized into five classes (pathogenic, likely pathogenic, VUS, likely benign, and benign) along ACMG guidelines for classification of variants. All relevant variants related to the phenotype of the patient are reported. For CentoXome® MOx, if applicable, biochemical analysis is performed upon detection of relevant variants by sequencing. This enhances the diagnosis of metabolic disorders, optimizes variant classification, and helps to ascertain the eventual contribution to the phenotype; the list of enzyme- activity assays and biomarkers can be obtained at www.centogene.com/mox. CENTOGENE has established stringent quality criteria and validation processes for variants detected by NGS. Variants with low sequencing quality and/or unclear zygosity are confirmed by orthogonal methods. Consequently, a specificity of > 99.9% for all reported variants is warranted. Mitochondrial variants are reported for heteroplasmy levels of 15% or higher. The copy number variation (CNV) detection software has a sensitivity of more than 95% for all homozygous/hemizygous and mitochondrial deletions, as well as heterozygous deletions/duplications and homozygous/hemizygous duplications spanning at least three consecutive exons. For the uniparental disomy (UPD) screening, a specific algorithm is used to assess the well-known clinically relevant chromosomal regions (6q24, 7, 11p15.5, 14q32, 15q11q13, 20q13 and 20).",
+    "genome_build": "GRCh37/hg19",
+    "platform": "Illumina platform"
+  },
+  "clinical_information": {
+    "hpo_terms": [
+      "Abnormal left ventricle morphology",
+      "Abnormal left ventricular function",
+      "Abnormal morphology of left ventricular trabeculae",
+      "Hydronephrosis",
+      "Left ventricular dilatation",
+      "Mildly reduced left ventricular ejection fraction",
+      "Mitral regurgitation",
+      "Patent foramen ovale",
+      "Reduced left ventricular ejection fraction",
+      "Tricuspid regurgitation"
+    ],
+    "family_history": "Yes.",
+    "consanguinity": "Yes",
+    "free_text": "Abnormal left ventricle morphology; Abnormal left ventricular function; Abnormal morphology of left ventricular trabeculae; Hydronephrosis; Left ventricular dilatation; Mildly reduced left ventricular ejection fraction; Mitral regurgitation; Patent foramen ovale; Reduced left ventricular ejection fraction; Tricuspid regurgitation (Clinical information indicated above follows HPO nomenclature.) Family history: Yes. Brother: Hypoplastic left heart, Neonatal death. Consanguineous parents: Yes. POTENTIALLY RELEVANT RESULT Pathogenic variant identified"
+  },
+  "overall_result": "Pathogenic variant identified",
+  "result_summary": "MT-TL1 NC_012920.1 m.3243A>G — Heteroplasmy (40% of 2104 NGS reads) — Pathogenic (class 1) — several mitochondrial disorders, including MELAS syndrome, MERRF, diabetes with maternally transmitted deafness, and Leigh syndrome, OMIM 540000",
+  "variants": [
+    {
+      "gene": "MT-TL1",
+      "transcript": "NC_012920.1",
+      "cdna_change": "m.3243A>G",
+      "zygosity": "Heteroplasmy (40% of 2104 NGS reads)",
+      "variant_type": "Alteration",
+      "classification": "Pathogenic",
+      "classification_class": "class 1",
+      "pmid": "20301411",
+      "disorder": {
+        "name": "several mitochondrial disorders, including MELAS syndrome, MERRF, diabetes with maternally transmitted deafness, and Leigh syndrome",
+        "omim": "540000"
+      }
+    }
+  ],
+  "interpretation": "A pathogenic variant was identified in heteroplasmy (40%) in the mitochondrial MT-TL1 gene. This variant is the most frequent variant associated with mitochondrial encephalomyopathy, lactic acidosis, and stroke-like episodes (MELAS), and is associated with diverse clinical manifestations (i.e., progressive external ophthalmoplegia, diabetes mellitus, cardiomyopathy, deafness) that collectively constitute a wide spectrum ranging from MELAS at the severe end to asymptomatic carrier status. No further clinically relevant variants related to the described phenotype were detected.",
+  "recommendations": "Clinical evaluation to assess the phenotypic overlap with the detected variant is recommended. As the percentage of heteroplasmy of pathogenic mtDNA variants may vary between organs and tissues in an individual, it is recommended to study other tissues in this patient (e.g., saliva, urine) for better integration of this result. NGS-based targeted analysis is recommended for the mother (in different tissues) to determine segregation. NGS-based targeted analysis is also recommended for other affected or at-risk matrilineal relatives. Specialized clinical follow-up and surveillance for possible additional manifestations associated with the disease is recommended. If the detected variant is not considered to contribute to or fully explain the patient’s phenotype, reevaluation of the sequence dataset is recommended every 12 months or if there are phenotypic changes. Additionally, proceeding to genome sequencing should be considered. Genetic counselling is recommended.",
+  "secondary_findings": "If consent is provided, in line with ACMG recommendations (ACMG SF v3.2 list for reporting of secondary findings in clinical exome and genome sequencing; Genetics in Medicine, 2023; PMID: 37347242) we report secondary findings, i.e. relevant pathogenic and likely pathogenic variants in the recommended genes for the indicated phenotypes in this publication. We did not detect any relevant variants in the genes for which secondary findings are reported.",
+  "carriership_findings": "In this table we list sequence variants previously ascertained or evaluated and classified in CENTOGENE as \"pathogenic\" and \"likely pathogenic\", in selected genes associated with recessive severe and early- onset Mendelian diseases. As only in-house classified variants are presented, it should not be considered a comprehensive list of variants in these genes and does not provide a complete list of potentially relevant genetic variants in the patient. The complete gene list can be found at www.centogene.com/carriership-findings (please contact CENTOGENE customer support if the gene list has been updated after this report was issued). Orthogonal validation was not performed for these variants. Therefore, if any variant is used for clinical management of the patient, confirmation by another method needs to be considered. Furthermore, the classification of these variants may change over time, however reclassification reports for these variants will not be issued. CENTOGENE is not liable for any missing variant in this list and/or any provided classification of the variants at a certain point of time. As the identified variants may indicate (additional) genetic risks or diagnoses in the patient and/or family and/or inform about reproductive risks, we recommend discussing these findings in the context of genetic counselling. In accordance with this disclaimer no relevant pathogenic or likely pathogenic variant was identified.",
+  "coverage": {
+    "pct_ge_20x": "98.98%",
+    "raw": "≥ 20x 98.98%"
+  },
+  "signatories": [
+    {
+      "name": "Prof Dr Peter Bauer, MD",
+      "title": "Chief Medical and Genomic Officer, Human Geneticist"
+    },
+    {
+      "name": "Dr Nayla Yazmín León Carlos, MD",
+      "title": "Human Geneticist"
+    },
+    {
+      "name": "Andreia Pinto, MSc",
+      "title": "Clinical Scientist"
+    }
+  ],
+  "patient_index": 0,
+  "patients_in_source": 1,
+  "ocr_used": false,
+  "key_fields": {
+    "your_ref": "8100371892",
+    "doctor_name": "Prof. Dr. Amal Alhashem",
+    "hospital_name": "Prince Sultan Military Medical City (PSMMC)",
+    "patient_name": "Faisal Raed Rajab Alzahrani",
+    "patient_no": "1886117",
+    "results": "Pathogenic variant identified",
+    "results_summary": "MT-TL1 NC_012920.1 m.3243A>G — Heteroplasmy (40% of 2104 NGS reads) — Pathogenic (class 1) — several mitochondrial disorders, including MELAS syndrome, MERRF, diabetes with maternally transmitted deafness, and Leigh syndrome, OMIM 540000",
+    "clinical_information": "Abnormal left ventricle morphology; Abnormal left ventricular function; Abnormal morphology of left ventricular trabeculae; Hydronephrosis; Left ventricular dilatation; Mildly reduced left ventricular ejection fraction; Mitral regurgitation; Patent foramen ovale; Reduced left ventricular ejection fraction; Tricuspid regurgitation (Clinical information indicated above follows HPO nomenclature.) Family history: Yes. Brother: Hypoplastic left heart, Neonatal death. Consanguineous parents: Yes. POTENTIALLY RELEVANT RESULT Pathogenic variant identified"
+  }
+}

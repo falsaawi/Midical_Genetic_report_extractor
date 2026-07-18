@@ -59,7 +59,7 @@
     "free_text": "Chewing difficulties, Delayed gross motor development, Easy fatigability, Elevated hepatic transaminases, Elevated serum creatine phosphokinase, Global developmental delay, Muscle weakness, Skeletal muscle hypertrophy *: Clinical information indicated above follows HPO nomenclature."
   },
   "overall_result": "Likely pathogenic variant identified",
-  "result_summary": "DMD NM_004006.2 c.2642C>G p.(Ser881*) — Hemizygous — likely pathogenic (class 2) — Duchenne Muscular Dystrophy, OMIM 310200",
+  "result_summary": "DMD NM_004006.2 c.2642C>G p.(Ser881*) — Hemizygous — Likely pathogenic (class 2) — Duchenne muscular dystrophy, OMIM 310200",
   "variants": [
     {
       "gene": "DMD",
@@ -70,10 +70,10 @@
       "exon": "21",
       "zygosity": "Hemizygous",
       "variant_type": "Stop gain",
-      "classification": "likely pathogenic",
+      "classification": "Likely pathogenic",
       "classification_class": "class 2",
       "disorder": {
-        "name": "Duchenne Muscular Dystrophy",
+        "name": "Duchenne muscular dystrophy",
         "omim": "310200",
         "inheritance": "X-linked"
       }
@@ -104,6 +104,7 @@
   ],
   "patient_index": 0,
   "patients_in_source": 1,
+  "ocr_used": false,
   "key_fields": {
     "your_ref": "01-20-89-66",
     "doctor_name": "Dr. Walaa Al Shuaibi",
@@ -111,7 +112,7 @@
     "patient_name": "Meshael Alsubaie",
     "patient_no": "1223557",
     "results": "Likely pathogenic variant identified",
-    "results_summary": "DMD NM_004006.2 c.2642C>G p.(Ser881*) — Hemizygous — likely pathogenic (class 2) — Duchenne Muscular Dystrophy, OMIM 310200",
+    "results_summary": "DMD NM_004006.2 c.2642C>G p.(Ser881*) — Hemizygous — Likely pathogenic (class 2) — Duchenne muscular dystrophy, OMIM 310200",
     "clinical_information": "Chewing difficulties, Delayed gross motor development, Easy fatigability, Elevated hepatic transaminases, Elevated serum creatine phosphokinase, Global developmental delay, Muscle weakness, Skeletal muscle hypertrophy *: Clinical information indicated above follows HPO nomenclature."
   }
 }

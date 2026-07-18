@@ -9,14 +9,21 @@ one clean JSON record **per patient**. Reports that contain two patients (for
 example a consanguineous couple analysed together) are automatically **split**
 into separate records that share the common report metadata.
 
-The parser is adaptive: it recognises three CENTOGENE template generations that
-differ substantially in layout, and normalises all of them into a single schema.
+The parser is adaptive: it recognises four CENTOGENE template generations that
+differ substantially in layout, extracts **every** reported variant (not just the
+first), and normalises all of them into a single schema.
 
-| Generation      | Example              | Layout cues                              | Patients |
-|-----------------|----------------------|------------------------------------------|----------|
-| `2016_legacy`   | `1150124` (couple)   | "Final Report", slash-separated fields   | 1–2      |
+| Generation      | Example              | Layout cues                              | Patients / variants |
+|-----------------|----------------------|------------------------------------------|---------------------|
+| `2016_couple`   | `1150124`            | "Final Report", slash-separated fields, inline variant table | 2 patients |
+| `2017_legacy`   | `ER860827`           | "Final Report", `Patient name: Last, First`, "Detailed description" table | 1 patient, **N variants** |
 | `2018_labeled`  | `1223557`            | `Patient no.: …, First Name: …`, `RESULT SUMMARY` | 1 |
-| `2024_labeled`  | `1933708`            | "CENTOGENE GmbH", `MAIN FINDINGS`, secondary/carriership sections | 1 |
+| `2024_labeled`  | `1933708`, `ER3283421` | "CENTOGENE GmbH", `MAIN FINDINGS`, secondary/carriership sections | 1 |
+
+Handled across formats: **multiple variants per report** (e.g. NAXE + DCHS1),
+**mitochondrial variants** (`m.` notation, `NC_012920`, heteroplasmy), per-gene
+disorder/OMIM/inheritance, all result banners (`POSITIVE` / `POTENTIALLY
+RELEVANT` / `NEGATIVE`), and scanned PDFs via offline OCR.
 
 ## Install
 
