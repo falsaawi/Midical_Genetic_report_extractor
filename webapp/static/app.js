@@ -58,27 +58,81 @@ function renderFiles() {
   $("#upload").disabled = selected.filter((s) => s.state !== "ok").length === 0;
 }
 
-/* ---------- upload ---------- */
+/* ---------- upload ----------
+   Files are sent in size-bounded batches (the server caps request bodies at
+   ~4.5 MB), a few batches in parallel, so hundreds of PDFs upload reliably. */
+const MAX_BATCH_BYTES = 4_000_000;
+const UPLOAD_CONCURRENCY = 3;
+
+function buildBatches(items) {
+  const batches = [];
+  let cur = [], size = 0;
+  for (const s of items) {
+    if (cur.length && size + s.file.size > MAX_BATCH_BYTES) { batches.push(cur); cur = []; size = 0; }
+    cur.push(s); size += s.file.size;
+  }
+  if (cur.length) batches.push(cur);
+  return batches;
+}
+
+async function postBatch(batch) {
+  const fd = new FormData();
+  batch.forEach((s) => fd.append("files", s.file, s.file.name));
+  const res = await fetch("/api/upload", { method: "POST", body: fd });
+  if (!res.ok) {
+    let msg = `HTTP ${res.status}`;
+    if (res.status === 413) msg = "batch too large for the server";
+    else {
+      const txt = await res.text();
+      try { msg = JSON.parse(txt).detail || msg; } catch { msg = (txt || msg).slice(0, 140); }
+    }
+    throw new Error(msg);
+  }
+  return (await res.json()).results;
+}
+
 $("#upload").addEventListener("click", async () => {
   const pending = selected.filter((s) => s.state !== "ok");
   if (!pending.length) return;
-  const fd = new FormData();
-  pending.forEach((s) => { s.state = "run"; fd.append("files", s.file, s.file.name); });
-  renderFiles(); $("#upload").disabled = true;
-  try {
-    const res = await fetch("/api/upload", { method: "POST", body: fd });
-    const data = await res.json();
-    let patients = 0, errs = 0;
-    data.results.forEach((r) => {
-      const s = selected.find((x) => x.file.name === r.filename);
-      if (s) s.state = r.status === "success" ? "ok" : "err";
-      if (r.status === "success") patients += r.patients.length; else errs++;
-    });
-    renderFiles();
-    if (patients) toast(`Extracted ${patients} patient record(s) from ${pending.length - errs} file(s).`, "ok");
-    if (errs) toast(`${errs} file(s) could not be processed.`, "err");
-    await refresh();
-  } catch (e) { pending.forEach((s) => (s.state = "err")); renderFiles(); toast("Upload failed: " + e.message, "err"); }
+  pending.forEach((s) => (s.state = "run"));
+  renderFiles();
+  $("#upload").disabled = true;
+  const btn = $("#upload"), label = btn.textContent;
+
+  const batches = buildBatches(pending);
+  let done = 0, patients = 0, errs = 0;
+  const byName = (n) => selected.find((x) => x.file.name === n);
+
+  const runBatch = async (batch) => {
+    try {
+      const results = await postBatch(batch);
+      results.forEach((r) => {
+        const s = byName(r.filename);
+        if (s) s.state = r.status === "success" ? "ok" : "err";
+        if (r.status === "success") patients += r.patients.length; else errs++;
+      });
+    } catch (e) {
+      batch.forEach((s) => (s.state = "err"));
+      errs += batch.length;
+      toast(`A batch failed: ${e.message}`, "err");
+    } finally {
+      done += batch.length;
+      btn.textContent = `Uploading ${done}/${pending.length}…`;
+      renderFiles();
+    }
+  };
+
+  // Simple concurrency pool over the batches.
+  let idx = 0;
+  const workers = Array.from({ length: Math.min(UPLOAD_CONCURRENCY, batches.length) }, async () => {
+    while (idx < batches.length) { const b = batches[idx++]; await runBatch(b); if (idx % UPLOAD_CONCURRENCY === 0) await refresh(); }
+  });
+  await Promise.all(workers);
+
+  btn.textContent = label;
+  if (patients) toast(`Extracted ${patients} patient record(s) from ${pending.length - errs} file(s).`, "ok");
+  if (errs) toast(`${errs} file(s) could not be processed.`, "err");
+  await refresh();
 });
 
 /* ---------- tables ---------- */
