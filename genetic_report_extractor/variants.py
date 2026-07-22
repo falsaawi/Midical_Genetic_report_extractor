@@ -114,28 +114,80 @@ def gene_by_cdna(clean: str) -> Dict[str, str]:
     return out
 
 
+def _clean_disname(name: str) -> Optional[str]:
+    name = collapse_ws(name).strip(" .,;:")
+    name = re.sub(r"^The\s+", "", name, flags=re.IGNORECASE)
+    name = re.sub(r",?\s+also\s+(?:referred|known)\s+as\b.*$", "", name, flags=re.IGNORECASE)
+    name = re.sub(r"\s*\([A-Z][A-Za-z0-9]*\)\s*$", "", name)   # drop trailing "(HPE)" abbrev
+    return name or None
+
+
+def _disorder_name_before(window: str) -> Optional[str]:
+    """The disorder name is the subject of the paragraph preceding its OMIM."""
+    w = collapse_ws(window)
+    for pat in (r"(?:^|\. )The\s+([A-Z].+?),\s+also\s+(?:referred|known)",
+                r"(?:^|\. )([A-Z][A-Za-z0-9 ()\-/,']{3,}?)\s+is\s+(?:characterized|the most|a genetically|an?\s|associated)",
+                r"(?:^|\. )([A-Z][A-Za-z0-9 \-/,']{3,}?)\s*\([A-Z0-9]+\)\s+is\b"):
+        matches = list(re.finditer(pat, w))
+        if matches:
+            name = _clean_disname(matches[-1].group(1))
+            if name and len(name) < 90:
+                return name
+    return None
+
+
+def _norm_inh(value: Optional[str]) -> Optional[str]:
+    if not value:
+        return None
+    v = collapse_ws(value)
+    return v[0].upper() + v[1:] if v else None
+
+
+def _moi_disorders(clean: str) -> List[Disorder]:
+    """Disorders written in the 2024 style: 'Mode of Inheritance: X (OMIM®: N)'."""
+    out, prev = [], 0
+    for m in re.finditer(
+        r"Mode\s+of\s+Inheritance:\s*([A-Za-z /\-]+?)\s*\.?\s*\(\s*OMIM®?:?\s*(\d{5,6})\s*\)",
+        clean, re.IGNORECASE):
+        out.append(Disorder(name=_disorder_name_before(clean[prev:m.start()]),
+                            omim=m.group(2), inheritance=_norm_inh(m.group(1))))
+        prev = m.end()
+    return out
+
+
+def gene_disorders(gene: str, clean: str) -> List[Disorder]:
+    """All disorders associated with ``gene`` (primary first)."""
+    found: List[Disorder] = []
+    seen = set()
+
+    def add(d):
+        key = d.omim or (d.name or "").lower()
+        if d and (d.name or d.omim) and key not in seen:
+            seen.add(key)
+            found.append(d)
+
+    if gene:
+        g = re.escape(gene)
+        m = re.search(
+            rf"Pathogenic variants?\s+in\s+(?:the\s+)?{g}\s+(?:gene\s+)?(?:is|are)\s+associated\s+with\s+(.+?)"
+            rf"(?:\.\s|\s*\(|,\s+an?\s)", clean, re.IGNORECASE | re.DOTALL)
+        if m:
+            tail = clean[m.start():m.start() + 900]
+            om = re.search(r"OMIM®?:?\s*(\d{5,6})", tail)
+            im = re.search(r"\b(?:an?\s+)?(autosomal (?:recessive|dominant)|X-linked(?: recessive| dominant)?|"
+                           r"mitochondrial|Y-linked)\s+(?:disorder|inheritance|manner|trait|condition|pattern)",
+                           tail, re.IGNORECASE)
+            add(Disorder(name=_clean_disname(m.group(1)),
+                         omim=om.group(1) if om else None,
+                         inheritance=_norm_inh(im.group(1)) if im else None))
+    for d in _moi_disorders(clean):
+        add(d)
+    return found
+
+
 def disorder_for_gene(gene: str, clean: str) -> Optional[Disorder]:
-    """Extract the disorder/OMIM/inheritance tied to a specific gene."""
-    if not gene:
-        return None
-    g = re.escape(gene)
-    m = re.search(
-        rf"Pathogenic variants?\s+in\s+(?:the\s+)?{g}\s+gene\s+(?:is|are)\s+associated\s+with\s+(.+?)"
-        rf"(?:\.\s|\s*\(|,\s+an?\s)", clean, re.IGNORECASE | re.DOTALL)
-    if not m:
-        return None
-    name = collapse_ws(m.group(1))
-    tail = clean[m.start():m.start() + 900]
-    omim = None
-    om = re.search(r"OMIM®?:?\s*(\d{5,6})", tail)
-    if om:
-        omim = om.group(1)
-    inh = None
-    im = re.search(r"an?\s+(autosomal (?:recessive|dominant)|X-linked(?: recessive| dominant)?|"
-                   r"mitochondrial|Y-linked)\s+disorder", tail, re.IGNORECASE)
-    if im:
-        inh = im.group(1).capitalize().replace("X-linked", "X-linked")
-    return Disorder(name=name or None, omim=omim, inheritance=inh)
+    ds = gene_disorders(gene, clean)
+    return ds[0] if ds else None
 
 
 def extract_variants(region: str, clean: str) -> List[Variant]:
@@ -176,12 +228,25 @@ def extract_variants(region: str, clean: str) -> List[Variant]:
             zyg = raw if raw.lower().startswith("heteroplasmy") else \
                 _ZYG_NORM.get(raw.lower().rstrip("."), raw)
 
+        af = None
+        for src in ("gnomAD", "ExAC", "ExAc", "ESP", "MitoMap"):
+            am = re.search(rf"{src}:\s*([0-9]+\.[0-9]+(?:[eE]-?\d+)?%?)", window)
+            if am:
+                af = am.group(1)
+                break
+        snp = None
+        sm = re.search(r"\b(rs\d+)\b", window)
+        if sm:
+            snp = sm.group(1)
+
+        dis = gene_disorders(gene, clean) if gene else []
         variants.append(Variant(
             gene=gene, transcript=m.group(1), cdna_change=core, protein_change=protein,
-            genomic_coordinate=genomic, zygosity=zyg,
+            genomic_coordinate=genomic, zygosity=zyg, allele_frequency=af, snp_identifier=snp,
             variant_type=_variant_type(window),
             classification=cls_label, classification_class=cls_class,
-            disorder=disorder_for_gene(gene, clean) if gene else None,
+            disorder=dis[0] if dis else None,
+            additional_disorders=dis[1:],
         ))
     return variants
 

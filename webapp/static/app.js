@@ -103,13 +103,17 @@ $("#upload").addEventListener("click", async () => {
   let done = 0, patients = 0, errs = 0;
   const byName = (n) => selected.find((x) => x.file.name === n);
 
+  let dups = 0, norec = 0;
   const runBatch = async (batch) => {
     try {
       const results = await postBatch(batch);
       results.forEach((r) => {
         const s = byName(r.filename);
-        if (s) s.state = r.status === "success" ? "ok" : "err";
-        if (r.status === "success") patients += r.patients.length; else errs++;
+        if (s) s.state = (r.status === "success") ? "ok" : (r.status === "duplicate") ? "dup" : "err";
+        if (r.status === "success") patients += r.patients.length;
+        else if (r.status === "duplicate") dups++;
+        else if (r.status === "no_records") norec++;
+        else errs++;
       });
     } catch (e) {
       batch.forEach((s) => (s.state = "err"));
@@ -130,7 +134,9 @@ $("#upload").addEventListener("click", async () => {
   await Promise.all(workers);
 
   btn.textContent = label;
-  if (patients) toast(`Extracted ${patients} patient record(s) from ${pending.length - errs} file(s).`, "ok");
+  if (patients) toast(`Extracted ${patients} patient record(s).`, "ok");
+  if (dups) toast(`${dups} duplicate file(s) skipped (already processed).`, "");
+  if (norec) toast(`${norec} file(s) yielded no record — see the Upload log.`, "err");
   if (errs) toast(`${errs} file(s) could not be processed.`, "err");
   await refresh();
 });
@@ -176,7 +182,9 @@ function renderTx(rows) {
   $("#tx-empty").style.display = rows.length ? "none" : "";
   rows.forEach((t) => {
     const tr = el("tr");
-    const badge = t.status === "success" ? '<span class="pill ok">success</span>' : '<span class="pill err">error</span>';
+    const badge = t.status === "success" ? '<span class="pill ok">success</span>'
+      : t.status === "no_records" ? '<span class="pill likely">no records</span>'
+      : '<span class="pill err">error</span>';
     tr.innerHTML =
       `<td class="mono">${esc(t.filename)}</td>` +
       `<td class="sub">${esc((t.uploaded_at || "").replace("T", " "))}</td>` +

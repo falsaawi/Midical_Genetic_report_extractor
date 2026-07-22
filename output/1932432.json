@@ -58,7 +58,7 @@
     "free_text": "Abnormal cerebral ventricle morphology; Acidemia; Frontal bossing; Macrocephaly; Methylmalonic acidemia; Ventriculomegaly (Clinical information indicated above follows HPO nomenclature.) Family history: Unknown. Consanguineous parents: Unknown."
   },
   "overall_result": "Likely pathogenic variant identified",
-  "result_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2)",
+  "result_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2) — basal cell nevus syndrome 1, OMIM 109400",
   "variants": [
     {
       "gene": "PTCH1",
@@ -70,11 +70,19 @@
       "variant_type": "Frameshift",
       "classification": "Likely pathogenic",
       "classification_class": "class 2",
-      "pmid": "11932998",
+      "pmid": "11932998, 11941477",
       "disorder": {
+        "name": "basal cell nevus syndrome 1",
         "omim": "109400",
         "inheritance": "Autosomal dominant"
-      }
+      },
+      "additional_disorders": [
+        {
+          "name": "Holoprosencephaly",
+          "omim": "610828",
+          "inheritance": "Autosomal dominant"
+        }
+      ]
     }
   ],
   "interpretation": "A heterozygous likely pathogenic variant was identified in the PTCH1 gene. The result is consistent with a genetic diagnosis of autosomal dominant PTCH1-related disease. The familial segregation analysis suggests the identified variant is de novo (although, other less likely explanations are possible, e.g., germline mosaicism in one of the parents).",
@@ -88,7 +96,11 @@
   "signatories": [
     {
       "name": "Prof Dr Peter Bauer, MD",
-      "title": "Chief Medical and Genomic Officer, Human Geneticist, Clinical Geneticist"
+      "title": "Chief Medical and Genomic Officer, Human Geneticist"
+    },
+    {
+      "name": "Dr Aida Bertoli-Avella, MD, PhD",
+      "title": "Clinical Geneticist, European Clinical Laboratory Geneticist, (ErCLG)"
     },
     {
       "name": "Nishtha Gulati, MSc",
@@ -105,7 +117,7 @@
     "patient_name": "AMERH ABUBAKUR ENAYAT",
     "patient_no": "1932432",
     "results": "Likely pathogenic variant identified",
-    "results_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2)",
+    "results_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2) — basal cell nevus syndrome 1, OMIM 109400",
     "clinical_information": "Abnormal cerebral ventricle morphology; Acidemia; Frontal bossing; Macrocephaly; Methylmalonic acidemia; Ventriculomegaly (Clinical information indicated above follows HPO nomenclature.) Family history: Unknown. Consanguineous parents: Unknown."
   }
 }

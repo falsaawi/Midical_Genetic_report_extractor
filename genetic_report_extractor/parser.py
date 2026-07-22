@@ -105,8 +105,15 @@ def _laboratory(raw: str) -> Laboratory:
         lab.name = "CENTOGENE AG"
     lab.address = first(r"(Am Strande 7\s*[•,].*?Germany|Schillingallee 68.*?Germany)", raw)
     lab.country = "Germany"
-    lab.clia_registration = first(r"CLIA registration\s*([0-9A-Z]+)", raw)
-    lab.cap_registration = first(r"CAP registration\s*([0-9A-Z]+)", raw)
+    # CLIA is always CENTOGENE's 99D2049715 (2 digits, letter, 7 digits); CAP is
+    # 8005167. OCR sometimes mangles these, so match the exact shape and fall back
+    # to the canonical value when the text is close but malformed.
+    clia = first(r"CLIA registration\s*([0-9]{2}[A-Z][0-9]{7})", raw)
+    if not clia and re.search(r"CLIA registration\s*99[0-9A-Z]{0,3}2049715", raw):
+        clia = "99D2049715"
+    lab.clia_registration = clia
+    cap = first(r"CAP registration\s*(8005167)\b", raw) or first(r"CAP registration\s*([0-9]{7})\b", raw)
+    lab.cap_registration = cap
     lab.phone = first(r"Tel\.?:\s*(\+49[0-9()\s]+)", raw)
     lab.fax = first(r"Fax:\s*(\+49[0-9()\s]+)", raw)
     lab.email = first(r"((?:office|support|dmqc|customer\.support)@centogene\.com)", raw)
@@ -197,20 +204,17 @@ def _recommend_sentences(text: str) -> Optional[str]:
     return " ".join(uniq) or None
 
 
+_DEGREE = r"(?:MD|PhD|MSc|BSc|MBBS|Dr\.?med|Prof)"
 _SIG_NAME_RE = re.compile(
-    r"(?:(?:Prof|Dr)\.?\s+)*[A-ZÀ-Ý][\wÀ-ÿ'’-]+(?:\s+[A-ZÀ-Ý][\wÀ-ÿ'’.-]+)*,\s*(?:MD|PhD|MSc)\b"
+    r"(?:(?:Prof|Dr)\.?\s+)*[A-ZÀ-Ý][\wÀ-ÿ'’-]+(?:\s+[A-ZÀ-Ý][\wÀ-ÿ'’.-]+)*"
+    rf",\s*{_DEGREE}(?:\s*,\s*{_DEGREE})*"   # allow several degrees: "MD, PhD"
 )
-_SIG_TITLES = [
-    "Chief Medical and Genomic Officer",
-    "Chief Medical Director",
-    "Human Geneticist",
-    "Clinical Geneticist",
-    "Clinical Scientist",
-    "Laboratory Director",
-    "Medical Director",
-    "Molecular Geneticist",
-]
-_SIG_TITLE_RE = re.compile("|".join(re.escape(t) for t in _SIG_TITLES))
+# A sign-off title line: matched by keyword so wording variants are covered.
+_SIG_TITLE_RE = re.compile(
+    r"^(?:Chief\s+|Clinical\s+|Medical\s+|Molecular\s+|Human\s+|Laboratory\s+|Senior\s+|European\s+)?"
+    r"[A-Za-z()\s]*?"
+    r"(?:Geneticist|Scientist|Officer|Director|Pathologist|Physician|Consultant|ErCLG)"
+    r"[A-Za-z()\s]*$")
 
 
 def _signatories(text: str) -> List[Signatory]:
@@ -223,6 +227,9 @@ def _signatories(text: str) -> List[Signatory]:
     titles); we detect which by comparing the first title's line index against
     the last name's.
     """
+    # Join a name whose academic degree wrapped onto the next line
+    # ("Dr. Anne-Kathrin Langenberg,\nPhD" -> "... Langenberg, PhD").
+    text = re.sub(rf",\s*\n\s*({_DEGREE})\b", r", \1", text)
     names, titles = [], []  # each entry: (line_index, text)
     for idx, ln in enumerate(norm_lines(text)):
         if _SIG_NAME_RE.fullmatch(ln):
@@ -322,8 +329,9 @@ def _parse_2016(doc: ExtractedDocument, clean: str, raw: str,
     # Shared fields
     sample = Sample(
         sample_type=first(r"Sample type:\s*([^\n]+)", header),
-        collection_date=first(r"Sample collection date[^:]*:\s*([0-9.]+)", header),
+        collection_date=first(r"Sample collection date[^:]*:\s*([0-9.]+|not available)", header),
         order_received_date=first(r"Order received[^:]*:\s*([0-9.]+)", header),
+        order_no=(ono_list[0] if ono_list else None),
     )
     ordering = _legacy_ordering(header)
     lab = _laboratory(raw)
@@ -333,10 +341,15 @@ def _parse_2016(doc: ExtractedDocument, clean: str, raw: str,
         genome_build=first(r"(GRCh3[78]/hg19|GRCh3[78])", raw),
         platform=first(r"(Illumina\s+\w[\w\s]*?)(?:platform|\.)", raw),
     )
+    clin_text = section(clean, r"Clinical information:",
+                        ["Variants with possible", "Variants with", "Gene ", "Interpretation"])
     clinical = ClinicalInformation(
-        free_text=section(clean, r"Clinical information:", ["Variants with possible", "Variants with", "Gene ", "Interpretation"]),
-        consanguinity=first(r"(consanguineous)", raw),
-        family_history=first(r"(negative family history|positive family history)", raw),
+        free_text=clin_text,
+        age_of_manifestation=first(
+            r"age of manifestation(?:\s+at)?\s*:?\s*([^.;\n]+)", clin_text or raw),
+        consanguinity=first(r"(consanguineous|non-consanguineous)", raw),
+        family_history=first(r"[Ff]amily history:?\s*([^\n]+?)(?:\.\s|\.?$)", clin_text or "")
+        or first(r"(negative family history|positive family history)", raw),
     )
 
     # Variant extraction: newer legacy reports (2017) use a "Detailed description
@@ -651,7 +664,8 @@ def _clinical_labeled(clean: str, raw: str) -> ClinicalInformation:
     return ClinicalInformation(
         hpo_terms=hpo,
         diagnosed_conditions=first(r"Diagnosed Condition\(s\):\s*([^\n.]+)", raw),
-        age_of_manifestation=first(r"Age of manifestation:\s*([^\n]+)", raw),
+        age_of_manifestation=first(r"Age of manifestation:?\s*([^\n]+)", raw)
+        or first(r"[Aa]ge of (?:manifestation|onset)\s*:?\s*([^\n.;]+)", clean),
         family_history=first(r"Family history:\s*([^\n]+)", raw),
         consanguinity=first(r"Consanguineous parents:\s*([^\n.]+)", raw),
         free_text=ci_text,
@@ -670,22 +684,41 @@ def _labeled_variants(clean: str, raw: str) -> List[Variant]:
     if not variants:
         return []
 
-    # Per-variant enrichment that the table alone doesn't carry.
+    # Per-variant enrichment that the table alone doesn't carry. The PMIDs and
+    # exon live in each variant's "GENE, c.… " interpretation paragraph.
     single = len(variants) == 1
     fallback_dis = _disorder_from_interpretation(clean) if single else None
     for v in variants:
+        block = _variant_interp_block(clean, v)
         if not v.exon:
-            v.exon = first(rf"{re.escape(v.cdna_change or '###')}[^\n]*?Exon\s*([0-9]+)", clean) \
-                or (first(r"exon\(s\)\s*no\.\s*([0-9]+)", clean) if single else None) \
+            v.exon = first(r"exon\(s\)\s*no\.\s*([0-9]+)", block) \
+                or first(rf"{re.escape(v.cdna_change or '###')}[^\n]*?Exon\s*([0-9]+)", clean) \
                 or (first(r"Exon\s*([0-9]+)", raw) if single else None)
-        if not v.pmid:
-            v.pmid = first(r"PMID:\s*(\d+)", clean) if single else None
+        pmids = re.findall(r"PMID[:\s]*([0-9]{5,8})", block)
+        if pmids:
+            v.pmid = ", ".join(dict.fromkeys(pmids))         # dedup, keep order
+        elif single and not v.pmid:
+            v.pmid = first(r"PMID:\s*(\d+)", clean)
         if not v.snp_identifier:
-            v.snp_identifier = first(r"(rs\d+)", raw) if single else None
+            v.snp_identifier = first(r"(rs\d+)", block) or (first(r"(rs\d+)", raw) if single else None)
         if not v.disorder and fallback_dis and (fallback_dis.name or fallback_dis.omim
                                                 or fallback_dis.inheritance):
             v.disorder = fallback_dis
     return variants
+
+
+def _variant_interp_block(clean: str, v) -> str:
+    """The interpretation paragraph for one variant (from 'GENE, c.…' to the next
+    variant heading or section), where PMIDs / SNP / exon for it are described."""
+    if not v.gene or not v.cdna_change:
+        return clean
+    m = re.search(rf"\b{re.escape(v.gene)}\s*,\s*{re.escape(v.cdna_change)}", clean)
+    if not m:
+        return clean
+    rest = clean[m.start():]
+    nxt = re.search(r"\n[A-Z][A-Z0-9\-]{1,9}\s*,\s*[cmn]\.|SECONDARY FINDINGS|CARRIERSHIP|"
+                    r"INCIDENTAL|ANALYSIS STATISTICS|METHODS", rest[20:])
+    return rest[:nxt.start() + 20] if nxt else rest[:1600]
 
 
 # --------------------------------------------------------------------------- #

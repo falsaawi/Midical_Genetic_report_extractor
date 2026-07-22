@@ -53,6 +53,7 @@ def stats() -> dict:
 @app.post("/api/upload")
 async def upload(files: list[UploadFile] = File(...)) -> JSONResponse:
     """Accept one or more PDFs; extract, persist, and return a per-file summary."""
+    import hashlib
     results = []
     for uf in files:
         data = await uf.read()
@@ -64,24 +65,31 @@ async def upload(files: list[UploadFile] = File(...)) -> JSONResponse:
                             "status": "error", "error": "Not a PDF file", "patients": []})
             continue
 
+        sha = hashlib.sha256(data).hexdigest()
+        if db.sha_exists(sha):
+            results.append({"filename": uf.filename, "status": "duplicate",
+                            "error": "Identical PDF already processed", "patients": []})
+            continue
+
         tmp_path = None
         try:
             with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
                 tmp.write(data)
                 tmp_path = tmp.name
             reports = extract_from_pdf(tmp_path)
-            # Keep the original filename in the stored source_file for clarity
             for r in reports:
-                r.source_file = uf.filename
-            tx = db.add_transaction(uf.filename, size, _now(), "success", len(reports))
+                r.source_file = uf.filename            # keep the real filename
+            status = "success" if reports else "no_records"
+            err = None if reports else "No patient record could be extracted"
+            tx = db.add_transaction(uf.filename, size, _now(), status, len(reports), err, sha)
             patients = []
             for r in reports:
-                rec_id = db.add_record(tx, _now(), r)
+                rec_id = db.add_record(tx, _now(), r, sha)
                 patients.append({"record_id": rec_id, **r.key_fields()})
             results.append({"transaction_id": tx, "filename": uf.filename,
-                            "status": "success", "patients": patients})
+                            "status": status, "error": err, "patients": patients})
         except Exception as exc:  # noqa: BLE001
-            tx = db.add_transaction(uf.filename, size, _now(), "error", 0, str(exc))
+            tx = db.add_transaction(uf.filename, size, _now(), "error", 0, str(exc), sha)
             results.append({"transaction_id": tx, "filename": uf.filename,
                             "status": "error", "error": str(exc), "patients": []})
         finally:

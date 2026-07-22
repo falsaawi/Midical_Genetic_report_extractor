@@ -60,12 +60,13 @@
       "Synophrys",
       "Visual impairment"
     ],
+    "age_of_manifestation": "3 month(s)",
     "family_history": "No.",
     "consanguinity": "Yes",
     "free_text": "Abnormal eye morphology; Abnormal facial shape; Chorioretinal coloboma; Decreased body weight; Dental crowding; Iris coloboma; Microcephaly; Micrognathia; Myopia; Prolonged neonatal jaundice; Short palpebral fissure; Short stature; Small for gestational age; Synophrys; Visual impairment (Clinical information indicated above follows HPO nomenclature.) Age of onset: 3 month(s). Previous CENTOGENE testing, results negative: CentoXome MOx Solo (63040375). Family history: No. Siblings unaffected. Consanguineous parents: Yes."
   },
   "overall_result": "Likely pathogenic variant identified",
-  "result_summary": "ALDH1A3 NM_000693.3 c.434C>T p.(Ala145Val) — Homozygous — Likely pathogenic (class 2)",
+  "result_summary": "ALDH1A3 NM_000693.3 c.434C>T p.(Ala145Val) — Homozygous — Likely pathogenic (class 2) — isolated microphthalmia type 8, OMIM 615113",
   "variants": [
     {
       "gene": "ALDH1A3",
@@ -78,9 +79,11 @@
       "classification_class": "class 2",
       "snp_identifier": "rs754619607",
       "pmid": "23646827",
+      "allele_frequency": "0.0000040",
       "disorder": {
+        "name": "isolated microphthalmia type 8",
         "omim": "615113",
-        "inheritance": "autosomal recessive"
+        "inheritance": "Autosomal recessive"
       }
     }
   ],
@@ -91,11 +94,15 @@
   "signatories": [
     {
       "name": "Prof Dr Peter Bauer, MD",
-      "title": "Chief Medical and Genomic Officer, Human Geneticist, Clinical Geneticist"
+      "title": "Chief Medical and Genomic Officer, Human Geneticist"
+    },
+    {
+      "name": "Dr Aida Bertoli-Avella, MD, PhD",
+      "title": "Clinical Geneticist, European Clinical Laboratory Geneticist, (ErCLG)"
     },
     {
       "name": "Dr Lígia S. Almeida, PhD",
-      "title": "Clinical Scientist"
+      "title": "Clinical Scientist, European Clinical Laboratory Geneticist, (ErCLG)"
     }
   ],
   "patient_index": 0,
@@ -108,7 +115,7 @@
     "patient_name": "Taleen Saad Shujaa Alotaibi",
     "patient_no": "1752296",
     "results": "Likely pathogenic variant identified",
-    "results_summary": "ALDH1A3 NM_000693.3 c.434C>T p.(Ala145Val) — Homozygous — Likely pathogenic (class 2)",
+    "results_summary": "ALDH1A3 NM_000693.3 c.434C>T p.(Ala145Val) — Homozygous — Likely pathogenic (class 2) — isolated microphthalmia type 8, OMIM 615113",
     "clinical_information": "Abnormal eye morphology; Abnormal facial shape; Chorioretinal coloboma; Decreased body weight; Dental crowding; Iris coloboma; Microcephaly; Micrognathia; Myopia; Prolonged neonatal jaundice; Short palpebral fissure; Short stature; Small for gestational age; Synophrys; Visual impairment (Clinical information indicated above follows HPO nomenclature.) Age of onset: 3 month(s). Previous CENTOGENE testing, results negative: CentoXome MOx Solo (63040375). Family history: No. Siblings unaffected. Consanguineous parents: Yes."
   }
 }

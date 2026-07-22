@@ -34,9 +34,10 @@ CREATE TABLE IF NOT EXISTS transactions (
     filename      TEXT NOT NULL,
     size_bytes    INTEGER,
     uploaded_at   TEXT NOT NULL,
-    status        TEXT NOT NULL,
+    status        TEXT NOT NULL,          -- 'success' | 'no_records' | 'error'
     num_patients  INTEGER DEFAULT 0,
-    error         TEXT
+    error         TEXT,
+    sha256        TEXT
 );
 CREATE TABLE IF NOT EXISTS records (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,8 +54,10 @@ CREATE TABLE IF NOT EXISTS records (
     classification  TEXT,
     overall_result  TEXT,
     template        TEXT,
+    sha256          TEXT,
     data_json       TEXT NOT NULL
 );
+CREATE INDEX IF NOT EXISTS idx_tx_sha ON transactions(sha256);
 """
 
 _initialized = False
@@ -100,19 +103,30 @@ def init_db() -> None:
         pass  # _conn() ensures the schema on first use
 
 
+def sha_exists(sha: str) -> bool:
+    """Has a PDF with this content hash already been processed successfully?"""
+    if not sha:
+        return False
+    with _conn() as conn:
+        rows = _rows(conn.execute(
+            "SELECT 1 FROM transactions WHERE sha256=? AND status IN ('success','no_records') LIMIT 1",
+            (sha,)))
+        return bool(rows)
+
+
 def add_transaction(filename: str, size_bytes: int, uploaded_at: str,
                     status: str, num_patients: int = 0,
-                    error: Optional[str] = None) -> int:
+                    error: Optional[str] = None, sha256: Optional[str] = None) -> int:
     with _conn() as conn:
         cur = conn.execute(
             "INSERT INTO transactions (filename, size_bytes, uploaded_at, status, "
-            "num_patients, error) VALUES (?,?,?,?,?,?)",
-            (filename, size_bytes, uploaded_at, status, num_patients, error),
+            "num_patients, error, sha256) VALUES (?,?,?,?,?,?,?)",
+            (filename, size_bytes, uploaded_at, status, num_patients, error, sha256),
         )
         return cur.lastrowid
 
 
-def add_record(transaction_id: int, created_at: str, report) -> int:
+def add_record(transaction_id: int, created_at: str, report, sha256: Optional[str] = None) -> int:
     kf = report.key_fields()
     v = report.variants[0] if report.variants else None
     variant_str = None
@@ -122,14 +136,14 @@ def add_record(transaction_id: int, created_at: str, report) -> int:
         cur = conn.execute(
             "INSERT INTO records (transaction_id, created_at, patient_no, patient_name, "
             "sex, your_ref, doctor, hospital, gene, variant, classification, overall_result, "
-            "template, data_json) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            "template, sha256, data_json) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (
                 transaction_id, created_at,
                 report.patient.patient_no, report.patient.full_name, report.patient.sex,
                 kf["your_ref"], kf["doctor_name"], kf["hospital_name"],
                 v.gene if v else None, variant_str,
                 (v.classification if v else None),
-                report.overall_result, report.template_generation,
+                report.overall_result, report.template_generation, sha256,
                 json.dumps(report.to_dict(), ensure_ascii=False),
             ),
         )
@@ -178,7 +192,8 @@ def stats() -> dict:
         t = _rows(conn.execute(
             "SELECT COUNT(*) n, "
             "COALESCE(SUM(CASE WHEN status='success' THEN 1 ELSE 0 END),0) ok, "
-            "COALESCE(SUM(CASE WHEN status='error' THEN 1 ELSE 0 END),0) err "
+            "COALESCE(SUM(CASE WHEN status='error' THEN 1 ELSE 0 END),0) err, "
+            "COALESCE(SUM(CASE WHEN status='no_records' THEN 1 ELSE 0 END),0) norec "
             "FROM transactions"))[0]
         rec = _rows(conn.execute(
             "SELECT COUNT(*) n, COUNT(DISTINCT patient_no) p FROM records"))[0]
@@ -186,6 +201,7 @@ def stats() -> dict:
             "SELECT COUNT(*) n FROM records WHERE lower(classification) LIKE '%pathogenic%'"))[0]
         return {
             "uploads": t["n"], "uploads_ok": t["ok"], "uploads_error": t["err"],
+            "uploads_no_records": t["norec"],
             "records": rec["n"], "unique_patients": rec["p"],
             "pathogenic_records": pos["n"],
             "backend": "turso" if using_turso() else "sqlite",

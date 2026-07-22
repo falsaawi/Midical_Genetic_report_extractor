@@ -91,6 +91,7 @@ class Variant:
     in_silico: Optional[str] = None
     allele_frequency: Optional[str] = None
     disorder: Optional[Disorder] = None
+    additional_disorders: List[Disorder] = field(default_factory=list)
 
 
 @dataclass

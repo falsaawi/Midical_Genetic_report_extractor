@@ -34,6 +34,8 @@
   },
   "sample": {
     "sample_type": "blood, EDTA",
+    "collection_date": "not available",
+    "order_no": "62400173",
     "order_received_date": "28.07.2017"
   },
   "test": {
@@ -68,11 +70,8 @@
   "incidental_findings": "We did not detect any class 1 or 2 variants in the genes for which incidental findings are reported based on the ACMG guidelines.",
   "signatories": [
     {
-      "name": "Prof. Peter Bauer, MD",
-      "title": "Clinical Scientist"
-    },
-    {
-      "name": "Lia Abbasi Moheb, PhD"
+      "name": "Lia Abbasi Moheb, PhD",
+      "title": "Chief Scientific Officer  Human Geneticist"
     }
   ],
   "patient_index": 0,

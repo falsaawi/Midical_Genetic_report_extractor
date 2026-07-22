@@ -70,6 +70,31 @@ def test_2024_single_variants_still_work():
         assert v[gene].disorder and v[gene].disorder.omim
 
 
+def test_doctor_feedback_fixes():
+    (r5,) = extract_from_pdf(os.path.join(EX, "new5_ER3407788.pdf"))
+    # 3 signatories including the previously-dropped middle one
+    names = [s.name for s in r5.signatories]
+    assert len(names) == 3
+    assert any("Bertoli-Avella" in n for n in names)
+    # CLIA/CAP canonical
+    assert r5.laboratory.clia_registration == "99D2049715"
+    assert r5.laboratory.cap_registration == "8005167"
+    # PTCH1: disorder name populated + second disorder captured
+    v = r5.variants[0]
+    assert v.disorder and v.disorder.name and v.disorder.omim == "109400"
+    assert any(d.omim == "610828" for d in v.additional_disorders)
+
+    (r4,) = extract_from_pdf(os.path.join(EX, "new4_ER3112271.pdf"))
+    v4 = r4.variants[0]
+    assert v4.allele_frequency and v4.snp_identifier          # MAF + rsID structured
+    assert v4.disorder.name and v4.disorder.omim == "615113"
+    assert v4.disorder.inheritance and "recessive" in v4.disorder.inheritance.lower()
+
+    # 2017 legacy age-of-manifestation is no longer blank
+    (r1,) = extract_from_pdf(os.path.join(EX, "new1_ER860827.pdf"))
+    assert r1.clinical_information.age_of_manifestation
+
+
 if __name__ == "__main__":
     for n, fn in list(globals().items()):
         if n.startswith("test_") and callable(fn):

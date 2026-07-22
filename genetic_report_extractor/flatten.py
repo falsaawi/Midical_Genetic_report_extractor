@@ -43,7 +43,7 @@ _VARIANT_FIELDS = [
     "gene", "transcript", "cdna_change", "protein_change", "genomic_coordinate",
     "exon", "zygosity", "variant_type", "classification", "classification_class",
     "snp_identifier", "described_in", "pmid", "allele_frequency",
-    "disorder.name", "disorder.omim", "disorder.inheritance",
+    "disorder.name", "disorder.omim", "disorder.inheritance", "disorder.additional",
 ]
 
 
@@ -113,6 +113,10 @@ def flatten_report(r: GeneticReport) -> Dict[str, str]:
     }
     for i, v in enumerate(r.variants, start=1):
         d = v.disorder
+        extra_dis = "; ".join(
+            f"{x.name or '?'} (OMIM {x.omim or '?'}, {x.inheritance or '?'})"
+            for x in (v.additional_disorders or [])
+        ) or None
         values = {
             "gene": v.gene, "transcript": v.transcript, "cdna_change": v.cdna_change,
             "protein_change": v.protein_change, "genomic_coordinate": v.genomic_coordinate,
@@ -123,6 +127,7 @@ def flatten_report(r: GeneticReport) -> Dict[str, str]:
             "disorder.name": d.name if d else None,
             "disorder.omim": d.omim if d else None,
             "disorder.inheritance": d.inheritance if d else None,
+            "disorder.additional": extra_dis,
         }
         for f in _VARIANT_FIELDS:
             row[f"variant{i}.{f}"] = values[f]

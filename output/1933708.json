@@ -64,7 +64,7 @@
     "free_text": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
   },
   "overall_result": "Pathogenic variant identified",
-  "result_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1)",
+  "result_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1) — Developmental and epileptic encephalopathy-94, OMIM 615369",
   "variants": [
     {
       "gene": "CHD2",
@@ -76,8 +76,9 @@
       "variant_type": "Nonsense",
       "classification": "Pathogenic",
       "classification_class": "class 1",
-      "pmid": "35627293",
+      "pmid": "35627293, 23708187",
       "disorder": {
+        "name": "Developmental and epileptic encephalopathy-94",
         "omim": "615369",
         "inheritance": "Autosomal dominant"
       }
@@ -115,7 +116,7 @@
     "patient_name": "Saqer Mohammed Misfer Alkhathami",
     "patient_no": "1933708",
     "results": "Pathogenic variant identified",
-    "results_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1)",
+    "results_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1) — Developmental and epileptic encephalopathy-94, OMIM 615369",
     "clinical_information": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
   }
 }

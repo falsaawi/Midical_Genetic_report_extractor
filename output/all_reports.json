@@ -36,6 +36,7 @@
     "sample": {
       "sample_type": "blood, EDTA",
       "collection_date": "03.09.2016",
+      "order_no": "62322058",
       "order_received_date": "06.09.2016"
     },
     "test": {
@@ -44,7 +45,7 @@
       "platform": "Illumina NextSeq or HiSeq 4000"
     },
     "clinical_information": {
-      "family_history": "negative family history",
+      "family_history": ".",
       "consanguinity": "consanguineous",
       "free_text": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
     },
@@ -143,6 +144,7 @@
     "sample": {
       "sample_type": "blood, EDTA",
       "collection_date": "03.09.2016",
+      "order_no": "62322058",
       "order_received_date": "06.09.2016"
     },
     "test": {
@@ -151,7 +153,7 @@
       "platform": "Illumina NextSeq or HiSeq 4000"
     },
     "clinical_information": {
-      "family_history": "negative family history",
+      "family_history": ".",
       "consanguinity": "consanguineous",
       "free_text": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
     },
@@ -397,7 +399,7 @@
       "free_text": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
     },
     "overall_result": "Pathogenic variant identified",
-    "result_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1)",
+    "result_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1) — Developmental and epileptic encephalopathy-94, OMIM 615369",
     "variants": [
       {
         "gene": "CHD2",
@@ -409,8 +411,9 @@
         "variant_type": "Nonsense",
         "classification": "Pathogenic",
         "classification_class": "class 1",
-        "pmid": "35627293",
+        "pmid": "35627293, 23708187",
         "disorder": {
+          "name": "Developmental and epileptic encephalopathy-94",
           "omim": "615369",
           "inheritance": "Autosomal dominant"
         }
@@ -448,7 +451,7 @@
       "patient_name": "Saqer Mohammed Misfer Alkhathami",
       "patient_no": "1933708",
       "results": "Pathogenic variant identified",
-      "results_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1)",
+      "results_summary": "CHD2 NM_001271.3 c.3783G>A p.(Trp1261*) — Heterozygous — Pathogenic (class 1) — Developmental and epileptic encephalopathy-94, OMIM 615369",
       "clinical_information": "Abnormality of the face; Atypical behavior; Auditory sensitivity; Autism; Autistic behavior; Cognitive impairment; Ear pain; Global developmental delay; Hypotonia; Intellectual disability; Intellectual disability, mild (Clinical information indicated above follows HPO nomenclature.) Diagnosed Condition(s): inattention. EEG normal. MRI normal. Previous external genetic testing, results negative: Karyotype (46 XY). Family history: Unknown. Siblings unaffected. Consanguineous parents: No."
     }
   },
@@ -489,6 +492,7 @@
     "sample": {
       "sample_type": "blood, filter card",
       "collection_date": "11.12.2017",
+      "order_no": "62437132",
       "order_received_date": "03.01.2018"
     },
     "test": {
@@ -498,6 +502,8 @@
       "platform": "Illumina compatible adapters ligated to generate libraries that are sequenced on Illumina"
     },
     "clinical_information": {
+      "age_of_manifestation": "14 months",
+      "family_history": "positive for epilepsy and early deaths (according to the provided pedigree two nephews deceased at age of 6 ½ years and 1 year, clinically diagnosed with progressive delayed epilepsy); the parents are consanguineous, no affected siblings",
       "consanguinity": "consanguineous",
       "free_text": "20 months old female with frequent visits to ER due to hyperactive airway disease, after 6 months of age she started to have progressive loss of milestones with ataxia, nystagmus, ptosis, eye squint and hyperreflexia with clonus, upper motor neuron lesions (UMNL), normal ammonia-lactate; age of manifestation at 14 months. Family history: positive for epilepsy and early deaths (according to the provided pedigree two nephews deceased at age of 6 ½ years and 1 year, clinically diagnosed with progressive delayed epilepsy); the parents are consanguineous, no affected siblings"
     },
@@ -541,7 +547,7 @@
     "incidental_findings": "We did not detect any class 1 or 2 variants in the genes for which incidental findings are reported based on the ACMG guidelines.",
     "signatories": [
       {
-        "name": "Prof. Dr. Arndt Rolfs, MD",
+        "name": "Dr. Anne-Kathrin Langenberg, PhD",
         "title": "Chief Medical Director"
       }
     ],
@@ -633,10 +639,12 @@
         "variant_type": "Alteration",
         "classification": "Pathogenic",
         "classification_class": "class 1",
-        "pmid": "20301411",
+        "pmid": "20301411, 35778412",
+        "allele_frequency": "0.019%",
         "disorder": {
           "name": "several mitochondrial disorders, including MELAS syndrome, MERRF, diabetes with maternally transmitted deafness, and Leigh syndrome",
-          "omim": "540000"
+          "omim": "540000",
+          "inheritance": "Mitochondrial"
         }
       }
     ],
@@ -712,6 +720,8 @@
     },
     "sample": {
       "sample_type": "blood, EDTA",
+      "collection_date": "not available",
+      "order_no": "62400173",
       "order_received_date": "28.07.2017"
     },
     "test": {
@@ -746,11 +756,8 @@
     "incidental_findings": "We did not detect any class 1 or 2 variants in the genes for which incidental findings are reported based on the ACMG guidelines.",
     "signatories": [
       {
-        "name": "Prof. Peter Bauer, MD",
-        "title": "Clinical Scientist"
-      },
-      {
-        "name": "Lia Abbasi Moheb, PhD"
+        "name": "Lia Abbasi Moheb, PhD",
+        "title": "Chief Scientific Officer  Human Geneticist"
       }
     ],
     "patient_index": 0,
@@ -829,12 +836,13 @@
         "Synophrys",
         "Visual impairment"
       ],
+      "age_of_manifestation": "3 month(s)",
       "family_history": "No.",
       "consanguinity": "Yes",
       "free_text": "Abnormal eye morphology; Abnormal facial shape; Chorioretinal coloboma; Decreased body weight; Dental crowding; Iris coloboma; Microcephaly; Micrognathia; Myopia; Prolonged neonatal jaundice; Short palpebral fissure; Short stature; Small for gestational age; Synophrys; Visual impairment (Clinical information indicated above follows HPO nomenclature.) Age of onset: 3 month(s). Previous CENTOGENE testing, results negative: CentoXome MOx Solo (63040375). Family history: No. Siblings unaffected. Consanguineous parents: Yes."
     },
     "overall_result": "Likely pathogenic variant identified",
-    "result_summary": "ALDH1A3 NM_000693.3 c.434C>T p.(Ala145Val) — Homozygous — Likely pathogenic (class 2)",
+    "result_summary": "ALDH1A3 NM_000693.3 c.434C>T p.(Ala145Val) — Homozygous — Likely pathogenic (class 2) — isolated microphthalmia type 8, OMIM 615113",
     "variants": [
       {
         "gene": "ALDH1A3",
@@ -847,9 +855,11 @@
         "classification_class": "class 2",
         "snp_identifier": "rs754619607",
         "pmid": "23646827",
+        "allele_frequency": "0.0000040",
         "disorder": {
+          "name": "isolated microphthalmia type 8",
           "omim": "615113",
-          "inheritance": "autosomal recessive"
+          "inheritance": "Autosomal recessive"
         }
       }
     ],
@@ -860,11 +870,15 @@
     "signatories": [
       {
         "name": "Prof Dr Peter Bauer, MD",
-        "title": "Chief Medical and Genomic Officer, Human Geneticist, Clinical Geneticist"
+        "title": "Chief Medical and Genomic Officer, Human Geneticist"
+      },
+      {
+        "name": "Dr Aida Bertoli-Avella, MD, PhD",
+        "title": "Clinical Geneticist, European Clinical Laboratory Geneticist, (ErCLG)"
       },
       {
         "name": "Dr Lígia S. Almeida, PhD",
-        "title": "Clinical Scientist"
+        "title": "Clinical Scientist, European Clinical Laboratory Geneticist, (ErCLG)"
       }
     ],
     "patient_index": 0,
@@ -877,7 +891,7 @@
       "patient_name": "Taleen Saad Shujaa Alotaibi",
       "patient_no": "1752296",
       "results": "Likely pathogenic variant identified",
-      "results_summary": "ALDH1A3 NM_000693.3 c.434C>T p.(Ala145Val) — Homozygous — Likely pathogenic (class 2)",
+      "results_summary": "ALDH1A3 NM_000693.3 c.434C>T p.(Ala145Val) — Homozygous — Likely pathogenic (class 2) — isolated microphthalmia type 8, OMIM 615113",
       "clinical_information": "Abnormal eye morphology; Abnormal facial shape; Chorioretinal coloboma; Decreased body weight; Dental crowding; Iris coloboma; Microcephaly; Micrognathia; Myopia; Prolonged neonatal jaundice; Short palpebral fissure; Short stature; Small for gestational age; Synophrys; Visual impairment (Clinical information indicated above follows HPO nomenclature.) Age of onset: 3 month(s). Previous CENTOGENE testing, results negative: CentoXome MOx Solo (63040375). Family history: No. Siblings unaffected. Consanguineous parents: Yes."
     }
   },
@@ -941,7 +955,7 @@
       "free_text": "Abnormal cerebral ventricle morphology; Acidemia; Frontal bossing; Macrocephaly; Methylmalonic acidemia; Ventriculomegaly (Clinical information indicated above follows HPO nomenclature.) Family history: Unknown. Consanguineous parents: Unknown."
     },
     "overall_result": "Likely pathogenic variant identified",
-    "result_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2)",
+    "result_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2) — basal cell nevus syndrome 1, OMIM 109400",
     "variants": [
       {
         "gene": "PTCH1",
@@ -953,11 +967,19 @@
         "variant_type": "Frameshift",
         "classification": "Likely pathogenic",
         "classification_class": "class 2",
-        "pmid": "11932998",
+        "pmid": "11932998, 11941477",
         "disorder": {
+          "name": "basal cell nevus syndrome 1",
           "omim": "109400",
           "inheritance": "Autosomal dominant"
-        }
+        },
+        "additional_disorders": [
+          {
+            "name": "Holoprosencephaly",
+            "omim": "610828",
+            "inheritance": "Autosomal dominant"
+          }
+        ]
       }
     ],
     "interpretation": "A heterozygous likely pathogenic variant was identified in the PTCH1 gene. The result is consistent with a genetic diagnosis of autosomal dominant PTCH1-related disease. The familial segregation analysis suggests the identified variant is de novo (although, other less likely explanations are possible, e.g., germline mosaicism in one of the parents).",
@@ -971,7 +993,11 @@
     "signatories": [
       {
         "name": "Prof Dr Peter Bauer, MD",
-        "title": "Chief Medical and Genomic Officer, Human Geneticist, Clinical Geneticist"
+        "title": "Chief Medical and Genomic Officer, Human Geneticist"
+      },
+      {
+        "name": "Dr Aida Bertoli-Avella, MD, PhD",
+        "title": "Clinical Geneticist, European Clinical Laboratory Geneticist, (ErCLG)"
       },
       {
         "name": "Nishtha Gulati, MSc",
@@ -988,7 +1014,7 @@
       "patient_name": "AMERH ABUBAKUR ENAYAT",
       "patient_no": "1932432",
       "results": "Likely pathogenic variant identified",
-      "results_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2)",
+      "results_summary": "PTCH1 NM_000264.5 c.92_98del p.(Gly31Alafs*47) — Heterozygous — Likely pathogenic (class 2) — basal cell nevus syndrome 1, OMIM 109400",
       "clinical_information": "Abnormal cerebral ventricle morphology; Acidemia; Frontal bossing; Macrocephaly; Methylmalonic acidemia; Ventriculomegaly (Clinical information indicated above follows HPO nomenclature.) Family history: Unknown. Consanguineous parents: Unknown."
     }
   }

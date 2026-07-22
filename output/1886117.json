@@ -72,10 +72,12 @@
       "variant_type": "Alteration",
       "classification": "Pathogenic",
       "classification_class": "class 1",
-      "pmid": "20301411",
+      "pmid": "20301411, 35778412",
+      "allele_frequency": "0.019%",
       "disorder": {
         "name": "several mitochondrial disorders, including MELAS syndrome, MERRF, diabetes with maternally transmitted deafness, and Leigh syndrome",
-        "omim": "540000"
+        "omim": "540000",
+        "inheritance": "Mitochondrial"
       }
     }
   ],

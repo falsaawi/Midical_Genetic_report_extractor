@@ -35,6 +35,7 @@
   "sample": {
     "sample_type": "blood, EDTA",
     "collection_date": "03.09.2016",
+    "order_no": "62322058",
     "order_received_date": "06.09.2016"
   },
   "test": {
@@ -43,7 +44,7 @@
     "platform": "Illumina NextSeq or HiSeq 4000"
   },
   "clinical_information": {
-    "family_history": "negative family history",
+    "family_history": ".",
     "consanguinity": "consanguineous",
     "free_text": "both probands are asymptomatic; they are the parents of two deceased girls with skeletal dysplasia (most likely thanatophoric dysplasia) who died aged 2 days. A diagnosis of Desbuquois dysplasia is suspected. According to the pedigree provided, the parents are consanguineous; negative family history."
   },

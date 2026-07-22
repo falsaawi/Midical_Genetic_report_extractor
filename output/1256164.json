@@ -35,6 +35,7 @@
   "sample": {
     "sample_type": "blood, filter card",
     "collection_date": "11.12.2017",
+    "order_no": "62437132",
     "order_received_date": "03.01.2018"
   },
   "test": {
@@ -44,6 +45,8 @@
     "platform": "Illumina compatible adapters ligated to generate libraries that are sequenced on Illumina"
   },
   "clinical_information": {
+    "age_of_manifestation": "14 months",
+    "family_history": "positive for epilepsy and early deaths (according to the provided pedigree two nephews deceased at age of 6 ½ years and 1 year, clinically diagnosed with progressive delayed epilepsy); the parents are consanguineous, no affected siblings",
     "consanguinity": "consanguineous",
     "free_text": "20 months old female with frequent visits to ER due to hyperactive airway disease, after 6 months of age she started to have progressive loss of milestones with ataxia, nystagmus, ptosis, eye squint and hyperreflexia with clonus, upper motor neuron lesions (UMNL), normal ammonia-lactate; age of manifestation at 14 months. Family history: positive for epilepsy and early deaths (according to the provided pedigree two nephews deceased at age of 6 ½ years and 1 year, clinically diagnosed with progressive delayed epilepsy); the parents are consanguineous, no affected siblings"
   },
@@ -87,7 +90,7 @@
   "incidental_findings": "We did not detect any class 1 or 2 variants in the genes for which incidental findings are reported based on the ACMG guidelines.",
   "signatories": [
     {
-      "name": "Prof. Dr. Arndt Rolfs, MD",
+      "name": "Dr. Anne-Kathrin Langenberg, PhD",
       "title": "Chief Medical Director"
     }
   ],
