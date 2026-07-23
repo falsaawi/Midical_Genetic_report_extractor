@@ -137,4 +137,10 @@ def index() -> FileResponse:
     return FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
 
+@app.get("/genomics")
+def genomics() -> FileResponse:
+    """Interactive explainer of the genomics-powered drug discovery value chain."""
+    return FileResponse(os.path.join(STATIC_DIR, "genomics.html"))
+
+
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
