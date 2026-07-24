@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An interactive, illustrated walkthrough of the genomics-powered drug discovery value chain, for non-experts.">
+<title>From Genome to Medicine — The Drug Discovery Value Chain</title>
+
+<style>
+  /* ============================================================
+     THE ASSAY — design tokens
+     Grounded in fluorescence microscopy + sequencing readouts
+     ============================================================ */
+  :root {
+    --bg:      #0a0e1a;
+    --bg-2:    #0f1626;
+    --bg-3:    #17203a;
+    --panel:   rgba(255,255,255,0.025);
+    --ink:     #eef2fb;
+    --ink-soft:#aab5cf;
+    --ink-mute:#6f7c9b;
+    --line:    rgba(255,255,255,0.10);
+    --line-2:  rgba(255,255,255,0.055);
+    --accent:  #35e0c8;   /* fluorescent probe teal */
+    --accent-2:#6ea8ff;   /* DAPI blue */
+    --glow:    rgba(53,224,200,0.30);
+    --warn:    #fbbf24;
+    /* DNA bases — categorical, used only for sequence motifs */
+    --A:#4ade80; --T:#f87171; --C:#60a5fa; --G:#fbbf24;
+
+    --serif: "Charter","Bitstream Charter","Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:  system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:  ui-monospace,"SF Mono","Cascadia Code","Roboto Mono",Menlo,Consolas,monospace;
+
+    --wrap: 1080px;
+    --r: 14px;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg:      #eef1f6;
+      --bg-2:    #ffffff;
+      --bg-3:    #e4e9f2;
+      --panel:   rgba(13,20,40,0.02);
+      --ink:     #0d1526;
+      --ink-soft:#39445e;
+      --ink-mute:#68748f;
+      --line:    rgba(10,20,45,0.13);
+      --line-2:  rgba(10,20,45,0.07);
+      --accent:  #0c8f80;
+      --accent-2:#2563eb;
+      --glow:    rgba(12,143,128,0.16);
+      --warn:    #b45309;
+      --A:#16a34a; --T:#dc2626; --C:#2563eb; --G:#b45309;
+    }
+  }
+  /* explicit toggle overrides media query in both directions */
+  :root[data-theme="dark"] {
+    --bg:#0a0e1a; --bg-2:#0f1626; --bg-3:#17203a; --panel:rgba(255,255,255,0.025);
+    --ink:#eef2fb; --ink-soft:#aab5cf; --ink-mute:#6f7c9b;
+    --line:rgba(255,255,255,0.10); --line-2:rgba(255,255,255,0.055);
+    --accent:#35e0c8; --accent-2:#6ea8ff; --glow:rgba(53,224,200,0.30); --warn:#fbbf24;
+    --A:#4ade80; --T:#f87171; --C:#60a5fa; --G:#fbbf24;
+  }
+  :root[data-theme="light"] {
+    --bg:#eef1f6; --bg-2:#ffffff; --bg-3:#e4e9f2; --panel:rgba(13,20,40,0.02);
+    --ink:#0d1526; --ink-soft:#39445e; --ink-mute:#68748f;
+    --line:rgba(10,20,45,0.13); --line-2:rgba(10,20,45,0.07);
+    --accent:#0c8f80; --accent-2:#2563eb; --glow:rgba(12,143,128,0.16); --warn:#b45309;
+    --A:#16a34a; --T:#dc2626; --C:#2563eb; --G:#b45309;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 22px; }
+
+  /* ---------- scroll progress + theme toggle ---------- */
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    box-shadow: 0 0 12px var(--glow); z-index: 90;
+  }
+  #themeBtn {
+    position: fixed; top: 16px; right: 16px; z-index: 91;
+    background: var(--bg-2); color: var(--ink-soft);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 8px 14px; font-family: var(--mono); font-size: 12px;
+    cursor: pointer; letter-spacing: .04em;
+    backdrop-filter: blur(6px);
+  }
+  #themeBtn:hover { color: var(--accent); border-color: var(--accent); }
+  #themeBtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; min-height: 92vh; display: grid; align-items: center;
+          overflow: hidden; border-bottom: 1px solid var(--line); }
+  #helix { position: absolute; inset: 0; width: 100%; height: 100%;
+           opacity: .9; z-index: 0; }
+  .hero-veil { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(120% 80% at 78% 30%, transparent 0%, var(--bg) 72%),
+      linear-gradient(180deg, transparent 55%, var(--bg) 100%); }
+  .hero .wrap { position: relative; z-index: 2; padding-block: 80px; }
+  .eyebrow { font-family: var(--mono); font-size: 12.5px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 20px; }
+  .eyebrow::before { content:"◖ "; opacity:.6; }
+  h1 { font-family: var(--serif); font-weight: 600; line-height: 1.03;
+    font-size: clamp(2.7rem, 7vw, 5.4rem); letter-spacing: -0.02em;
+    margin: 0 0 22px; text-wrap: balance; max-width: 15ch; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede { font-size: clamp(1.05rem,2.2vw,1.32rem); color: var(--ink-soft);
+    max-width: 56ch; line-height: 1.55; margin: 0 0 30px; }
+  .seq { font-family: var(--mono); font-size: clamp(.8rem,2.4vw,1.05rem);
+    letter-spacing: .18em; white-space: nowrap; overflow: hidden;
+    padding: 12px 0; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2);
+    max-width: 640px; }
+  .A{color:var(--A)} .T{color:var(--T)} .C{color:var(--C)} .G{color:var(--G)}
+  .caret { color: var(--accent); animation: blink 1.05s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .scroll-hint { font-family: var(--mono); font-size: 11.5px; color: var(--ink-mute);
+    letter-spacing: .18em; margin-top: 34px; text-transform: uppercase; }
+  .scroll-hint span { display:inline-block; animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(5px); } }
+
+  /* ---------- generic section ---------- */
+  section { padding-block: clamp(56px, 9vw, 104px); position: relative; }
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent-2); margin: 0 0 14px; }
+  h2 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em;
+    font-size: clamp(1.9rem, 4.2vw, 3rem); line-height: 1.08; margin: 0 0 18px;
+    text-wrap: balance; max-width: 20ch; }
+  h2.center, .kicker.center { text-align: center; margin-inline: auto; }
+  .sub { color: var(--ink-soft); max-width: 62ch; font-size: 1.08rem; }
+  .sub.center { margin-inline: auto; text-align: center; }
+
+  /* ---------- big idea / analogy ---------- */
+  .idea { border-top: 1px solid var(--line); background:
+     linear-gradient(180deg, var(--bg-2), transparent); }
+  .idea-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 44px; }
+  .idea-card { background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--r); padding: 26px 24px; }
+  .idea-card .n { font-family: var(--mono); color: var(--accent); font-size: 13px;
+    letter-spacing:.12em; }
+  .idea-card h3 { font-family: var(--serif); font-size: 1.32rem; margin: 12px 0 8px; font-weight:600; }
+  .idea-card p { margin: 0; color: var(--ink-soft); font-size: .98rem; }
+  .idea-card b { color: var(--ink); }
+
+  /* ---------- value chain ---------- */
+  .chain { background:
+    radial-gradient(80% 50% at 50% 0%, var(--bg-2), transparent 70%); }
+  .spine { position: relative; margin-top: 56px; }
+  .spine::before { content:""; position: absolute; left: 31px; top: 8px; bottom: 60px;
+    width: 2px; background: linear-gradient(180deg,var(--accent),var(--accent-2));
+    opacity: .55; }
+  @media (max-width: 620px){ .spine::before { left: 23px; } }
+
+  .station { position: relative; padding: 0 0 20px 76px; margin-bottom: 10px; }
+  @media (max-width: 620px){ .station { padding-left: 60px; } }
+  .node { position: absolute; left: 12px; top: 4px; width: 40px; height: 40px;
+    border-radius: 50%; background: var(--bg); border: 2px solid var(--accent);
+    display: grid; place-items: center; font-family: var(--mono); font-weight: 700;
+    color: var(--accent); z-index: 2; box-shadow: 0 0 0 6px var(--bg), 0 0 20px var(--glow); }
+  @media (max-width: 620px){ .node { left: 4px; width: 38px; height: 38px; } }
+
+  .st-head { width: 100%; text-align: left; cursor: pointer; background: var(--panel);
+    border: 1px solid var(--line); border-radius: var(--r); padding: 20px 22px;
+    display: flex; align-items: center; gap: 16px; color: inherit; font-family: inherit;
+    transition: border-color .2s, background .2s; }
+  .st-head:hover { border-color: var(--accent); background: var(--bg-2); }
+  .st-head:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .st-head .txt { flex: 1; min-width: 0; }
+  .st-phase { font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-mute); }
+  .st-title { font-family: var(--serif); font-size: 1.4rem; font-weight: 600;
+    line-height: 1.15; margin-top: 3px; }
+  .st-chev { flex: none; color: var(--accent); font-family: var(--mono);
+    transition: transform .25s; font-size: 1.1rem; }
+  .st-head[aria-expanded="true"] .st-chev { transform: rotate(45deg); }
+
+  .st-body { overflow: hidden; height: 0; transition: height .3s ease; }
+  .st-inner { padding: 20px 22px 8px; }
+  .st-inner p.lead { margin: 0 0 18px; color: var(--ink-soft); font-size: 1.03rem; }
+  .st-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 620px){ .st-cols { grid-template-columns: 1fr; } }
+  .st-block { border: 1px solid var(--line-2); border-radius: 11px; padding: 15px 16px;
+    background: var(--bg); }
+  .st-block .lab { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-mute); margin-bottom: 7px; display:flex; gap:7px; align-items:center;}
+  .st-block .lab .dot { width:7px; height:7px; border-radius:50%; background:var(--accent); }
+  .st-block p { margin: 0; font-size: .95rem; color: var(--ink); }
+  .st-block.analogy { border-color: color-mix(in srgb, var(--accent-2) 35%, transparent); }
+  .st-block.analogy .dot { background: var(--accent-2); }
+  .st-block.pcsk9 { grid-column: 1 / -1; border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    background: linear-gradient(180deg, color-mix(in srgb,var(--accent) 7%, var(--bg)), var(--bg)); }
+  .st-block.pcsk9 .dot { background: var(--accent); box-shadow: 0 0 8px var(--glow); }
+  .st-block.pcsk9 p b { color: var(--accent); font-family: var(--mono); }
+  .st-stat { margin-top: 16px; font-family: var(--mono); font-size: .82rem;
+    color: var(--ink-mute); }
+  .st-stat b { color: var(--accent); }
+
+  /* ---------- odds interactive ---------- */
+  .odds { border-top: 1px solid var(--line); }
+  .odds-panel { margin-top: 40px; background: var(--bg-2); border: 1px solid var(--line);
+    border-radius: 18px; padding: clamp(24px,4vw,40px); }
+  .toggle { display: inline-flex; background: var(--bg); border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px; gap: 4px; }
+  .toggle button { border: none; background: transparent; color: var(--ink-soft);
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: .04em; cursor: pointer;
+    padding: 9px 16px; border-radius: 999px; transition: .2s; }
+  .toggle button[aria-pressed="true"] { background: var(--accent); color: #04120f; font-weight: 700; }
+  .toggle button:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+  .meter-wrap { margin-top: 30px; }
+  .meter-row { display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--mono); font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; }
+  .meter-row .val { font-size: clamp(1.6rem,5vw,2.4rem); color: var(--accent); font-weight: 700; }
+  .track { height: 22px; background: var(--bg-3); border-radius: 999px; overflow: hidden;
+    border: 1px solid var(--line-2); }
+  .fill { height: 100%; width: 12%; border-radius: 999px;
+    background: linear-gradient(90deg,var(--accent-2),var(--accent));
+    transition: width .8s cubic-bezier(.4,0,.1,1); box-shadow: 0 0 18px var(--glow); }
+  .odds-note { margin-top: 22px; color: var(--ink-soft); font-size: .98rem; max-width: 60ch; }
+  .odds-note b { color: var(--ink); }
+
+  /* ---------- funnel ---------- */
+  .funnel { background: linear-gradient(180deg, transparent, var(--bg-2)); border-top: 1px solid var(--line); }
+  .funnel-grid { margin-top: 46px; display: grid; gap: 12px; }
+  .frow { display: grid; grid-template-columns: 220px 1fr; gap: 20px; align-items: center; }
+  @media (max-width: 640px){ .frow { grid-template-columns: 1fr; gap: 6px; } }
+  .frow .meta .stage { font-family: var(--serif); font-size: 1.12rem; font-weight: 600; }
+  .frow .meta .desc { font-size: .85rem; color: var(--ink-mute); }
+  .fbar-wrap { position: relative; }
+  .fbar { height: 46px; border-radius: 10px; display: flex; align-items: center;
+    padding-left: 16px; color: #04120f; font-family: var(--mono); font-weight: 700;
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    width: 0; transition: width 1.1s cubic-bezier(.4,0,.1,1); overflow: hidden;
+    white-space: nowrap; min-width: 0; }
+  .fbar .cnt { text-shadow: 0 1px 2px rgba(0,0,0,.15); }
+  :root[data-theme="light"] .fbar, @media (prefers-color-scheme: light){ .fbar{ color:#fff; } }
+  .fcap { text-align: center; margin-top: 34px; font-family: var(--mono);
+    font-size: .9rem; color: var(--ink-mute); }
+  .fcap b { color: var(--accent); }
+
+  /* ---------- numbers strip ---------- */
+  .stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    background: var(--bg-2); }
+  .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; }
+  @media (max-width: 720px){ .stat-grid { grid-template-columns: repeat(2,1fr); } }
+  .stat { padding: 34px 22px; border-left: 1px solid var(--line); }
+  .stat:first-child { border-left: none; }
+  @media (max-width: 720px){ .stat:nth-child(odd){ border-left:none; } .stat { border-top: 1px solid var(--line);} .stat:nth-child(1),.stat:nth-child(2){ border-top:none; } }
+  .stat .big { font-family: var(--mono); font-weight: 700; font-size: clamp(1.8rem,5vw,2.6rem);
+    color: var(--accent); letter-spacing: -.02em; }
+  .stat .lbl { color: var(--ink-soft); font-size: .92rem; margin-top: 6px; }
+
+  /* ---------- cross-cutting ---------- */
+  .cross-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; margin-top: 42px; }
+  @media (max-width: 640px){ .cross-grid { grid-template-columns: 1fr; } }
+  .cc { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+    padding: 26px; }
+  .cc h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; margin: 0 0 8px; }
+  .cc .tag { font-family: var(--mono); font-size: 11px; color: var(--accent);
+    letter-spacing: .1em; text-transform: uppercase; }
+  .cc p { margin: 6px 0 0; color: var(--ink-soft); font-size: .97rem; }
+
+  /* ---------- glossary ---------- */
+  .glossary { border-top: 1px solid var(--line); background: var(--bg-2); }
+  .terms { margin-top: 40px; display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+  @media (max-width: 640px){ .terms { grid-template-columns: 1fr; } }
+  .term { border: 1px solid var(--line); border-radius: 12px; background: var(--bg);
+    overflow: hidden; }
+  .term button { width: 100%; text-align: left; background: transparent; border: none;
+    color: var(--ink); font-family: var(--mono); font-size: .95rem; padding: 15px 18px;
+    cursor: pointer; display: flex; justify-content: space-between; gap: 12px; align-items:center; }
+  .term button:hover { color: var(--accent); }
+  .term button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .term .plus { color: var(--accent); flex: none; transition: transform .2s; }
+  .term button[aria-expanded="true"] .plus { transform: rotate(45deg); }
+  .term .def { height: 0; overflow: hidden; transition: height .25s ease; }
+  .term .def p { margin: 0; padding: 0 18px 16px; color: var(--ink-soft);
+    font-size: .95rem; font-family: var(--sans); }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--line); padding-block: 56px; color: var(--ink-mute); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: baseline; }
+  footer .brand { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); font-weight: 600; }
+  footer p { margin: 6px 0 0; font-size: .85rem; max-width: 52ch; }
+  footer .disclaim { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; }
+
+  /* ---------- reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce){
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .caret, .scroll-hint span { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button id="themeBtn" type="button">◑ theme</button>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <canvas id="helix"></canvas>
+  <div class="hero-veil"></div>
+  <div class="wrap">
+    <p class="eyebrow">A visual guide for the curious</p>
+    <h1>From <em>genome</em> to medicine</h1>
+    <p class="lede">Every new drug begins as a question about the human body. Genomics —
+      the science of reading our DNA — has become the sharpest tool we have for asking it.
+      Here is how a strand of code becomes a treatment, step by step.</p>
+    <div class="seq" id="seq" aria-hidden="true"></div>
+    <p class="scroll-hint"><span>▼</span>&nbsp; Scroll to follow the chain</p>
+  </div>
+</header>
+
+<!-- ============ BIG IDEA ============ -->
+<section class="idea">
+  <div class="wrap">
+    <p class="kicker reveal">The one idea to hold onto</p>
+    <h2 class="reveal">Your genome is an instruction manual. Disease is often a typo.</h2>
+    <p class="sub reveal">Genomics-driven drug discovery is really a search for typos that matter —
+      and then a plan to work around them. Three plain-language pieces make the whole thing click.</p>
+    <div class="idea-grid">
+      <div class="idea-card reveal">
+        <div class="n">01 — the manual</div>
+        <h3>The genome</h3>
+        <p>Roughly <b>3 billion letters</b> (A, T, C and G) that spell out how to build and run a
+          human body. Nearly every cell carries a full copy.</p>
+      </div>
+      <div class="idea-card reveal">
+        <div class="n">02 — the typo</div>
+        <h3>A variant</h3>
+        <p>A place where your spelling differs from the reference. Most are harmless. A few change how a
+          <b>protein</b> works — and that can cause, or protect against, disease.</p>
+      </div>
+      <div class="idea-card reveal">
+        <div class="n">03 — the fix</div>
+        <h3>A drug</h3>
+        <p>A molecule designed to <b>turn a protein up, down, or off</b> — correcting for the typo's
+          effect. Genetics tells us <em>which</em> protein to aim at.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VALUE CHAIN ============ -->
+<section class="chain">
+  <div class="wrap">
+    <p class="kicker reveal">The value chain</p>
+    <h2 class="reveal">Seven stations, one journey</h2>
+    <p class="sub reveal">Tap any station to open it. A running example — the real story of a
+      cholesterol drug called <span style="font-family:var(--mono);color:var(--accent)">PCSK9</span> —
+      threads through all seven, so you can watch one idea travel the whole chain.</p>
+
+    <div class="spine" id="spine"><!-- stations injected by JS --></div>
+  </div>
+</section>
+
+<!-- ============ ODDS INTERACTIVE ============ -->
+<section class="odds">
+  <div class="wrap">
+    <p class="kicker reveal">Why bother with genetics?</p>
+    <h2 class="reveal">Genetic evidence roughly doubles the odds</h2>
+    <p class="sub reveal">Most drug candidates fail. But when the target was chosen because human genetics
+      pointed to it, the candidate is far more likely to survive trials and reach patients. Flip the switch.</p>
+
+    <div class="odds-panel reveal">
+      <div class="toggle" role="group" aria-label="Choose evidence type">
+        <button id="oddsA" type="button" aria-pressed="true">Target picked without genetic evidence</button>
+        <button id="oddsB" type="button" aria-pressed="false">Target backed by human genetics</button>
+      </div>
+      <div class="meter-wrap">
+        <div class="meter-row">
+          <span id="oddsLabel">Baseline chance of reaching approval</span>
+          <span class="val" id="oddsVal">~1×</span>
+        </div>
+        <div class="track"><div class="fill" id="oddsFill"></div></div>
+      </div>
+      <p class="odds-note" id="oddsNote"><b>Baseline.</b> A target with no genetic support is essentially a
+        well-reasoned bet. Historically only a small fraction of such programmes make it all the way through.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUNNEL ============ -->
+<section class="funnel">
+  <div class="wrap">
+    <p class="kicker reveal">The attrition funnel</p>
+    <h2 class="reveal">Thousands go in. One comes out.</h2>
+    <p class="sub reveal">Drug discovery is a filter. At each stage, most candidates are eliminated for
+      lack of effect or safety concerns. These are illustrative industry figures — the shape is what matters.</p>
+
+    <div class="funnel-grid" id="funnel">
+      <div class="frow reveal">
+        <div class="meta"><div class="stage">Screened</div><div class="desc">Molecules & targets examined</div></div>
+        <div class="fbar-wrap"><div class="fbar" data-w="100"><span class="cnt">~10,000 candidates</span></div></div>
+      </div>
+      <div class="frow reveal">
+        <div class="meta"><div class="stage">Hits → Leads</div><div class="desc">Show real activity on the target</div></div>
+        <div class="fbar-wrap"><div class="fbar" data-w="62"><span class="cnt">~250</span></div></div>
+      </div>
+      <div class="frow reveal">
+        <div class="meta"><div class="stage">Preclinical</div><div class="desc">Cell & animal testing</div></div>
+        <div class="fbar-wrap"><div class="fbar" data-w="38"><span class="cnt">~10</span></div></div>
+      </div>
+      <div class="frow reveal">
+        <div class="meta"><div class="stage">Clinical trials</div><div class="desc">Phase I → II → III in people</div></div>
+        <div class="fbar-wrap"><div class="fbar" data-w="20"><span class="cnt">~5</span></div></div>
+      </div>
+      <div class="frow reveal">
+        <div class="meta"><div class="stage">Approved</div><div class="desc">Available to patients</div></div>
+        <div class="fbar-wrap"><div class="fbar" data-w="7"><span class="cnt">1 medicine</span></div></div>
+      </div>
+    </div>
+    <p class="fcap reveal">Start to finish: <b>10–15 years</b> and often <b>$1–2.6 billion</b> per approved drug.
+      Genomics' job is to make the survivors more likely from the very first station.</p>
+  </div>
+</section>
+
+<!-- ============ NUMBERS ============ -->
+<section class="stats">
+  <div class="wrap" style="padding-inline:0;">
+    <div class="stat-grid">
+      <div class="stat reveal"><div class="big">3B</div><div class="lbl">letters in a single human genome</div></div>
+      <div class="stat reveal"><div class="big">~2×</div><div class="lbl">higher success when a target has genetic support</div></div>
+      <div class="stat reveal"><div class="big">90%</div><div class="lbl">of drugs entering clinical trials still fail</div></div>
+      <div class="stat reveal"><div class="big">&lt;$200</div><div class="lbl">to sequence a whole genome today, down from billions</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CROSS-CUTTING ============ -->
+<section>
+  <div class="wrap">
+    <p class="kicker reveal">Beyond finding the target</p>
+    <h2 class="reveal">Genomics keeps working after the drug exists</h2>
+    <p class="sub reveal">The same DNA data that reveals a target also helps match the right drug to the
+      right person — the heart of precision medicine.</p>
+    <div class="cross-grid">
+      <div class="cc reveal"><span class="tag">Precision medicine</span>
+        <h3>The right patients</h3>
+        <p>Genomic markers can predict who will respond. Trials enrol the patients most likely to benefit,
+          so effects are clearer and smaller trials can succeed.</p></div>
+      <div class="cc reveal"><span class="tag">Companion diagnostics</span>
+        <h3>A test with the pill</h3>
+        <p>Many modern drugs ship with a genetic test that confirms a patient carries the variant the drug
+          was designed for — approved together by regulators.</p></div>
+      <div class="cc reveal"><span class="tag">Pharmacogenomics</span>
+        <h3>The right dose</h3>
+        <p>Your genes affect how you break down medicines. Genomics flags who needs a lower dose or a
+          different drug to stay safe.</p></div>
+      <div class="cc reveal"><span class="tag">New modalities</span>
+        <h3>Editing the source</h3>
+        <p>Reading DNA also lets us write it. Gene therapies and CRISPR-based treatments aim to fix the
+          typo directly, rather than working around it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GLOSSARY ============ -->
+<section class="glossary">
+  <div class="wrap">
+    <p class="kicker reveal">Plain-language glossary</p>
+    <h2 class="reveal">The words, decoded</h2>
+    <p class="sub reveal">Every field has its jargon. Here are the terms you met above, in one place. Tap to open.</p>
+    <div class="terms" id="terms"><!-- injected --></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="brand">From genome to medicine</div>
+      <p>An interactive explainer of the genomics-powered drug discovery value chain, built for
+        readers meeting the field for the first time.</p>
+    </div>
+    <p class="disclaim">Figures are illustrative industry estimates for teaching.<br>Not medical advice.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement, tbtn = document.getElementById("themeBtn");
+  function currentDark(){
+    var t = root.getAttribute("data-theme");
+    if (t) return t === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  tbtn.addEventListener("click", function(){
+    root.setAttribute("data-theme", currentDark() ? "light" : "dark");
+  });
+
+  /* ---------- scroll progress ---------- */
+  var prog = document.getElementById("progress");
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  }
+  document.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- reveals ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, {threshold: .12});
+  document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+
+  /* ---------- hero typed sequence ---------- */
+  (function(){
+    var el = document.getElementById("seq");
+    var bases = "ATCG";
+    var cls = {A:"A",T:"T",C:"C",G:"G"};
+    // deterministic pseudo-sequence (no Math.random)
+    var seed = "ATGCTGACCGTATCGGATTACGCATGCCGTAAGCTTCAGGATCCGTTAACGATCGTAGCATGCATGACCGTAGCT";
+    var i = 0, buf = "";
+    function tick(){
+      if (i >= seed.length){
+        el.innerHTML = render(seed) + '<span class="caret">▍</span>';
+        return;
+      }
+      buf += seed[i]; i++;
+      el.innerHTML = render(buf) + '<span class="caret">▍</span>';
+      setTimeout(tick, 42);
+    }
+    function render(s){
+      var out = "";
+      for (var k=0;k<s.length;k++){ var ch=s[k]; out += '<span class="'+(cls[ch]||"")+'">'+ch+'</span>'; }
+      return out;
+    }
+    if (reduce){ el.innerHTML = render(seed); } else { tick(); }
+  })();
+
+  /* ---------- hero helix canvas ---------- */
+  (function(){
+    var cv = document.getElementById("helix");
+    if (!cv) return;
+    var ctx = cv.getContext("2d");
+    var W, H, dpr;
+    function baseColor(k){
+      var v = getComputedStyle(root);
+      return [v.getPropertyValue("--A"),v.getPropertyValue("--T"),v.getPropertyValue("--C"),v.getPropertyValue("--G")][k].trim();
+    }
+    function resize(){
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = cv.clientWidth; H = cv.clientHeight;
+      cv.width = W*dpr; cv.height = H*dpr;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    var phase = 0;
+    var N = 30;
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      // place helix on the right third
+      var cx = W * 0.74;
+      var amp = Math.min(W*0.11, 150);
+      var top = -20, bottom = H + 20;
+      var span = bottom - top;
+      for (var i=0;i<N;i++){
+        var t = i / (N-1);
+        var y = top + t*span;
+        var a = phase + t * Math.PI * 4;
+        var x1 = cx + Math.cos(a)*amp;
+        var x2 = cx + Math.cos(a + Math.PI)*amp;
+        var depth = (Math.sin(a)+1)/2;           // 0..1 front/back
+        var r = 3 + depth*3.2;
+        // rung
+        ctx.globalAlpha = 0.12 + depth*0.18;
+        ctx.strokeStyle = baseColor(i % 4);
+        ctx.lineWidth = 1 + depth*1.4;
+        ctx.beginPath(); ctx.moveTo(x1,y); ctx.lineTo(x2,y); ctx.stroke();
+        // nodes
+        ctx.globalAlpha = 0.35 + depth*0.55;
+        ctx.fillStyle = baseColor(i % 4);
+        ctx.beginPath(); ctx.arc(x1,y,r,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle = baseColor((i+2) % 4);
+        ctx.beginPath(); ctx.arc(x2,y,r,0,Math.PI*2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      if (!reduce){ phase += 0.012; requestAnimationFrame(frame); }
+    }
+    frame();
+  })();
+
+  /* ---------- value chain stations ---------- */
+  var STATIONS = [
+    { phase:"Station 1 · Read the data",
+      title:"Generate & collect genomic data",
+      lead:"It starts with reading DNA at scale. Hospitals, biobanks and research studies sequence the genomes of hundreds of thousands of people — some healthy, some with a disease — and store the results as structured data.",
+      what:"DNA sequencing turns a biological sample into billions of letters. Paired with health records, this becomes a searchable map of who carries which variants and who develops which conditions.",
+      analogy:"Imagine collecting the instruction manuals of a whole city's worth of people, alongside notes on which appliances broke — the raw material for spotting patterns.",
+      pcsk9:"Population studies sequenced thousands of people and recorded their <b>cholesterol levels</b>. A rich, structured dataset — the same kind this project's report extractor helps build — is where every discovery begins.",
+      stat:"A whole genome now costs <b>under $200</b> to sequence, versus ~$3 billion for the first one." },
+    { phase:"Station 2 · Find the culprit",
+      title:"Target identification",
+      lead:"Now we hunt for genes that are causally linked to disease. If people with a particular variant reliably get — or avoid — a condition, the protein made by that gene becomes a candidate 'target' to aim a drug at.",
+      what:"Techniques like genome-wide association studies (GWAS) and rare-variant analysis compare the DNA of patients and healthy people to find variants that tip the scales toward disease.",
+      analogy:"Like noticing that every house with a flooded basement has the same faulty valve — the valve becomes the thing to fix.",
+      pcsk9:"Researchers found people with rare mutations that <b>switched off the PCSK9 gene</b>. These people had strikingly <b>low LDL cholesterol</b> and far less heart disease. PCSK9 became the target.",
+      stat:"Human genetics points to a specific protein — turning a vague disease into a concrete address." },
+    { phase:"Station 3 · Make sure it's real",
+      title:"Target validation",
+      lead:"A promising target still has to earn trust. Scientists confirm that changing the target actually changes the disease — and that doing so is likely to be safe — before spending years on it.",
+      what:"Lab tools (like CRISPR to switch genes on or off in cells) and 'natural experiments' from human genetics test whether the target is truly causal, not just a bystander.",
+      analogy:"Before ripping out the valve, you prove that closing it really does stop the flood — and doesn't break the whole house.",
+      pcsk9:"Human genetics was the ultimate validation: people <b>born with no working PCSK9</b> were healthy and protected from heart disease. That real-world 'experiment' proved blocking it should be both effective and safe.",
+      stat:"Genetic 'natural experiments' de-risk a target years before any drug is made." },
+    { phase:"Station 4 · Design the fix",
+      title:"Hit discovery & lead optimisation",
+      lead:"With a validated target, chemists and biologists search for molecules that act on it — then refine the best ones into a viable drug candidate.",
+      what:"Millions of molecules are screened for activity ('hits'). The strongest are optimised into 'leads' — improving potency, safety and how the body handles them. Modalities include small molecules, antibodies, and RNA-based drugs.",
+      analogy:"Trying thousands of keys in a lock, then filing down the one that fits best until it turns smoothly every time.",
+      pcsk9:"Because PCSK9 works outside the cell, scientists designed <b>monoclonal antibodies</b> — lab-made proteins that latch onto PCSK9 and neutralise it, letting the liver clear more cholesterol.",
+      stat:"Structure and AI-guided design now speed up what used to be years of trial and error." },
+    { phase:"Station 5 · Test it safely",
+      title:"Preclinical development",
+      lead:"Before any human takes it, the candidate is tested extensively in cells and animals to gauge whether it works and whether it's safe enough to try in people.",
+      what:"Studies measure efficacy, toxicity, and how the drug is absorbed and cleared (PK/PD). Genomic biomarkers are chosen here to later identify responders in the clinic.",
+      analogy:"A dress rehearsal in a controlled setting — catching problems before opening night with real audiences.",
+      pcsk9:"Antibodies against PCSK9 were tested in cells and animals, confirming they <b>lowered LDL cholesterol</b> without unexpected harm — clearing the way for human trials.",
+      stat:"Most candidates that fail for toxicity are caught — ideally — at this stage." },
+    { phase:"Station 6 · Prove it in people",
+      title:"Clinical trials — Phase I, II, III",
+      lead:"The candidate is tested in humans in three escalating phases: first for safety, then for the right dose and early signs of benefit, then in large trials that confirm it truly works.",
+      what:"Phase I (small, safety) → Phase II (dose & efficacy) → Phase III (large, confirmatory). Genomics helps recruit the patients most likely to respond, making effects easier to detect.",
+      analogy:"Opening a play first to a tiny preview crowd, then a bigger one, then a full theatre — checking at each step that it lands.",
+      pcsk9:"Large trials showed the antibodies cut LDL cholesterol by roughly <b>60%</b> and reduced heart attacks and strokes — turning a genetic insight into measured patient benefit.",
+      stat:"About <b>90%</b> of drugs that enter clinical trials never make it out." },
+    { phase:"Station 7 · Reach patients",
+      title:"Regulatory approval & real-world use",
+      lead:"Regulators review all the evidence. If a drug is proven safe and effective, it's approved — often alongside a genetic test that identifies exactly who it's for.",
+      what:"Agencies like the FDA and EMA scrutinise the data. After approval, pharmacogenomics continues to guide the right drug and dose for each person, and real-world data refines its use.",
+      analogy:"A final inspection and licence — then the medicine enters the world, matched to the people it was designed to help.",
+      pcsk9:"The PCSK9 antibodies <b>evolocumab</b> and <b>alirocumab</b> were approved in 2015 — roughly a decade after the genetic discovery — and now protect patients with stubbornly high cholesterol.",
+      stat:"From genetic clue to approved medicine: about <b>10 years</b>, guided the whole way by DNA." }
+  ];
+
+  var spine = document.getElementById("spine");
+  STATIONS.forEach(function(s, idx){
+    var el = document.createElement("div");
+    el.className = "station reveal";
+    var bodyId = "stbody-" + idx;
+    el.innerHTML =
+      '<div class="node">'+(idx+1)+'</div>' +
+      '<button class="st-head" type="button" aria-expanded="false" aria-controls="'+bodyId+'">' +
+        '<div class="txt"><div class="st-phase">'+s.phase+'</div>' +
+        '<div class="st-title">'+s.title+'</div></div>' +
+        '<div class="st-chev" aria-hidden="true">+</div>' +
+      '</button>' +
+      '<div class="st-body" id="'+bodyId+'"><div class="st-inner">' +
+        '<p class="lead">'+s.lead+'</p>' +
+        '<div class="st-cols">' +
+          '<div class="st-block"><div class="lab"><span class="dot"></span>What happens</div><p>'+s.what+'</p></div>' +
+          '<div class="st-block analogy"><div class="lab"><span class="dot"></span>In plain terms</div><p>'+s.analogy+'</p></div>' +
+          '<div class="st-block pcsk9"><div class="lab"><span class="dot"></span>The PCSK9 story, at this station</div><p>'+s.pcsk9+'</p></div>' +
+        '</div>' +
+        '<div class="st-stat">'+s.stat+'</div>' +
+      '</div></div>';
+    spine.appendChild(el);
+    io.observe(el);
+
+    var head = el.querySelector(".st-head");
+    var body = el.querySelector(".st-body");
+    var inner = el.querySelector(".st-inner");
+    head.addEventListener("click", function(){
+      var open = head.getAttribute("aria-expanded") === "true";
+      if (open){
+        body.style.height = inner.offsetHeight + "px";
+        requestAnimationFrame(function(){ body.style.height = "0px"; });
+        head.setAttribute("aria-expanded","false");
+      } else {
+        body.style.height = inner.offsetHeight + "px";
+        head.setAttribute("aria-expanded","true");
+        body.addEventListener("transitionend", function te(){
+          if (head.getAttribute("aria-expanded")==="true") body.style.height = "auto";
+          body.removeEventListener("transitionend", te);
+        });
+      }
+    });
+  });
+  // open the first station by default so the pattern is obvious
+  var firstHead = spine.querySelector(".st-head");
+  if (firstHead){ firstHead.click(); }
+
+  /* ---------- odds interactive ---------- */
+  (function(){
+    var a = document.getElementById("oddsA"), b = document.getElementById("oddsB");
+    var fill = document.getElementById("oddsFill"), val = document.getElementById("oddsVal");
+    var label = document.getElementById("oddsLabel"), note = document.getElementById("oddsNote");
+    function set(genetic){
+      a.setAttribute("aria-pressed", String(!genetic));
+      b.setAttribute("aria-pressed", String(genetic));
+      if (genetic){
+        fill.style.width = "78%"; val.textContent = "~2×";
+        label.textContent = "Chance of reaching approval, with genetic support";
+        note.innerHTML = "<b>Backed by genetics.</b> When the target is chosen because human DNA links it to the disease, the programme is roughly <b>twice as likely</b> to survive trials and reach patients. The biology was validated by nature before a single dollar was spent on chemistry.";
+      } else {
+        fill.style.width = "34%"; val.textContent = "~1×";
+        label.textContent = "Baseline chance of reaching approval";
+        note.innerHTML = "<b>Baseline.</b> A target with no genetic support is essentially a well-reasoned bet. Historically only a small fraction of such programmes make it all the way through.";
+      }
+    }
+    a.addEventListener("click", function(){ set(false); });
+    b.addEventListener("click", function(){ set(true); });
+    // init baseline width once visible
+    var oio = new IntersectionObserver(function(en){
+      en.forEach(function(e){ if(e.isIntersecting){ set(false); oio.disconnect(); } });
+    }, {threshold:.3});
+    oio.observe(document.querySelector(".odds-panel"));
+  })();
+
+  /* ---------- funnel animation ---------- */
+  (function(){
+    var funnel = document.getElementById("funnel");
+    var bars = funnel.querySelectorAll(".fbar");
+    var fired = false;
+    var fio = new IntersectionObserver(function(en){
+      en.forEach(function(e){
+        if (e.isIntersecting && !fired){
+          fired = true;
+          bars.forEach(function(bar, i){
+            var w = bar.getAttribute("data-w");
+            setTimeout(function(){ bar.style.width = w + "%"; }, reduce ? 0 : i*160);
+          });
+          fio.disconnect();
+        }
+      });
+    }, {threshold:.25});
+    fio.observe(funnel);
+  })();
+
+  /* ---------- glossary ---------- */
+  var TERMS = [
+    ["Genome","The complete set of DNA in an organism — all 3 billion letters. Your personal copy of the instruction manual for building and running you."],
+    ["DNA sequencing","The lab process of reading the exact order of letters (A, T, C, G) in a DNA sample and turning it into digital data."],
+    ["Variant","A spot where your DNA spelling differs from the standard reference. Most are harmless; some change how a protein works."],
+    ["Protein","The molecular machines that do the work in your cells. Genes are the recipes; proteins are the meals. Most drugs act on a protein."],
+    ["Target","The specific protein (or gene) a drug is designed to act on. Choosing the right target is the single most important decision in drug discovery."],
+    ["GWAS","Genome-Wide Association Study — comparing the DNA of many people with and without a disease to find variants linked to it."],
+    ["Biomarker","A measurable biological signal — often genetic — that predicts who has a disease, who will respond to a drug, or whether it's working."],
+    ["Pharmacogenomics","The study of how your genes affect your response to medicines — used to pick the safest, most effective drug and dose for you."],
+    ["Companion diagnostic","A test approved alongside a drug that confirms a patient has the genetic feature the drug was designed to treat."],
+    ["Preclinical","Testing in cells and animals that happens before a drug is ever given to humans."],
+    ["Clinical trial","A carefully designed study testing a drug in people, in escalating phases (I, II, III), to prove it's safe and effective."],
+    ["Attrition","The steady elimination of drug candidates at each stage. Only a tiny fraction of starters ever become approved medicines."]
+  ];
+  var termsBox = document.getElementById("terms");
+  TERMS.forEach(function(t, idx){
+    var el = document.createElement("div");
+    el.className = "term";
+    var id = "def-"+idx;
+    el.innerHTML =
+      '<button type="button" aria-expanded="false" aria-controls="'+id+'">' +
+        '<span>'+t[0]+'</span><span class="plus" aria-hidden="true">+</span></button>' +
+      '<div class="def" id="'+id+'"><p>'+t[1]+'</p></div>';
+    termsBox.appendChild(el);
+    var btn = el.querySelector("button"), def = el.querySelector(".def");
+    var p = def.querySelector("p");
+    btn.addEventListener("click", function(){
+      var open = btn.getAttribute("aria-expanded")==="true";
+      if (open){ def.style.height = p.offsetHeight + "px"; requestAnimationFrame(function(){ def.style.height="0px"; }); btn.setAttribute("aria-expanded","false"); }
+      else { def.style.height = p.offsetHeight + "px"; btn.setAttribute("aria-expanded","true");
+        def.addEventListener("transitionend", function te(){ if(btn.getAttribute("aria-expanded")==="true") def.style.height="auto"; def.removeEventListener("transitionend", te); }); }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
